@@ -1,4 +1,4 @@
-#include "../include/OBJParser.hpp"
+#include "OBJParser.hpp"
 #include <iostream>
 
 int main(int argc, char** argv)
