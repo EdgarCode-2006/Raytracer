@@ -4,6 +4,7 @@
 #include <string>
 #include <exception>
 #include <raylib.h>
+#include <vector>
 
 namespace Graphic {
     class Renderer {
@@ -11,6 +12,7 @@ namespace Graphic {
             void renderPixelBuffer(Color *pixels, int width, int height);
             int getScreenHeight();
             int getScreenWidth();
+            Color* getPixels();
         private:
     };
 
