@@ -1,4 +1,8 @@
-#include "raytracer.hpp"
+#ifndef OBJPARSER_HPP_
+#define OBJPARSER_HPP_
+
+#include "math.hpp"
+#include "rayTracer.hpp"
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -20,3 +24,5 @@ namespace OBJParser {
             int parseIndex(const std::string& token);
     };
 }
+
+#endif
