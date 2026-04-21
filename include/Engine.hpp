@@ -16,11 +16,16 @@ namespace RayTracer {
         public:
             Engine(RayTracer::Scene& scene);
             ~Engine();
-    
+            
+            
             void run();
             void close();
         private:
+            int _lastWidth;
+            int _lastHeight;
+
             Scene& _scene;
+            void handleWindowResize(RayTracer::Camera &cam);
             
             std::unique_ptr<Graphic::Renderer> _renderer;
             std::unique_ptr<RayTracer::Integrator> _integrator;

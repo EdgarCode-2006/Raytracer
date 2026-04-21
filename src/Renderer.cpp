@@ -38,16 +38,6 @@ namespace Graphic {
         EndDrawing();
     }
 
-    void Renderer::checkWindowState(RayTracer::Camera &cam) {
-        if (IsWindowResized()) {
-            int newWidth = GetScreenWidth();
-            int newHeight = GetScreenHeight();
-            resizeCanvas(newWidth, newHeight);
-            cam.setWidth(newWidth);
-            cam.setHeight(newHeight);
-        }
-    }
-
     void Renderer::resizeCanvas(int newWidth, int newHeight) {
         UnloadImage(_canvas);
         UnloadTexture(_texture);
