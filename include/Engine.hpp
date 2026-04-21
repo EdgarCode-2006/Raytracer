@@ -25,7 +25,7 @@ class Engine {
         Engine(const Scene &scene);
         ~Engine();
 
-        void init();
+        void init(const Scene &scene);
         void run();
         void close();
     private:
