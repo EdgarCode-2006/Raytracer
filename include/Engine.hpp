@@ -12,7 +12,6 @@
 
 namespace RayTracer {
 
-
     class Engine {
         public:
             Engine(const RayTracer::Scene& scene);
