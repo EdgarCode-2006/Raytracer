@@ -1,8 +1,8 @@
 #ifndef OBJPARSER_HPP_
 #define OBJPARSER_HPP_
 
-#include "math.hpp"
-#include "rayTracer.hpp"
+#include "utils/math.hpp"
+#include "utils/rayTracer.hpp"
 #include <iostream>
 #include <sstream>
 #include <vector>
