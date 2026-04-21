@@ -19,15 +19,14 @@ namespace RayTracer {
         Math::Vector3D cameraDir = { 0.0f, 0.0f, 1.0f };
         float aspectRatio = (float)screenWidth / (float)screenHeight;
         Color col = {0, 0, 0};
+        Camera cam = this->_scene->getCamera();
     
         for (int y = 0; y < screenHeight; y++) {
             for (int x = 0; x < screenWidth; x++) {
     
-                float screenX = ((2.0f * (x + 0.5f) / screenWidth) - 1.0f) * aspectRatio;
-                float screenY = 1.0f - (2.0f * (y + 0.5f) / screenHeight);
-    
-                Math::Vector3D rayDir = (Math::Vector3D(screenX, screenY, 1.0f)).normalize();
-                float value = rayDir.dot(cameraDir);
+                Ray ray = cam.generateRay(x, y);
+
+                float value = ray.direction.dot(cameraDir);
                 unsigned char intensity = (unsigned char)(value * 255);
                 col = {intensity, intensity, intensity, 255};
     

@@ -6,7 +6,8 @@
 namespace RayTracer {
     class Scene {
         public:
-
+            Camera getCamera() {return _camera;};
+        
         private:
             Camera _camera;
 

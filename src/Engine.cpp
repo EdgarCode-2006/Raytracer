@@ -11,7 +11,7 @@ namespace RayTracer{
         this->close();
     }
 
-    void Engine::init(const RayTracer::Scene &scene)
+    void Engine::init(const Scene &scene)
     {
         this->_renderer = std::make_unique<Graphic::Renderer>();
         this->_integrator = std::make_unique<Integrator>();
