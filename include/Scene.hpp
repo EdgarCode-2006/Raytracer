@@ -1,6 +1,9 @@
 #ifndef SCENE_HPP_
-#define  SCENE_HPP_
-class Scene {
-    
-};
+#define SCENE_HPP_
+
+namespace RayTracer {
+    class Scene {
+
+    };
+}
 #endif

@@ -1,21 +1,25 @@
 #ifndef RENDERER_HPP_
 #define RENDERER_HPP_
-#include <iostream>
+
+#include <string>
+#include <exception>
 #include <raylib.h>
 
-class Renderer {
-    public:
-        void renderPixelBuffer(Color *pixel);
+namespace Graphic {
+    class Renderer {
+        public:
+            void renderPixelBuffer(Color *pixels, int width, int height);
+            int getScreenHeight();
+            int getScreenWidth();
+        private:
+    };
 
-};
-
-
-class RendererException : public std::exception {
-    public:
-        RendererException(const std::string& message) : message_(message) {}
-        const char* what() const throw() { return message_.c_str(); }
-
-    private:
-        std::string message_;
-};
+    class RendererException : public std::exception {
+        public:
+            RendererException(const std::string& message) : _message(message) {}
+            const char* what() const noexcept override { return _message.c_str(); }
+        private:
+            std::string _message;
+    };
+}
 #endif
