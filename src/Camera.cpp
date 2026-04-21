@@ -3,6 +3,14 @@
 #include <numbers>
 
 namespace RayTracer {
+    Camera::Camera(const int width, const int height)
+    {
+        this->_fov = 100.0;
+        this->_width = width;
+        this->_height = height;
+        this->_position = Math::Vector3D(0, 0, 0);
+        this->_rotation = Math::Vector3D(0, 0, 0);
+    }
 
     static Math::Vector3D rotateX(Math::Vector3D v, double deg)
     {
@@ -18,7 +26,7 @@ namespace RayTracer {
 
     Ray Camera::generateRay(int x, int y) const
     {
-        double aspect = (int)this->_width / (int)this->_height;
+        double aspect = (double)this->_width / (double)this->_height;
         double scale  = std::tan(this->_fov / 2.0 * std::numbers::pi / 180.0);
 
         double u = (2.0 * (x + 0.5) / this->_width  - 1.0) * aspect * scale;

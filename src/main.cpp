@@ -1,5 +1,7 @@
 #include "OBJParser.hpp"
 #include <iostream>
+#include "Engine.hpp"
+#include "Scene.hpp"
 
 int main(int argc, char** argv)
 {
@@ -8,14 +10,21 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    OBJParser::OBJParser parser;
-    std::vector<RayTracer::Triangle> triangles = parser.load(argv[1]);
+    try {
+        OBJParser::OBJParser parser;
+        std::vector<RayTracer::Triangle> triangles = parser.load(argv[1]);
+        const int screenWidth = 800;
+        const int screenHeight = 450;
 
-    std::cout << triangles.size() << " triangles loaded" << std::endl;
-    std::cout << "Triangle " << 1 << ": "
-        << "(" << triangles[1].a.x << "," << triangles[1].a.y << "," << triangles[1].a.z << ") "
-        << "(" << triangles[1].b.x << "," << triangles[1].b.y << "," << triangles[1].b.z << ") "
-        << "(" << triangles[1].c.x << "," << triangles[1].c.y << "," << triangles[1].c.z << ")"
-        << std::endl;
+        RayTracer::Scene scene(screenWidth, screenHeight);
+        scene.addTriangles(triangles);
+
+        RayTracer::Engine engine(scene);
+        engine.run();
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+    
     return 0;
 }

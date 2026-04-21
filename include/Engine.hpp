@@ -14,18 +14,15 @@ namespace RayTracer {
 
     class Engine {
         public:
-            Engine(const RayTracer::Scene& scene);
+            Engine(RayTracer::Scene& scene);
             ~Engine();
     
-            void init(const Scene &scene);
             void run();
             void close();
         private:
-            size_t _screenHeight = 0;
-            size_t _screenWidth = 0;
-            std::vector<RayTracer::Triangle> _triangles;
-    
-            std::unique_ptr<Graphic::Renderer>     _renderer;
+            Scene& _scene;
+            
+            std::unique_ptr<Graphic::Renderer> _renderer;
             std::unique_ptr<RayTracer::Integrator> _integrator;
     };
     

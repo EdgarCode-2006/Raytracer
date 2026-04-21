@@ -2,16 +2,17 @@
 #define INTEGRATOR_HPP_
 #include <memory>
 #include "Scene.hpp"
+#include <raylib.h>
 
 namespace RayTracer {
     class Integrator {
         public:
-            Integrator();
+            Integrator(const Scene& scene);
             ~Integrator();
-            void computePixels(const int &screenWidth, const int &screenHeight, Color *pixels);
+            void computePixels(const Camera &cam, Color *pixels);
 
         private:
-            std::unique_ptr<RayTracer::Scene> _scene;
+            const Scene& _scene;
 
     };
 }

@@ -1,9 +1,11 @@
 #include "Engine.hpp"
 
 namespace RayTracer{
-    Engine::Engine(const RayTracer::Scene &scene)
+    Engine::Engine(RayTracer::Scene &scene) : _scene(scene)
     {
-        this->init(scene);
+        Camera& cam = _scene.getCamera();
+        _renderer = std::make_unique<Graphic::Renderer>(cam.getWidth(), cam.getHeight());
+        _integrator = std::make_unique<Integrator>(_scene);
     }
 
     Engine::~Engine()
@@ -11,18 +13,17 @@ namespace RayTracer{
         this->close();
     }
 
-    void Engine::init(const Scene &scene)
-    {
-        this->_renderer = std::make_unique<Graphic::Renderer>();
-        this->_integrator = std::make_unique<Integrator>();
-        // Copy the scene into a new scene, which holds the triangles.
-    }
-
     void Engine::run()
     {
-        // Color *pixels = this->_renderer.getPixels();
-        // this->_integrator.computePixels(200, 800, pixels);
-        // this->_renderer.renderPixelBuffer(pixels);
+        Camera& cam = _scene.getCamera();
+
+        while (!WindowShouldClose()) {
+            _renderer->checkWindowState(cam);
+            
+            Color *pixels = _renderer->getPixels();
+            _integrator->computePixels(cam, pixels);
+            _renderer->renderPixelBuffer(pixels);
+        }
     }
 
     void Engine::close()

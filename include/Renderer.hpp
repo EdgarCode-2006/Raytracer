@@ -6,14 +6,21 @@
 #include <raylib.h>
 #include <vector>
 
+#include "entities/Camera.hpp"
+
 namespace Graphic {
     class Renderer {
         public:
-            void renderPixelBuffer(Color *pixels, int width, int height);
-            int getScreenHeight();
-            int getScreenWidth();
-            Color* getPixels();
+            Renderer(const int screenHeight, const int screenWidth);
+            ~Renderer();
+            void renderPixelBuffer(Color *pixels);
+            void checkWindowState(RayTracer::Camera &cam);
+            void resizeCanvas(int newWidth, int newHeight);
+            Color* getPixels() {return this->_pixels;};
         private:
+            Color *_pixels;
+            Image _canvas;
+            Texture2D _texture;
     };
 
     class RendererException : public std::exception {
@@ -24,4 +31,5 @@ namespace Graphic {
             std::string _message;
     };
 }
+
 #endif

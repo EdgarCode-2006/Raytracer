@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.14)
 
-set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_CXX_COMPILER "g++")
 project(nanotekspice LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-add_compile_options(-Wall -Wextra -Werror)
+add_compile_options(-lraylib -lGL -lm -lpthread -ldl -lrt -lX11)
 
 set(EXECUTABLE_NAME "raytracer")
 
@@ -18,7 +18,7 @@ find_library(RAYLIB_LIB raylib)
 find_path(RAYLIB_INC raylib.h)
 if(RAYLIB_LIB AND RAYLIB_INC)
     target_include_directories(${EXECUTABLE_NAME} PRIVATE ${RAYLIB_INC})
-    target_link_libraries(${EXECUTABLE_NAME} ${RAYLIB_LIB} GL m pthread dl)
+    target_link_libraries(${EXECUTABLE_NAME} ${RAYLIB_LIB} GL m pthread dl X11 rt)
 else()
     message(FATAL_ERROR "raylib not found")
 endif()

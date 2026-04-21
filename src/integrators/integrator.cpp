@@ -3,23 +3,22 @@
 #include <raylib.h>
 
 namespace RayTracer {
-    Integrator::Integrator()
+    Integrator::Integrator(const Scene& scene) : _scene(scene)
     {
-        // load the functions from .so
+        // Initialize integrator with scene
     }
     
     Integrator::~Integrator()
     {
-        // Close the .so
+        // Cleanup
     }
     
-    void Integrator::computePixels(const int &screenWidth, const int &screenHeight, Color *pixels)
+    void Integrator::computePixels(const Camera &cam, Color *pixels)
     {
-        Math::Vector3D cameraPos = { 0.0f, 0.0f, 0.0f };
         Math::Vector3D cameraDir = { 0.0f, 0.0f, 1.0f };
-        float aspectRatio = (float)screenWidth / (float)screenHeight;
         Color col = {0, 0, 0};
-        Camera cam = this->_scene->getCamera();
+        const int screenWidth = cam.getWidth();
+        const int screenHeight = cam.getHeight();
     
         for (int y = 0; y < screenHeight; y++) {
             for (int x = 0; x < screenWidth; x++) {
