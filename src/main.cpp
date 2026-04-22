@@ -2,6 +2,7 @@
 #include "Engine.hpp"
 #include "Scene.hpp"
 #include <iostream>
+#include "renderer/RaylibRenderer.hpp"
 
 int main(int argc, char** argv)
 {
@@ -19,8 +20,8 @@ int main(int argc, char** argv)
             return 84;
         }
 
-        const int screenWidth  = 200;
-        const int screenHeight = 112;
+        const int screenWidth  = 800;
+        const int screenHeight = 600;
 
         RayTracer::Scene scene(screenWidth, screenHeight);
         scene.addTriangles(triangles);
@@ -42,7 +43,9 @@ int main(int argc, char** argv)
                   << cam.getPosition().z() << std::endl;
         std::cerr << "cam fov: " << cam.getFov() << std::endl;
 
-        RayTracer::Engine engine(scene);
+        auto renderer = std::make_unique<Graphic::RaylibRenderer>(screenWidth, screenHeight);
+
+        RayTracer::Engine engine(scene, std::move(renderer));
         engine.run();
 
     } catch (const std::exception& e) {

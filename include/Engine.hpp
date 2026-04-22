@@ -4,8 +4,9 @@
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
 #include "Scene.hpp"
-#include "Renderer.hpp"
 #include "integrators/Integrator.hpp"
+#include "utils/Pixel.hpp"
+#include "renderer/Renderer.hpp"
 
 #include <vector>
 #include <memory>
@@ -14,12 +15,10 @@ namespace RayTracer {
 
     class Engine {
         public:
-            Engine(RayTracer::Scene& scene);
-            ~Engine();
-            
+            Engine(RayTracer::Scene& scene, std::unique_ptr<Graphic::IRenderer> renderer);
+            ~Engine() = default;
             
             void run();
-            void close();
         private:
             int _lastWidth;
             int _lastHeight;
@@ -27,7 +26,7 @@ namespace RayTracer {
             Scene& _scene;
             void handleWindowResize(RayTracer::Camera &cam);
             
-            std::unique_ptr<Graphic::Renderer> _renderer;
+            std::unique_ptr<Graphic::IRenderer> _renderer;
             std::unique_ptr<RayTracer::Integrator> _integrator;
     };
     

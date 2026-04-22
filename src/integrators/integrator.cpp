@@ -14,7 +14,7 @@ namespace RayTracer {
         // Cleanup
     }
 
-    void Integrator::computeTile(const PixelTile &tile, const Camera &cam, Color *pixels)
+    void Integrator::computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels)
     {
         int startX = tile.getX();
         int startY = tile.getY();
@@ -22,6 +22,7 @@ namespace RayTracer {
         int height = tile.getYDim();
 
         for (int y = startY; y < startY + height; y++) {
+            if (_stopRender) return;
             for (int x = startX; x < startX + width; x++) {
                 Ray ray = cam.generateRay(x, y);
                 pixels[y * cam.getWidth() + x] = this->shootRay(ray);
@@ -47,7 +48,7 @@ namespace RayTracer {
         }
     }
     
-    void Integrator::renderScene(const Camera &cam, Color *pixels)
+    void Integrator::renderScene(const Camera &cam, Graphic::Pixel* pixels)
     {
         for (const auto& tile : _tiles) {
             this->_threadPool->enqueue([this, tile, &cam, pixels]() {
@@ -78,7 +79,7 @@ namespace RayTracer {
         return (t > EPSILON) ? t : -1;
     }
 
-    Color Integrator::shootRay(const Ray &ray)
+    Graphic::Pixel Integrator::shootRay(const Ray &ray)
     {
         double closest_t = 1e9;
         const Triangle* hit = nullptr;

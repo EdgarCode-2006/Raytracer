@@ -26,6 +26,9 @@ namespace optimization {
                     {
                         std::unique_lock<std::mutex> lock(this->_queueMutex);
                         this->_activeTasks--;
+                        if (this->_activeTasks == 0 && this->_tasks.empty()) {
+                            _cv.notify_all(); // Only really need to wake up the 'wait()' caller
+                        }
                     }
                     _cv.notify_all();
                 }
