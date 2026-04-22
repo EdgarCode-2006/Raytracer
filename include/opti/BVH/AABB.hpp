@@ -15,10 +15,10 @@ namespace RayTracer {
             double surfaceArea() const noexcept;
             Math::Vector3D center() const noexcept;
             Math::Vector3D size() const noexcept;
-            int longestAxis() const noexcept;
+            // int longestAxis() const noexcept;
 
-            const Math::Vector3D &min() const noexcept;
-            const Math::Vector3D &max() const noexcept;
+            // const Math::Vector3D &min() const noexcept;
+            // const Math::Vector3D &max() const noexcept;
         
         private:
             Math::Vector3D _min;
