@@ -13,6 +13,13 @@ namespace RayTracer{
         this->_integrator->instanceTiles(cam);
     }
 
+    Engine::~Engine()
+    {
+        if (_integrator) {
+            _integrator->waitForRendering();
+        }
+    }
+
     void Engine::handleWindowResize(RayTracer::Camera &cam)
     {
         int currentWidth = GetScreenWidth();
@@ -54,8 +61,7 @@ namespace RayTracer{
             _integrator->renderScene(cam, pixels);
             _renderer->renderPixelBuffer(pixels);
         }
-
-        this->_integrator->stopRendering();
-        this->_integrator->waitForRendering();
+        _integrator->stop();
+        _integrator->waitForRendering();
     }
 }

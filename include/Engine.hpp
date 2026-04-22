@@ -16,7 +16,7 @@ namespace RayTracer {
     class Engine {
         public:
             Engine(RayTracer::Scene& scene, std::unique_ptr<Graphic::IRenderer> renderer);
-            ~Engine() = default;
+            ~Engine();
             
             void run();
         private:

@@ -7,7 +7,7 @@
 #include "opti/ThreadPool/threadPool.hpp"
 #include "utils/Pixel.hpp"
 
-#define TILE_DIM 32
+#define TILE_DIM 64
 
 namespace RayTracer {
     struct SurfaceIntersection
@@ -26,15 +26,15 @@ namespace RayTracer {
             void instanceTiles(const Camera &cam);
             Graphic::Pixel shootRay(const Ray &ray);
             void waitForRendering();
-            void stopRendering() { _stopRender = true; };
-
+            void stop() { _stopRendering = true; };
+            
         private:
-            void computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels);
             double intersectTriangle(const Ray& ray, const Triangle& tri);
+            void computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels);
             const Scene& _scene;
             std::unique_ptr<optimization::ThreadPool> _threadPool;
             std::vector<PixelTile> _tiles;
-            bool _stopRender = false;
+            bool _stopRendering = false;
     };
 }
 #endif

@@ -11,7 +11,10 @@ namespace RayTracer {
     
     Integrator::~Integrator()
     {
-        // Cleanup
+        if (_threadPool) {
+            _threadPool->wait();
+            _threadPool.reset();
+        }
     }
 
     void Integrator::computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels)
@@ -22,7 +25,7 @@ namespace RayTracer {
         int height = tile.getYDim();
 
         for (int y = startY; y < startY + height; y++) {
-            if (_stopRender) return;
+            if (_stopRendering) return;
             for (int x = startX; x < startX + width; x++) {
                 Ray ray = cam.generateRay(x, y);
                 pixels[y * cam.getWidth() + x] = this->shootRay(ray);
