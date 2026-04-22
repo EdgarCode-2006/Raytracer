@@ -1,5 +1,4 @@
 #include "opti/BVH/BVH.hpp"
-#include "opti/BVH/AABB.hpp"
 #include "opti/BVH/BVHNode.hpp"
 #include "utils/rayTracer.hpp"
 #include <cstddef>
@@ -29,11 +28,28 @@ namespace RayTracer {
         std::iota(_indices.begin(), _indices.end(), 0);
 
         _centroids.resize(n);
-        for (size_t i = 0; i < n; i++)
-            _centroids[i] = (*_triangles)[i].centroid();
+        _primAABBs.resize(n);
+        for (size_t i = 0; i < n; i++) {
+            const Triangle &tri = (*_triangles)[i];
+            _centroids[i] = tri.centroid();
+            _primAABBs[i].expand(tri.a());
+            _primAABBs[i].expand(tri.b());
+            _primAABBs[i].expand(tri.c());
+        }
 
         _nodes.reserve(n * 2);
         _allocNode();
         _subdivide(0, 0, static_cast<uint32_t>(n), 0);
+    }
+
+    BVH::BoundsResult BVH::_computeBounds(uint32_t first, uint32_t count) const noexcept {
+        BoundsResult result;
+
+        for (uint32_t i = 0; i < count; i++) {
+            const uint32_t primitiveIndex = _indices[first + i];
+            result.nodeAABB.expand(_primAABBs[primitiveIndex]);
+            result.centAABB.expand(_centroids[primitiveIndex]);
+        }
+        return result;
     }
 }
