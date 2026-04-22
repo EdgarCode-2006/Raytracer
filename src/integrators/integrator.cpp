@@ -8,7 +8,7 @@ namespace RayTracer {
         this->_threadPool = std::make_unique<optimization::ThreadPool>(10); // init thread pool with 4 threads.
         // Initialize integrator with scene
     }
-    
+
     Integrator::~Integrator()
     {
         if (_threadPool) {
