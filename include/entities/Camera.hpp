@@ -3,6 +3,7 @@
 
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
+#include <vector>
 
 namespace RayTracer {
 
@@ -18,6 +19,9 @@ namespace RayTracer {
             void setHeight(const int height) {this->_height = height;};
             void setWidth(const int width) {this->_width = width;};
             void setFov(const double fov) {this->_fov = fov;};
+
+            void setPosition(const Math::Vector3D& position);
+            void fitToScene(const std::vector<Triangle>& triangles);
 
             // void rotateCamera(double degrees)
             // void translateCamera(Vector3D newPos)
