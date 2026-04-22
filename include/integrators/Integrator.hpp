@@ -4,6 +4,7 @@
 #include "Scene.hpp"
 #include <raylib.h>
 #include "integrators/PixelTile.hpp"
+#include "opti/BVH/BVH.hpp"
 #include "opti/ThreadPool/threadPool.hpp"
 #include "utils/Pixel.hpp"
 
@@ -35,6 +36,7 @@ namespace RayTracer {
             std::unique_ptr<optimization::ThreadPool> _threadPool;
             std::vector<PixelTile> _tiles;
             bool _stopRendering = false;
+            std::unique_ptr<BVH> _bvh;
     };
 }
 #endif

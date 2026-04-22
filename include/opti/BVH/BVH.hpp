@@ -12,6 +12,7 @@ namespace RayTracer {
     inline constexpr int BUCKETS = 32;
     inline constexpr double BVH_EPSILON = 1e-12; // si une boite est tellement petite qu'elle est plate c'est qu'il n'y a rien à optimiser
     inline constexpr double BVH_SPAN_EPSILON = 1e-9;
+    inline constexpr double BVH_TRAVERSAL_COST = 0.125; // le cout de descendre dans un noued 
     class BVH {
         public:
             BVH(const std::vector<Triangle> &triangles, int leafThreshold = 4);

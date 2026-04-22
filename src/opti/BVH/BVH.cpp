@@ -128,8 +128,40 @@ namespace RayTracer {
                 buckets[bucketIdx].bounds.expand(_primAABBs[primitiveIdx]);
                 buckets[bucketIdx].count++;
             }
+
+            AABB leftBounds[BUCKETS];
+            int leftCount[BUCKETS] = {};
+            AABB left;
+            int lc = 0;
+
+            for (int i = 0; i < BUCKETS; i++) {
+                left.expand(buckets[i].bounds);
+                lc += buckets[i].count;
+                leftBounds[i] = left;
+                leftCount[i] = lc;
+            }
+
+            AABB right;
+            int rc = 0;
+            for (int split = BUCKETS - 1; split >= 1; split--) {
+                right.expand(buckets[split].bounds);
+                rc += buckets[split].count;
+
+                if (rc == 0 || leftCount[split - 1] == 0)
+                    continue;
+
+                const double cost = 0.125  + (leftBounds[split -1].surfaceArea() * leftCount[split - 1] + right.surfaceArea() * rc) / parentSA;
+
+                if (cost < bestCost) {
+                    bestCost = cost;
+                    bestAxis = axis;
+                    // convertir le bucket index en position réelle dans l'espace
+                    // split est dans [0, BUCKETS] donc on le normalise et on le remappe dans l'intervalle [axMin, axMax]
+                    bestPos = axMin + span * static_cast<double>(split) / BUCKETS;
+                }
+            }
         }
 
-        return true;
+        return bestAxis >= 0;
     }
 }

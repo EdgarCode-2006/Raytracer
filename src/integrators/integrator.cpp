@@ -1,12 +1,23 @@
 #include "integrators/Integrator.hpp"
 #include "utils/math.hpp"
+#include <memory>
 #include <raylib.h>
+#include <chrono>
 
 namespace RayTracer {
     Integrator::Integrator(const Scene& scene) : _scene(scene)
     {
         this->_threadPool = std::make_unique<optimization::ThreadPool>(10); // init thread pool with 4 threads.
         // Initialize integrator with scene
+
+        const auto &tris = scene.getTriangles();
+        if (!tris.empty()) {
+            const auto start = std::chrono::high_resolution_clock::now();
+            _bvh = std::make_unique<BVH>(tris);
+            const auto end = std::chrono::high_resolution_clock::now();
+
+            std::cout << "BVH build time: " << std::chrono::duration<double, std::milli>(end - start).count() << " ms\n";
+        }
     }
 
     Integrator::~Integrator()
