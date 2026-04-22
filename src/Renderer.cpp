@@ -10,7 +10,7 @@ namespace Graphic {
     Renderer::Renderer(const int screenWidth, const int screenHeight) {
         SetTraceLogLevel(LOG_NONE);
 
-        InitWindow(screenWidth, screenHeight, "RayTracer Window");
+        InitWindow(screenWidth * 4, screenHeight * 4, "RayTracer Window");
         SetWindowState(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
 
         _canvas = GenImageColor(screenWidth, screenHeight, BLACK);
@@ -31,7 +31,7 @@ namespace Graphic {
             ClearBackground(RAYWHITE);
             
             // Draw the texture covering the whole screen
-            DrawTexture(_texture, 0, 0, WHITE);
+            DrawTextureEx(_texture, (Vector2){0, 0}, 0.0f, 4.0f, WHITE);
             
             DrawFPS(10, 10);
 

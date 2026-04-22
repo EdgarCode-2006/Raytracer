@@ -6,7 +6,7 @@
 #include "integrators/PixelTile.hpp"
 #include "opti/ThreadPool/threadPool.hpp"
 
-#define TILE_DIM 16
+#define TILE_DIM 32
 
 namespace RayTracer {
     struct SurfaceIntersection
@@ -28,6 +28,7 @@ namespace RayTracer {
 
         private:
             void computeTile(const PixelTile &tile, const Camera &cam, Color *pixels);
+            double intersectTriangle(const Ray& ray, const Triangle& tri);
             const Scene& _scene;
             std::unique_ptr<optimization::ThreadPool> _threadPool;
             std::vector<PixelTile> _tiles;
