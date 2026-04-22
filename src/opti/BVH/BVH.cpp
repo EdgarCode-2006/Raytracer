@@ -1,4 +1,5 @@
 #include "opti/BVH/BVH.hpp"
+#include "opti/BVH/AABB.hpp"
 #include "opti/BVH/BVHNode.hpp"
 #include "utils/rayTracer.hpp"
 #include <cstddef>

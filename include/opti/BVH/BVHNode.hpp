@@ -14,12 +14,11 @@ namespace RayTracer {
             bool isLeaf() const noexcept;
             uint32_t leftOrFirst() const noexcept;
             uint32_t primCount() const noexcept;
-            AABB bounds() const noexcept;
+            const AABB &bounds() const noexcept;
             
         private:
-            double _aabbMin[3] = {0};
+            AABB _bounds;
             uint32_t _leftorFirst = 0;
-            double _aabbMax[3] = {0};
             uint32_t _primCount = 0;
 
             friend class BVH;
