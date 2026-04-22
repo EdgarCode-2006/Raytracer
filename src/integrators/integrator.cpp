@@ -1,8 +1,6 @@
 #include "integrators/Integrator.hpp"
 #include "utils/math.hpp"
 #include <raylib.h>
-#include <cmath>
-#include <future>
 
 namespace RayTracer {
     Integrator::Integrator(const Scene& scene) : _scene(scene)
@@ -61,14 +59,14 @@ namespace RayTracer {
     double Integrator::intersectTriangle(const Ray& ray, const Triangle& tri)
     {
         const double EPSILON = 1e-7;
-        Math::Vector3D edge1 = tri.b - tri.a;
-        Math::Vector3D edge2 = tri.c - tri.a;
+        Math::Vector3D edge1 = tri.b() - tri.a();
+        Math::Vector3D edge2 = tri.c() - tri.a();
         Math::Vector3D h = ray.direction.cross(edge2);
         double a = edge1.dot(h);
         if (a > -EPSILON && a < EPSILON)
             return -1;
         double f = 1.0 / a;
-        Math::Vector3D s = ray.origin - tri.a;
+        Math::Vector3D s = ray.origin - tri.a();
         double u = f * s.dot(h);
         if (u < 0.0 || u > 1.0)
             return -1;
@@ -96,7 +94,7 @@ namespace RayTracer {
         if (!hit)
             return {20, 20, 20, 255};
 
-        Math::Vector3D normal = (hit->b - hit->a).cross(hit->c - hit->a).normalize();
+        Math::Vector3D normal = (hit->b() - hit->a()).cross(hit->c() - hit->a()).normalize();
 
         double intensity = this->_scene.getAmbientLight().intensity;
         for (const auto& light : this->_scene.getLights()) {

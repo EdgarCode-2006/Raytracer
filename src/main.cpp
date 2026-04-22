@@ -37,9 +37,9 @@ int main(int argc, char** argv)
 
         auto& cam = scene.getCamera();
         std::cerr << "triangles: " << triangles.size() << std::endl;
-        std::cerr << "cam pos: " << cam.getPosition().x << " "
-                  << cam.getPosition().y << " "
-                  << cam.getPosition().z << std::endl;
+        std::cerr << "cam pos: " << cam.getPosition().x() << " "
+                  << cam.getPosition().y() << " "
+                  << cam.getPosition().z() << std::endl;
         std::cerr << "cam fov: " << cam.getFov() << std::endl;
 
         RayTracer::Engine engine(scene);

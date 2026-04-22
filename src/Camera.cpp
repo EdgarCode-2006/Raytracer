@@ -41,9 +41,9 @@ namespace RayTracer {
         double y = _yaw   * std::numbers::pi / 180.0;
 
         _position = Math::Vector3D(
-            _target.x + _distance * std::sin(y) * std::cos(p),
-            _target.y - _distance * std::sin(p),
-            _target.z - _distance * std::cos(y) * std::cos(p)
+            _target.x() + _distance * std::sin(y) * std::cos(p),
+            _target.y() - _distance * std::sin(p),
+            _target.z() - _distance * std::cos(y) * std::cos(p)
         );
     }
 
@@ -52,10 +52,10 @@ namespace RayTracer {
         double minx=1e9, maxx=-1e9, miny=1e9, maxy=-1e9, minz=1e9, maxz=-1e9;
 
         for (const auto& tri : triangles) {
-            for (const auto* v : {&tri.a, &tri.b, &tri.c}) {
-                minx = std::min(minx, v->x); maxx = std::max(maxx, v->x);
-                miny = std::min(miny, v->y); maxy = std::max(maxy, v->y);
-                minz = std::min(minz, v->z); maxz = std::max(maxz, v->z);
+            for (const auto* v : {&tri.a(), &tri.b(), &tri.c()}) {
+                minx = std::min(minx, v->x()); maxx = std::max(maxx, v->x());
+                miny = std::min(miny, v->y()); maxy = std::max(maxy, v->y());
+                minz = std::min(minz, v->z()); maxz = std::max(maxz, v->z());
             }
         }
 
