@@ -13,22 +13,31 @@ namespace RayTracer {
             ~Camera() = default;
             Ray generateRay(int x, int y) const;
 
-            const int getHeight() const {return this->_height;};
-            const int getWidth() const {return this->_width;};
+            int getHeight() const { return _height; }
+            int getWidth()  const { return _width;  }
 
-            void setHeight(const int height) {this->_height = height;};
-            void setWidth(const int width) {this->_width = width;};
-            void setFov(const double fov) {this->_fov = fov;};
+            void setHeight(int height) { _height = height; }
+            void setWidth(int width)   { _width  = width;  }
+            void setFov(double fov)    { _fov    = fov;    }
+
+            const Math::Vector3D& getPosition() const { return _position; }
+            double getFov() const { return _fov; }
 
             void setPosition(const Math::Vector3D& position);
             void fitToScene(const std::vector<Triangle>& triangles);
 
-            // void rotateCamera(double degrees)
-            // void translateCamera(Vector3D newPos)
+            void addRotationX(double degrees);
+            void addRotationY(double degrees);
+
         private:
+            void _updatePosition();
+
             Math::Vector3D _position;
-            Math::Vector3D _rotation;
-            double _fov = 1.0;
+            Math::Vector3D _target;
+            double _distance = 1.0;
+            double _yaw   = 0.0;
+            double _pitch = 0.0;
+            double _fov   = 60.0;
             int _width;
             int _height;
     };

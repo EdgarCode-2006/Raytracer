@@ -3,30 +3,48 @@
 #include <numbers>
 
 namespace RayTracer {
+
     Camera::Camera(const int width, const int height)
     {
-        this->_fov = 100.0;
-        this->_width = width;
-        this->_height = height;
-        this->_position = Math::Vector3D(0, 0, 0);
-        this->_rotation = Math::Vector3D(0, 0, 0);
-    }
-
-    static Math::Vector3D rotateX(Math::Vector3D v, double deg)
-    {
-        double a = deg * std::numbers::pi / 180.0;
-        return Math::Vector3D(v.x, v.y * cos(a) - v.z * sin(a), v.y * sin(a) + v.z * cos(a));
-    }
-
-    static Math::Vector3D rotateY(Math::Vector3D v, double deg)
-    {
-        double a = deg * std::numbers::pi / 180.0;
-        return Math::Vector3D(v.x * cos(a) + v.z * sin(a), v.y, -v.x * sin(a) + v.z * cos(a));
+        _fov      = 60.0;
+        _width    = width;
+        _height   = height;
+        _position = Math::Vector3D(0, 0, 0);
+        _target   = Math::Vector3D(0, 0, 0);
+        _distance = 1.0;
+        _yaw      = 0.0;
+        _pitch    = 0.0;
     }
 
     void Camera::setPosition(const Math::Vector3D& position)
     {
-        this->_position = position;
+        _position = position;
+    }
+
+    void Camera::addRotationX(double degrees)
+    {
+        _pitch += degrees;
+        if (_pitch >  89.0) _pitch =  89.0;
+        if (_pitch < -89.0) _pitch = -89.0;
+        _updatePosition();
+    }
+
+    void Camera::addRotationY(double degrees)
+    {
+        _yaw += degrees;
+        _updatePosition();
+    }
+
+    void Camera::_updatePosition()
+    {
+        double p = _pitch * std::numbers::pi / 180.0;
+        double y = _yaw   * std::numbers::pi / 180.0;
+
+        _position = Math::Vector3D(
+            _target.x + _distance * std::sin(y) * std::cos(p),
+            _target.y - _distance * std::sin(p),
+            _target.z - _distance * std::cos(y) * std::cos(p)
+        );
     }
 
     void Camera::fitToScene(const std::vector<Triangle>& triangles)
@@ -41,24 +59,34 @@ namespace RayTracer {
             }
         }
 
-        Math::Vector3D center((minx+maxx)/2, (miny+maxy)/2, (minz+maxz)/2);
-        double size = std::max(maxx-minx, std::max(maxy-miny, maxz-minz));
+        _target = Math::Vector3D(
+            (minx + maxx) / 2.0,
+            (miny + maxy) / 2.0,
+            (minz + maxz) / 2.0
+        );
+        double size = std::max(maxx - minx, std::max(maxy - miny, maxz - minz));
+        _distance = size * 1.5;
+        _yaw   = 0.0;
+        _pitch = 0.0;
 
-        this->_position = Math::Vector3D(center.x, center.y, center.z - size * 1.5);
+        _updatePosition();
     }
 
     Ray Camera::generateRay(int x, int y) const
     {
-        double aspect = (double)this->_width / (double)this->_height;
-        double scale  = std::tan(this->_fov / 2.0 * std::numbers::pi / 180.0);
+        // Build orthonormal basis from position → target
+        Math::Vector3D forward = (_target - _position).normalize();
+        Math::Vector3D worldUp(0, 1, 0);
+        Math::Vector3D right = worldUp.cross(forward).normalize();
+        Math::Vector3D up    = forward.cross(right).normalize();
 
-        double u = (2.0 * (x + 0.5) / this->_width  - 1.0) * aspect * scale;
-        double v = (2.0 * (y + 0.5) / this->_height - 1.0) * scale;
+        double aspect = (double)_width  / (double)_height;
+        double scale  = std::tan(_fov / 2.0 * std::numbers::pi / 180.0);
 
-        Math::Vector3D dir = Math::Vector3D(u, -v, 1.0).normalize();
-        dir = rotateX(dir, this->_rotation.x);
-        dir = rotateY(dir, this->_rotation.y);
+        double u = (2.0 * (x + 0.5) / _width  - 1.0) * aspect * scale;
+        double v = (2.0 * (y + 0.5) / _height - 1.0) * scale;
 
-        return Ray(this->_position, dir);
+        Math::Vector3D dir = (forward + right * u - up * v).normalize();
+        return Ray(_position, dir);
     }
 }

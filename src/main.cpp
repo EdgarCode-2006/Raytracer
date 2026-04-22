@@ -3,26 +3,6 @@
 #include "Scene.hpp"
 #include <iostream>
 
-static void positionCamera(RayTracer::Scene& scene, const std::vector<RayTracer::Triangle>& triangles)
-{
-    double minx=1e9, maxx=-1e9, miny=1e9, maxy=-1e9, minz=1e9, maxz=-1e9;
-
-    for (const auto& tri : triangles) {
-        for (const auto* v : {&tri.a, &tri.b, &tri.c}) {
-            minx = std::min(minx, v->x); maxx = std::max(maxx, v->x);
-            miny = std::min(miny, v->y); maxy = std::max(maxy, v->y);
-            minz = std::min(minz, v->z); maxz = std::max(maxz, v->z);
-        }
-    }
-
-    Math::Vector3D center((minx+maxx)/2, (miny+maxy)/2, (minz+maxz)/2);
-    double size = std::max(maxx-minx, std::max(maxy-miny, maxz-minz));
-
-    scene.getCamera().setPosition(
-        Math::Vector3D(center.x, center.y, center.z - size * 1.5)
-    );
-}
-
 int main(int argc, char** argv)
 {
     if (argc != 2) {
@@ -39,12 +19,12 @@ int main(int argc, char** argv)
             return 84;
         }
 
-        const int screenWidth  = 800;
-        const int screenHeight = 450;
+        const int screenWidth  = 200;
+        const int screenHeight = 112;
 
         RayTracer::Scene scene(screenWidth, screenHeight);
         scene.addTriangles(triangles);
-        positionCamera(scene, triangles);
+        scene.getCamera().fitToScene(triangles);
 
         RayTracer::AmbientLight ambient;
         ambient.intensity = 0.2;
@@ -54,6 +34,13 @@ int main(int argc, char** argv)
         light.direction = Math::Vector3D(1, 2, -1).normalize();
         light.intensity = 0.8;
         scene.addLight(light);
+
+        auto& cam = scene.getCamera();
+        std::cerr << "triangles: " << triangles.size() << std::endl;
+        std::cerr << "cam pos: " << cam.getPosition().x << " "
+                  << cam.getPosition().y << " "
+                  << cam.getPosition().z << std::endl;
+        std::cerr << "cam fov: " << cam.getFov() << std::endl;
 
         RayTracer::Engine engine(scene);
         engine.run();
