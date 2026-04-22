@@ -1,6 +1,7 @@
 #ifndef BVH_HPP_
 #define BVH_HPP_
 
+#include "opti/BVH/AABB.hpp"
 #include "opti/BVH/BVHNode.hpp"
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
@@ -29,7 +30,7 @@ namespace RayTracer {
             
             BoundsResult _computeBounds(uint32_t first, uint32_t count) const noexcept;
             void _subdivide(uint32_t nodeIndex, uint32_t first, uint32_t count, int depth);
-            void _splitSAH(uint32_t first, uint32_t count, const AABB &centBounds,int &bestAxis, double &bestPos);
+            bool _splitSAH(uint32_t first, uint32_t count, const AABB& nodeBounds, const AABB& centBounds, int& bestAxis, double& bestPos) const noexcept;
 
             const std::vector<Triangle>* _triangles;
             std::vector<BVHNode> _nodes;

@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <cstdint>
 #include <numeric>
+#include <sys/types.h>
+#include <utility>
 #include <vector>
 
 
@@ -51,5 +53,52 @@ namespace RayTracer {
             result.centAABB.expand(_centroids[primitiveIndex]);
         }
         return result;
+    }
+
+    void BVH::_subdivide(uint32_t nodeIndex, uint32_t first, uint32_t count, int depth) {
+        auto [nodeBox, centBox] = _computeBounds(first, count);
+        _nodes[nodeIndex]._bounds = nodeBox;
+
+        if (static_cast<int>(count) <= _leafThreshold) {
+            _nodes[nodeIndex]._leftorFirst = first;
+            _nodes[nodeIndex]._primCount = count;
+            return;
+        }
+
+        int axis = 0;
+        double pos = 0.0;
+
+        if (!_splitSAH(first, count, nodeBox, centBox, axis, pos)) {
+            _nodes[nodeIndex]._leftorFirst = first;
+            _nodes[nodeIndex]._primCount = count;
+            return;
+        }
+
+        uint32_t mid = first;
+
+        for (uint32_t i = first; i < first + count; i++)
+            if (_centroids[_indices[i]][axis] < pos)
+                std::swap(_indices[i], _indices[mid++]);
+        
+        // si tout est à gauche ou tout est à droite split inutile
+        if (mid == first || mid == first + count) {
+            _nodes[nodeIndex]._leftorFirst = first;
+            _nodes[nodeIndex]._primCount = count;
+            return;
+        }
+
+        const uint32_t leftIdx = _allocNode();
+        const uint32_t rightIdx = _allocNode(); // rightIdx = leftIdx + 1
+
+        _nodes[nodeIndex]._leftorFirst = leftIdx;
+        _nodes[nodeIndex]._primCount = 0;
+
+        // creation de l'arbre binaire
+        _subdivide(leftIdx, first, mid - first, depth + 1);
+        _subdivide(rightIdx, mid, (first + count) - mid, depth + 1);
+    }
+
+    bool BVH::_splitSAH(uint32_t first, uint32_t count, const AABB &nodeBounds, const AABB &centBounds, int &bestAxis, double &bestPos) const noexcept {
+
     }
 }
