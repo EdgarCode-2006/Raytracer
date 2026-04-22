@@ -1,6 +1,7 @@
 #ifndef BVH_HPP_
 #define BVH_HPP_
 
+#include "opti/BVH/BVHNode.hpp"
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
 #include <cstdint>
@@ -24,7 +25,7 @@ namespace RayTracer {
             void _splitSAH(uint32_t first, uint32_t count, int &bestAxis, double &bestPos);
 
             const std::vector<Triangle>* _triangles;
-
+            const std::vector<BVHNode> _nodes;
             std::vector<uint32_t> _indices;
             std::vector<Math::Vector3D> _centroids;
 
