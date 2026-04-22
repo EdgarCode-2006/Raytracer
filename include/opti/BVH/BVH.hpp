@@ -7,7 +7,11 @@
 #include "utils/rayTracer.hpp"
 #include <cstdint>
 #include <vector>
+
 namespace RayTracer {
+    inline constexpr int BUCKETS = 32;
+    inline constexpr double BVH_EPSILON = 1e-12; // si une boite est tellement petite qu'elle est plate c'est qu'il n'y a rien à optimiser
+    inline constexpr double BVH_SPAN_EPSILON = 1e-9;
     class BVH {
         public:
             BVH(const std::vector<Triangle> &triangles, int leafThreshold = 4);

@@ -54,4 +54,6 @@ namespace RayTracer {
         return 2.0 * (dx * dy + dy * dz + dx * dz);
     }
 
+    const Math::Vector3D& AABB::min() const noexcept { return _min; }
+    const Math::Vector3D& AABB::max() const noexcept { return _max; }
 }

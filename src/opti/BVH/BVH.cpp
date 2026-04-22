@@ -1,4 +1,5 @@
 #include "opti/BVH/BVH.hpp"
+#include "opti/BVH/AABB.hpp"
 #include "opti/BVH/BVHNode.hpp"
 #include "utils/rayTracer.hpp"
 #include <cstddef>
@@ -10,7 +11,6 @@
 
 
 namespace RayTracer {
-
     uint32_t BVH::_allocNode() {
         _nodes.emplace_back();
         return static_cast<uint32_t>(_nodes.size() - 1);
@@ -99,6 +99,37 @@ namespace RayTracer {
     }
 
     bool BVH::_splitSAH(uint32_t first, uint32_t count, const AABB &nodeBounds, const AABB &centBounds, int &bestAxis, double &bestPos) const noexcept {
+        struct Bucket {
+            AABB bounds;
+            int count = 0;
+        };
 
+        const double parentSA = nodeBounds.surfaceArea();
+
+        if (parentSA < BVH_EPSILON)
+            return false;
+        
+        double bestCost = static_cast<double>(count); // coût de base = rester une feuille
+        bestAxis = -1;
+
+        for (int axis = 0; axis < 3; axis++) {
+            const double axMin = centBounds.min()[axis];
+            const double axMax = centBounds.max()[axis];
+            const double span = axMax - axMin;
+            if (span < BVH_SPAN_EPSILON) // les centroides sont quasiment tous alignés sur cette axes donc impossible de faire une coupe utile
+                continue;
+        
+            Bucket buckets[BUCKETS] = {};
+
+            for (uint32_t i = 0; i < count; i++) {
+                const uint32_t primitiveIdx = _indices[first + i];
+                // normaliser la position du centroide sur un axe pour avoir une valeur entre 0 et 1 pour pouvoir avoir l'index du bucket
+                const int bucketIdx = std::min(static_cast<int>((_centroids[primitiveIdx][axis] - axMin) / span * BUCKETS), BUCKETS -1);
+                buckets[bucketIdx].bounds.expand(_primAABBs[primitiveIdx]);
+                buckets[bucketIdx].count++;
+            }
+        }
+
+        return true;
     }
 }
