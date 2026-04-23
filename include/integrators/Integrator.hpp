@@ -1,23 +1,47 @@
 #ifndef INTEGRATOR_HPP_
 #define INTEGRATOR_HPP_
 #include <memory>
+#include <string>
+#include <vector>
+#include <poll.h>
+#include <netinet/in.h>
+#include <unordered_map>
+#include <memory>
+
 #include "Scene.hpp"
 #include <raylib.h>
 #include "integrators/PixelTile.hpp"
 #include "opti/ThreadPool/threadPool.hpp"
 #include "utils/Pixel.hpp"
+#include "entities/Light.hpp"
+#include "integrators/rayFeature/IRayFeature.hpp"
+#include "integrators/featureLoader/DLLoader.hpp"
 
 #define TILE_DIM 64
+#define MAX_DEPTH 5
 
 namespace RayTracer {
     struct SurfaceIntersection
     {
         Math::Vector3D normal;
         Math::Vector3D hitPoint;
-        float t;
+        Math::Vector3D rayDir;
         // Material *mat
-        bool hit;
+        Graphic::Pixel accumulatedColor;
+        RayTracer::Ray nextRay;
+        bool shouldBounce;
+        float attenuation;
+
     };
+    struct RenderData
+    {
+        std::vector<DirectionalLight> lights;
+        AmbientLight &ambientLight;
+        Scene scene;
+    };
+
+    class IRayFeature;
+
     class Integrator {
         public:
             Integrator(const Scene& scene);
@@ -27,6 +51,7 @@ namespace RayTracer {
             Graphic::Pixel shootRay(const Ray &ray);
             void waitForRendering();
             void stop() { _stopRendering = true; };
+            void loadRayFeatures();
             
         private:
             double intersectTriangle(const Ray& ray, const Triangle& tri);
@@ -35,6 +60,17 @@ namespace RayTracer {
             std::unique_ptr<optimization::ThreadPool> _threadPool;
             std::vector<PixelTile> _tiles;
             bool _stopRendering = false;
+
+            std::vector<DLLoader<IRayFeature>> _loaders;
+            std::vector<std::unique_ptr<IRayFeature>> _pipeline;
+    };
+
+    class IntegratorException : public std::exception {
+        public:
+            IntegratorException(const std::string& message) : _message(message) {}
+            const char* what() const noexcept override { return _message.c_str(); }
+        private:
+            std::string _message;
     };
 }
 #endif

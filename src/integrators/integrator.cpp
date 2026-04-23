@@ -1,11 +1,16 @@
 #include "integrators/Integrator.hpp"
+#include "integrators/rayFeature/IRayFeature.hpp"
 #include "utils/math.hpp"
-#include <raylib.h>
 
 namespace RayTracer {
     Integrator::Integrator(const Scene& scene) : _scene(scene)
     {
         this->_threadPool = std::make_unique<optimization::ThreadPool>(10); // init thread pool with 4 threads.
+        try {
+            this->loadRayFeatures();
+        } catch (const IntegratorException &e) {
+            throw IntegratorException(e.what());
+        }
         // Initialize integrator with scene
     }
 
@@ -81,6 +86,34 @@ namespace RayTracer {
         double t = f * edge2.dot(q);
         return (t > EPSILON) ? t : -1;
     }
+
+    // Graphic::Pixel Integrator::shootRay(Ray &ray)
+    // {
+    //     double closest_t = 1e9;
+    //     float energy = 1.0;
+    //     const Triangle* hit = nullptr;
+    //     RenderData data{
+    //         .scene = this->_scene,
+            
+    //     };
+    //     SurfaceIntersection intersection{
+
+    //     };
+
+    //     for (size_t i = 0; i < MAX_DEPTH; i++) {
+    //         data.scene.getTriangles()
+
+    //         for (auto &rayFeature : _pipeline) {
+    //             rayFeature->process(data, intersection);
+    //         }
+    //         if (intersection.shouldBounce) {
+    //             energy /= intersection.attenuation + 0.00001f;
+    //             ray = intersection.nextRay;
+    //         } else {
+    //             break;
+    //         }
+    //     }
+    // }
 
     Graphic::Pixel Integrator::shootRay(const Ray &ray)
     {
