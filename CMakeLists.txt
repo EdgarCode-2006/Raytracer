@@ -1,23 +1,51 @@
 cmake_minimum_required(VERSION 3.14)
 
 set(CMAKE_CXX_COMPILER "g++")
-project(nanotekspice LANGUAGES CXX)
+project(raytracer LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-add_compile_options(-lraylib -lGL -lm -lpthread -ldl -lrt -lX11)
 
 set(EXECUTABLE_NAME "raytracer")
+
+include(FetchContent)
+
+FetchContent_Declare(
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG        v1.91.6
+)
+FetchContent_MakeAvailable(imgui)
+
+FetchContent_Declare(
+    rlimgui
+    GIT_REPOSITORY https://github.com/raylib-extras/rlImGui.git
+    GIT_TAG        ceceffd5e8148d4781f5f58cffe1641cf50f8f68
+)
+FetchContent_MakeAvailable(rlimgui)
 
 include_directories(include include/utils)
 file(GLOB_RECURSE SRC "src/*.cpp")
 
-add_executable(${EXECUTABLE_NAME} ${SRC})
+set(IMGUI_SRC
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${rlimgui_SOURCE_DIR}/rlImGui.cpp
+)
+
+add_executable(${EXECUTABLE_NAME} ${SRC} ${IMGUI_SRC})
 
 find_library(RAYLIB_LIB raylib)
 find_path(RAYLIB_INC raylib.h)
 if(RAYLIB_LIB AND RAYLIB_INC)
-    target_include_directories(${EXECUTABLE_NAME} PRIVATE ${RAYLIB_INC})
+    target_include_directories(${EXECUTABLE_NAME} PRIVATE
+        ${RAYLIB_INC}
+        ${imgui_SOURCE_DIR}
+        ${rlimgui_SOURCE_DIR}
+    )
+    target_compile_definitions(${EXECUTABLE_NAME} PRIVATE "IsTextureValid=IsTextureReady")
     target_link_libraries(${EXECUTABLE_NAME} ${RAYLIB_LIB} GL m pthread dl X11 rt)
 else()
     message(FATAL_ERROR "raylib not found")
@@ -61,7 +89,6 @@ if(CRITERION_FOUND)
             COMMAND ${GCOVR} ${GCOVR_COMMON} --txt
             DEPENDS unit_tests
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-            COMMENT "Running tests and generating coverage report (text)"
         )
 
         add_custom_target(coverage-html
@@ -71,7 +98,6 @@ if(CRITERION_FOUND)
                     --html-details ${CMAKE_BINARY_DIR}/coverage_html/index.html
             DEPENDS unit_tests
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-            COMMENT "Running tests and generating HTML coverage report"
         )
     endif()
 endif()

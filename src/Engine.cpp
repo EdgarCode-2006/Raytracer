@@ -59,7 +59,7 @@ namespace RayTracer{
             if (!pixels)
                 throw EngineException("Pixels buffer is empty!");
             _integrator->renderScene(cam, pixels);
-            _renderer->renderPixelBuffer(pixels);
+            _renderer->renderPixelBuffer(pixels, _scene, cam);
         }
         _integrator->stop();
         _integrator->waitForRendering();

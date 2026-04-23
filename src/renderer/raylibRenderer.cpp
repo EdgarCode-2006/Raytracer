@@ -3,10 +3,13 @@
 
 #include "renderer/Renderer.hpp"
 #include "renderer/RaylibRenderer.hpp"
+#include "GUI.hpp"
+#include "rlImGui.h"
 #include <cstring>
 
 namespace Graphic {
     RaylibRenderer::~RaylibRenderer() {
+        rlImGuiShutdown();
         UnloadImage(_canvas);
         UnloadTexture(_texture);
         CloseWindow();
@@ -25,6 +28,7 @@ namespace Graphic {
 
         _texture = LoadTextureFromImage(_canvas);
         SetTargetFPS(60);
+        rlImGuiSetup(true);
     }
 
 
@@ -37,7 +41,7 @@ namespace Graphic {
         std::memcpy(this->_screenBuffer, pixels, totalBytes);
     }
 
-    void RaylibRenderer::renderPixelBuffer(Pixel* pixels)
+    void RaylibRenderer::renderPixelBuffer(Pixel* pixels, RayTracer::Scene& scene, RayTracer::Camera& cam)
     {
         this->pixelsToScreenBuffer(pixels);
 
@@ -47,6 +51,7 @@ namespace Graphic {
             ClearBackground(BLACK);
             DrawTexture(_texture, 0, 0, WHITE);
             DrawFPS(10, 10);
+            _gui.Render(scene, cam);
         EndDrawing();
     }
 

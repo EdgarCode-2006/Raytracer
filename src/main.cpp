@@ -51,7 +51,7 @@ int main(int argc, char** argv)
             return 84;
         }
         RayTracer::Scene scene(screenWidth, screenHeight);
-        scene.addTriangles(triangles);
+        scene.addObject(triangles);
         scene.getCamera().fitToScene(triangles);
 
         RayTracer::AmbientLight ambient;

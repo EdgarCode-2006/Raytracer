@@ -1,6 +1,8 @@
 #ifndef IRENDERER_HPP_
 #define IRENDERER_HPP_
 #include "utils/Pixel.hpp"
+#include "Scene.hpp"
+#include "entities/Camera.hpp"
 #include <iostream>
 #include <vector>
 
@@ -10,7 +12,7 @@ namespace Graphic {
             virtual ~IRenderer() = default;
             virtual void resizeWindow(int newWidth, int newHeight) = 0;
             virtual void pixelsToScreenBuffer(Pixel *pixels) = 0;
-            virtual void renderPixelBuffer(Pixel *pixels) = 0;
+            virtual void renderPixelBuffer(Pixel *pixels, RayTracer::Scene& scene, RayTracer::Camera& cam) = 0;
             virtual Pixel *getPixels() = 0;
             virtual bool windowOpen() = 0;
     };
@@ -20,7 +22,7 @@ namespace Graphic {
             virtual ~ARenderer() = default;
             virtual void resizeWindow(int newWidth, int newHeight) = 0;
             virtual void pixelsToScreenBuffer(Pixel *pixels) = 0;
-            virtual void renderPixelBuffer(Pixel *pixels) = 0;
+            virtual void renderPixelBuffer(Pixel *pixels, RayTracer::Scene& scene, RayTracer::Camera& cam) = 0;
             virtual Pixel *getPixels() override {return _pixels.data();};
             virtual bool windowOpen() = 0;
         protected:
