@@ -36,8 +36,8 @@ namespace RayTracer {
     struct RenderData
     {
         std::vector<DirectionalLight> lights;
-        AmbientLight &ambientLight;
-        Scene scene;
+        const AmbientLight& ambientLight;
+        const Scene& scene;
     };
 
     class IRayFeature;
@@ -48,7 +48,7 @@ namespace RayTracer {
             ~Integrator();
             void renderScene(const Camera &cam, Graphic::Pixel *pixels);
             void instanceTiles(const Camera &cam);
-            Graphic::Pixel shootRay(const Ray &ray);
+            Graphic::Pixel shootRay(Ray &ray);
             void waitForRendering();
             void stop() { _stopRendering = true; };
             void loadRayFeatures();
