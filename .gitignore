@@ -1,3 +1,4 @@
 .vscode
 raytracer
 build/
+compile_flags.txt
