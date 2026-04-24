@@ -1,12 +1,28 @@
 #include "integrators/Integrator.hpp"
+#include "integrators/rayFeature/IRayFeature.hpp"
 #include "utils/math.hpp"
-#include <raylib.h>
+#include <memory>
+#include <chrono>
 
 namespace RayTracer {
     Integrator::Integrator(const Scene& scene) : _scene(scene)
     {
         this->_threadPool = std::make_unique<optimization::ThreadPool>(10); // init thread pool with 4 threads.
+        try {
+            this->loadRayFeatures();
+        } catch (const IntegratorException &e) {
+            throw IntegratorException(e.what());
+        }
         // Initialize integrator with scene
+
+        const auto &tris = scene.getTriangles();
+        if (!tris.empty()) {
+            const auto start = std::chrono::high_resolution_clock::now();
+            _bvh = std::make_unique<BVH>(tris);
+            const auto end = std::chrono::high_resolution_clock::now();
+
+            std::cout << "BVH build time: " << std::chrono::duration<double, std::milli>(end - start).count() << " ms\n";
+        }
     }
 
     Integrator::~Integrator()
@@ -82,35 +98,51 @@ namespace RayTracer {
         return (t > EPSILON) ? t : -1;
     }
 
-    Graphic::Pixel Integrator::shootRay(const Ray &ray)
+    Graphic::Pixel Integrator::shootRay(Ray &ray)
     {
-        double closest_t = 1e9;
-        const Triangle* hit = nullptr;
+        float energy = 1.0;
+        RenderData data{
+            .lights = this->_scene.getLights(),
+            .ambientLight = this->_scene.getAmbientLight(),
+            .scene = this->_scene,
+        };
+        SurfaceIntersection intersection{
+            .normal = {0, 0, 0},
+            .hitPoint = {0, 0, 0},
+            .rayDir = ray.direction,
+            .accumulatedColor = {0, 0, 0, 255},
+            .nextRay = ray,
+            .shouldBounce = false,
+            .attenuation = 1.0f
+        };
 
-        for (const auto& tri : this->_scene.getTriangles()) {
-            double t = intersectTriangle(ray, tri);
-            if (t > 0 && t < closest_t) {
-                closest_t = t;
-                hit = &tri;
+        for (size_t i = 0; i < MAX_DEPTH; i++) {
+            double closest_t = 1e9;
+            const Triangle* hit = nullptr;
+
+            for (const auto& tri : data.scene.getTriangles()) {
+                double t = intersectTriangle(ray, tri);
+                if (t > 0 && t < closest_t) {
+                    closest_t = t;
+                    hit = &tri;
+                }
+            }
+            if (!hit)
+                break;
+            intersection.hitPoint = ray.origin + ray.direction * closest_t;
+            intersection.normal = (hit->b() - hit->a()).cross(hit->c() - hit->a()).normalize();
+            intersection.rayDir = ray.direction;
+            for (auto &rayFeature : _pipeline) {
+                rayFeature->process(data, intersection);
+            }
+            if (intersection.shouldBounce) {
+                energy /= intersection.attenuation + 0.00001f;
+                ray = intersection.nextRay;
+            } else {
+                break;
             }
         }
-
-        if (!hit)
-            return {20, 20, 20, 255};
-
-        Math::Vector3D normal = (hit->b() - hit->a()).cross(hit->c() - hit->a()).normalize();
-
-        double intensity = this->_scene.getAmbientLight().intensity;
-        for (const auto& light : this->_scene.getLights()) {
-            double diff = normal.dot(light.direction * -1.0);
-            if (diff > 0)
-                intensity += diff * light.intensity;
-        }
-        if (intensity > 1.0)
-            intensity = 1.0;
-
-        unsigned char c = (unsigned char)(intensity * 255);
-        return {c, c, c, 255};
+        return intersection.accumulatedColor;
     }
 
     void Integrator::waitForRendering()
