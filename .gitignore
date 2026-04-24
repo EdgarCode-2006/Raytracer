@@ -2,4 +2,4 @@
 raytracer
 build/
 compile_flags.txt
-//*.so
+*.so
