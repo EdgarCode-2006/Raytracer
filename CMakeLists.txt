@@ -103,3 +103,5 @@ add_custom_target(re
     COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target fclean
     COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target all
 )
+
+target_compile_options(${EXECUTABLE_NAME} PRIVATE -O3 -flto -march=native)
