@@ -11,6 +11,7 @@
 #include "Scene.hpp"
 #include <raylib.h>
 #include "integrators/PixelTile.hpp"
+#include "opti/BVH/BVH.hpp"
 #include "opti/ThreadPool/threadPool.hpp"
 #include "utils/Pixel.hpp"
 #include "entities/Light.hpp"
@@ -63,6 +64,8 @@ namespace RayTracer {
 
             std::vector<DLLoader<IRayFeature>> _loaders;
             std::vector<std::unique_ptr<IRayFeature>> _pipeline;
+            std::unique_ptr<BVH> _bvh;
+
     };
 
     class IntegratorException : public std::exception {
