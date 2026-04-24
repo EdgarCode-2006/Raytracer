@@ -134,37 +134,6 @@ namespace RayTracer {
         return intersection.accumulatedColor;
     }
 
-    // Graphic::Pixel Integrator::shootRay(const Ray &ray)
-    // {
-    //     double closest_t = 1e9;
-    //     const Triangle* hit = nullptr;
-
-    //     for (const auto& tri : this->_scene.getTriangles()) {
-    //         double t = intersectTriangle(ray, tri);
-    //         if (t > 0 && t < closest_t) {
-    //             closest_t = t;
-    //             hit = &tri;
-    //         }
-    //     }
-
-    //     if (!hit)
-    //         return {20, 20, 20, 255};
-
-    //     Math::Vector3D normal = (hit->b() - hit->a()).cross(hit->c() - hit->a()).normalize();
-
-    //     double intensity = this->_scene.getAmbientLight().intensity;
-    //     for (const auto& light : this->_scene.getLights()) {
-    //         double diff = normal.dot(light.direction * -1.0);
-    //         if (diff > 0)
-    //             intensity += diff * light.intensity;
-    //     }
-    //     if (intensity > 1.0)
-    //         intensity = 1.0;
-
-    //     unsigned char c = (unsigned char)(intensity * 255);
-    //     return {c, c, c, 255};
-    // }
-
     void Integrator::waitForRendering()
     {
         _threadPool->wait();
