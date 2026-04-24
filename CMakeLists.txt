@@ -9,6 +9,21 @@ add_compile_options(-lraylib -lGL -lm -lpthread -ldl -lrt -lX11)
 
 set(EXECUTABLE_NAME "raytracer")
 
+# __________________ Ray features
+set(FEATURES_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/rayFeatures")
+
+add_library(basicLight_feat MODULE
+    src/integrators/features/BasicLighting.cpp
+)
+
+target_include_directories(basicLight_feat PRIVATE include include/utils)
+
+set_target_properties(basicLight_feat PROPERTIES
+    PREFIX ""
+    SUFFIX ".so"
+    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+)
+# ________________ compile of rest of C++ files.
 include_directories(include include/utils)
 file(GLOB_RECURSE SRC "src/*.cpp")
 
