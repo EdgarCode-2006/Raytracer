@@ -73,6 +73,13 @@ namespace Math {
                 return *this;
             }
 
+            constexpr Vector3D& operator+=(double t) noexcept {
+                coords[0] += t;
+                coords[1] += t;
+                coords[2] += t;
+                return *this;
+            }
+
             constexpr Vector3D& operator-=(const Vector3D& b) noexcept {
                 coords[0] -= b.coords[0];
                 coords[1] -= b.coords[1];
@@ -131,7 +138,6 @@ namespace Math {
         constexpr inline Vector3D operator*(double t, const Vector3D& v) noexcept {
             return v * t;
         }
-
 }
 
 constexpr inline Math::Vector3D min(const Math::Vector3D& a, const Math::Vector3D& b) noexcept {

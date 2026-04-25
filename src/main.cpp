@@ -59,9 +59,13 @@ int main(int argc, char** argv)
         scene.setAmbientLight(ambient);
 
         RayTracer::DirectionalLight light;
-        light.direction = Math::Vector3D(1, 2, -1).normalize();
+        // RayTracer::DirectionalLight light2;
+        light.direction = Math::Vector3D(-1.2, 0.1, 0.1).normalize();
         light.intensity = 0.8;
+        // light2.direction = Math::Vector3D(-1.5, -0.1, 4).normalize();
+        // light2.intensity = 0.7;
         scene.addLight(light);
+        // scene.addLight(light2);
 
         auto renderer = std::make_unique<Graphic::RaylibRenderer>(screenWidth, screenHeight);
 

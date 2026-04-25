@@ -7,6 +7,8 @@
 #include <netinet/in.h>
 #include <unordered_map>
 #include <memory>
+#include <cmath>
+#include <random>
 
 #include "Scene.hpp"
 #include <raylib.h>
@@ -17,8 +19,10 @@
 #include "entities/Light.hpp"
 #include "integrators/rayFeature/IRayFeature.hpp"
 #include "integrators/featureLoader/DLLoader.hpp"
+#include "utils/Material.hpp"
 
 #define TILE_DIM 64
+#define MIN_THROUGHPUT_LENGTH 0.001
 #define MAX_DEPTH 5
 
 namespace RayTracer {
@@ -27,12 +31,35 @@ namespace RayTracer {
         Math::Vector3D normal;
         Math::Vector3D hitPoint;
         Math::Vector3D rayDir;
-        // Material *mat
-        Graphic::Pixel accumulatedColor;
+        // Graphic::Material *mat;
+        Graphic::Pixel localColor;
         RayTracer::Ray nextRay;
         bool shouldBounce;
-        float attenuation;
+        Math::Vector3D throughput;
 
+        Math::Vector3D getOmega() {
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_real_distribution<double> dist(0.0, 1.0);
+
+            double r1 = dist(gen);
+            double r2 = dist(gen);
+
+            double r = std::sqrt(r1);
+            double phi = 2 * M_PI * r2;
+
+            double x = r * std::cos(phi);
+            double y = r * std::sin(phi);
+            double z = std::sqrt(1 - r1);
+
+            // Build coordinate system from normal
+            Math::Vector3D n = normal;
+            Math::Vector3D ref = (std::abs(n.z()) < 0.999) ? Math::Vector3D(0, 0, 1) : Math::Vector3D(1, 0, 0);
+            Math::Vector3D tangent = n.cross(ref).normalize();
+            Math::Vector3D bitangent = n.cross(tangent);
+
+            return (tangent * x + bitangent * y + n * z).normalize();
+        }
     };
     struct RenderData
     {
@@ -55,8 +82,8 @@ namespace RayTracer {
             void loadRayFeatures();
             
         private:
-            double intersectTriangle(const Ray& ray, const Triangle& tri);
             void computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels);
+            void setPluginState(const std::string &pluginName, const bool &state);
             const Scene& _scene;
             std::unique_ptr<optimization::ThreadPool> _threadPool;
             std::vector<PixelTile> _tiles;

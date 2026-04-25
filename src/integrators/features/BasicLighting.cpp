@@ -3,19 +3,33 @@
 namespace RayTracer {
     void BasicLighting::process(RenderData &data, SurfaceIntersection &interaction)
     {
-        double intensity = data.scene.getAmbientLight().intensity;
-        for (const auto& light : data.scene.getLights()) {
-            double diff = interaction.normal.dot(light.direction * -1.0);
-            if (diff > 0)
-                intensity += diff * light.intensity;
-        }
-        if (intensity > 1.0)
-            intensity = 1.0;
-        unsigned char c = (unsigned char)(intensity * 255);
-        interaction.accumulatedColor = {c, c, c, 255};
-    }
+        double totalIntensity = data.scene.getAmbientLight().intensity;
 
-    extern "C" IRayFeature *getInstance() {
-        return new BasicLighting();
+        for (const auto& light : data.scene.getLights()) {
+            Math::Vector3D lightDir = light.direction * -1;
+            double diff = interaction.normal.dot(lightDir);
+            
+            if (diff > 0) {
+                Ray shadowRay(interaction.hitPoint + (interaction.normal * 0.001), lightDir);
+                bool blocked = false;
+
+                for (const auto& tri : data.scene.getTriangles()) {
+                    double t = RayTracer::Utils::intersectTriangle(shadowRay, tri);
+                    if (t > 0.001) {
+                        blocked = true;
+                        break;
+                    }
+                }
+                if (!blocked) {
+                    totalIntensity += diff * light.intensity;
+                }
+            }
+        }
+        totalIntensity = std::clamp(totalIntensity, 0.0, 1.0);
+        unsigned char c = (unsigned char)(totalIntensity * 255);
+        interaction.localColor = {c, c, c, 255};
     }
+}
+extern "C" RayTracer::IRayFeature *getInstance() {
+    return new RayTracer::BasicLighting();
 }

@@ -76,77 +76,19 @@ namespace RayTracer {
         }
     }
 
-    double Integrator::intersectTriangle(const Ray& ray, const Triangle& tri)
-    {
-        const double EPSILON = 1e-7;
-        Math::Vector3D edge1 = tri.b() - tri.a();
-        Math::Vector3D edge2 = tri.c() - tri.a();
-        Math::Vector3D h = ray.direction.cross(edge2);
-        double a = edge1.dot(h);
-        if (a > -EPSILON && a < EPSILON)
-            return -1;
-        double f = 1.0 / a;
-        Math::Vector3D s = ray.origin - tri.a();
-        double u = f * s.dot(h);
-        if (u < 0.0 || u > 1.0)
-            return -1;
-        Math::Vector3D q = s.cross(edge1);
-        double v = f * ray.direction.dot(q);
-        if (v < 0.0 || u + v > 1.0)
-            return -1;
-        double t = f * edge2.dot(q);
-        return (t > EPSILON) ? t : -1;
-    }
-
-    Graphic::Pixel Integrator::shootRay(Ray &ray)
-    {
-        float energy = 1.0;
-        RenderData data{
-            .lights = this->_scene.getLights(),
-            .ambientLight = this->_scene.getAmbientLight(),
-            .scene = this->_scene,
-        };
-        SurfaceIntersection intersection{
-            .normal = {0, 0, 0},
-            .hitPoint = {0, 0, 0},
-            .rayDir = ray.direction,
-            .accumulatedColor = {0, 0, 0, 255},
-            .nextRay = ray,
-            .shouldBounce = false,
-            .attenuation = 1.0f
-        };
-
-        for (size_t i = 0; i < MAX_DEPTH; i++) {
-            double closest_t = 1e9;
-            const Triangle* hit = nullptr;
-
-            for (const auto& tri : data.scene.getTriangles()) {
-                double t = intersectTriangle(ray, tri);
-                if (t > 0 && t < closest_t) {
-                    closest_t = t;
-                    hit = &tri;
-                }
-            }
-            if (!hit)
-                break;
-            intersection.hitPoint = ray.origin + ray.direction * closest_t;
-            intersection.normal = (hit->b() - hit->a()).cross(hit->c() - hit->a()).normalize();
-            intersection.rayDir = ray.direction;
-            for (auto &rayFeature : _pipeline) {
-                rayFeature->process(data, intersection);
-            }
-            if (intersection.shouldBounce) {
-                energy /= intersection.attenuation + 0.00001f;
-                ray = intersection.nextRay;
-            } else {
-                break;
-            }
-        }
-        return intersection.accumulatedColor;
-    }
-
     void Integrator::waitForRendering()
     {
         _threadPool->wait();
+    }
+
+    void Integrator::setPluginState(const std::string &pluginName, const bool &state)
+    {
+        for (auto& plugin : _pipeline) {
+            if (plugin->getName() == pluginName) {
+                plugin->setActivity(state);
+                return;
+            }
+        }
+        std::cout << "plugin not found couldn't disable." << std::endl;
     }
 }
