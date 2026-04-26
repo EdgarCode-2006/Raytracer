@@ -61,4 +61,19 @@ namespace RayTracer {
         };
     }
     
+    AABB Matrix4::transformAABB(const AABB& box) const noexcept {
+        const Math::Vector3D& mn = box.min();
+        const Math::Vector3D& mx = box.max();
+        const Math::Vector3D corners[8] = {
+            {mn.x(), mn.y(), mn.z()}, {mx.x(), mn.y(), mn.z()},
+            {mn.x(), mx.y(), mn.z()}, {mx.x(), mx.y(), mn.z()},
+            {mn.x(), mn.y(), mx.z()}, {mx.x(), mn.y(), mx.z()},
+            {mn.x(), mx.y(), mx.z()}, {mx.x(), mx.y(), mx.z()}
+        };
+        AABB result;
+        for (const auto& c : corners)
+            result.expand(transformPoint(c));
+        return result;
+    }
+    
 }

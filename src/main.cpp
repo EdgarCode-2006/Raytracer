@@ -51,8 +51,10 @@ int main(int argc, char** argv)
             return 84;
         }
         RayTracer::Scene scene(screenWidth, screenHeight);
-        scene.addTriangles(triangles);
-        scene.getCamera().fitToScene(triangles);
+        uint32_t meshId = scene.addMesh(std::move(triangles));
+        scene.addInstance(meshId);
+        // scene.buildTLAS();
+        scene.getCamera().fitToScene(scene.getAllTriangles());
 
         RayTracer::AmbientLight ambient;
         ambient.intensity = 0.2;

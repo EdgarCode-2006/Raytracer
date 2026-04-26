@@ -5,7 +5,7 @@
 #include "opti/BVH/TLASHit.hpp"
 #include "opti/BVH/TLASNode.hpp"
 #include <cstdint>
-#include <memory>
+#include <span>
 #include <raylib.h>
 #include <vector>
 
@@ -13,9 +13,8 @@ namespace RayTracer {
     class TLAS {
         public:
             TLAS() = default;
-            void addInstance(std::shared_ptr<Instance> instance);
-            void build();
-
+            
+            void build(std::span<const Instance> instances);
             TLASHit traverse(const Ray &ray);
 
         private:
@@ -29,7 +28,7 @@ namespace RayTracer {
 
             static double _slabTest(const TLASNode &node, const double *ro, const double *invd, double tmax) noexcept;
 
-            std::vector<std::shared_ptr<Instance>> _instances;
+            std::span<const Instance> _instances;
             std::vector<uint32_t> _indices;
             std::vector<uint32_t> _mortonCodes;
             std::vector<TLASNode> _nodes;

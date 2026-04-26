@@ -18,12 +18,12 @@ namespace RayTracer {
         return static_cast<uint32_t>(_nodes.size() - 1);
     }
 
-    BVH::BVH(const std::vector<Triangle> &triangles, int leafThreshold) : _triangles(&triangles), _leafThreshold(leafThreshold) {
+    BVH::BVH(const std::span<const Triangle> &triangles, int leafThreshold) : _triangles(triangles), _leafThreshold(leafThreshold) {
         _build();
     }
 
     void BVH::_build() {
-        const size_t n = _triangles->size();
+        const size_t n = _triangles.size();
 
         if (n == 0)
             return;
@@ -34,7 +34,7 @@ namespace RayTracer {
         _centroids.resize(n);
         _primAABBs.resize(n);
         for (size_t i = 0; i < n; i++) {
-            const Triangle &tri = (*_triangles)[i];
+            const Triangle &tri = _triangles[i];
             _centroids[i] = tri.centroid();
             _primAABBs[i].expand(tri.a());
             _primAABBs[i].expand(tri.b());
@@ -247,7 +247,7 @@ namespace RayTracer {
             if (node.isLeaf()) {
                 for (uint32_t i = 0; i < node.primCount(); i++) {
                     const uint32_t primitiveIndex = _indices[node.leftOrFirst() + i];
-                    const double t = _mollerTrumbore((*_triangles)[primitiveIndex], ray);
+                    const double t = _mollerTrumbore(_triangles[primitiveIndex], ray);
                     if (t < hit.t())
                         hit = RayHit(t, primitiveIndex);
                 }
