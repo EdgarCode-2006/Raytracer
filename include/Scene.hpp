@@ -38,7 +38,7 @@ namespace RayTracer {
                 _blases.reserve(meshCount);
                 _instances.reserve(meshCount);
             }
-            
+
             uint32_t addMesh(std::vector<Triangle> tris) {
                 const uint32_t id = static_cast<uint32_t>(_meshRanges.size());
                 const uint32_t start = static_cast<uint32_t>(_allTriangles.size());
@@ -70,6 +70,7 @@ namespace RayTracer {
             void buildTLAS() {_tlas.build(std::span<const Instance>(_instances));}
             
             const TLAS &getTLAS() const noexcept {return _tlas;}
+            Instance& getInstance(uint32_t i) noexcept { return _instances[i]; }
             const Instance &getInstance(uint32_t i) const noexcept {return _instances[i];}
 
 

@@ -1,5 +1,6 @@
 #include "utils/Matrix4.hpp"
 #include <cstdlib>
+#include <cstring>
 
 namespace RayTracer {
 
@@ -75,5 +76,21 @@ namespace RayTracer {
             result.expand(transformPoint(c));
         return result;
     }
-    
+
+    Matrix4 Matrix4::translation(double tx, double ty, double tz) noexcept {
+        Matrix4 r;
+        r.m[0][3] = tx; r.m[1][3] = ty; r.m[2][3] = tz;
+        return r;
+    }
+
+    Matrix4 Matrix4::operator*(const Matrix4& o) const noexcept {
+        Matrix4 result;
+        std::memset(result.m, 0, sizeof(result.m));
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 4; j++)
+                for (int k = 0; k < 4; k++)
+                    result.m[i][j] += m[i][k] * o.m[k][j];
+        return result;
+    }
+        
 }

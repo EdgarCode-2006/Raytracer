@@ -26,7 +26,7 @@ namespace RayTracer {
                 return _blas->traverse(_invTransform.transformRay(worldRay));
             };
             
-            
+            const Matrix4& getTransform() const noexcept { return _transform; }
             const AABB &worldAABB() const noexcept {return _worldAABB;};
             const Triangle &getPrimitive(uint32_t idx) const noexcept {return _triangles[idx];}
         private:
