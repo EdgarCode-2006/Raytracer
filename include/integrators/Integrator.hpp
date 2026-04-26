@@ -24,6 +24,7 @@
 #define TILE_DIM 64
 #define MIN_THROUGHPUT_LENGTH 0.001
 #define MAX_DEPTH 5
+#define RAYS_PER_PIXEL 1
 
 namespace RayTracer {
     struct SurfaceIntersection
@@ -84,6 +85,7 @@ namespace RayTracer {
         private:
             void computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels);
             void setPluginState(const std::string &pluginName, const bool &state);
+            void getPixelColor(int x, int y, const Camera &cam, Graphic::Pixel *pixels);
             const Scene& _scene;
             std::unique_ptr<optimization::ThreadPool> _threadPool;
             std::vector<PixelTile> _tiles;
@@ -93,6 +95,8 @@ namespace RayTracer {
             std::vector<std::unique_ptr<IRayFeature>> _pipeline;
             std::unique_ptr<BVH> _bvh;
 
+            int _samplesPerSide;
+            float _step;
     };
 
     class IntegratorException : public std::exception {

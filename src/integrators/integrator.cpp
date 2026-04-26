@@ -23,6 +23,11 @@ namespace RayTracer {
 
             std::cout << "BVH build time: " << std::chrono::duration<double, std::milli>(end - start).count() << " ms\n";
         }
+
+        _samplesPerSide = std::sqrt(RAYS_PER_PIXEL);
+        if (_samplesPerSide < 1) _samplesPerSide = 1;
+
+        _step = 1.0f / _samplesPerSide;
     }
 
     Integrator::~Integrator()
@@ -31,6 +36,33 @@ namespace RayTracer {
             _threadPool->wait();
             _threadPool.reset();
         }
+    }
+
+    void Integrator::getPixelColor(int x, int y, const Camera &cam, Graphic::Pixel *pixels)
+    {
+        float sumR = 0, sumG = 0, sumB = 0;
+
+        for (int sY = 0; sY < _samplesPerSide; sY++) {
+            for (int sX = 0; sX < _samplesPerSide; sX++) {
+                
+                float offsetX = (sX + 0.5f) * _step - 0.5f;
+                float offsetY = (sY + 0.5f) * _step - 0.5f;
+
+                Ray ray = cam.generateRay(x + offsetX, y + offsetY);
+                Graphic::Pixel sampleColor = this->shootRay(ray);
+                
+                sumR += sampleColor._r;
+                sumG += sampleColor._g;
+                sumB += sampleColor._b;
+            }
+        }
+
+        int totalSamples = _samplesPerSide * _samplesPerSide;
+        
+        pixels[y * cam.getWidth() + x] = Graphic::Pixel(
+            (unsigned char)(sumR / totalSamples),
+            (unsigned char)(sumG / totalSamples),
+            (unsigned char)(sumB / totalSamples));
     }
 
     void Integrator::computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels)
@@ -43,8 +75,7 @@ namespace RayTracer {
         for (int y = startY; y < startY + height; y++) {
             if (_stopRendering) return;
             for (int x = startX; x < startX + width; x++) {
-                Ray ray = cam.generateRay(x, y);
-                pixels[y * cam.getWidth() + x] = this->shootRay(ray);
+                this->getPixelColor(x, y, cam, pixels);
             }
         }
     }
