@@ -1,11 +1,99 @@
+#include "opti/BVH/AABB.hpp"
+#include "opti/BVH/Instance.hpp"
 #include "opti/BVH/RayHit.hpp"
 #include "opti/BVH/TLASHit.hpp"
 #include "opti/BVH/TLASNode.hpp"
+#include "utils/math.hpp"
+#include <algorithm>
 #include <cstdint>
+#include <numeric>
+#include <span>
 #include <sys/types.h>
 #include "opti/BVH/TLAS.hpp"
 
 namespace RayTracer {
+
+    void TLAS::build(const std::span<const Instance> instances) {
+        _instances = instances;
+        _nodes.clear();
+        _mortonCodes.clear();
+
+        const uint32_t instanceCount = static_cast<uint32_t>(_instances.size());
+
+        if (instanceCount == 0)
+            return;
+
+        AABB sceneBounds;
+        for (const auto &instance : _instances)
+            sceneBounds.expand(instance.worldAABB().center());
+        
+        const Math::Vector3D sceneMin = sceneBounds.min();
+        const Math::Vector3D sceneSize = sceneBounds.size();
+
+        _indices.resize(instanceCount);
+        std::iota(_indices.begin(), _indices.end(), 0);
+        _mortonCodes.resize(instanceCount);
+
+        // compute morton code
+
+        std::sort(_indices.begin(), _indices.end(), [this](uint32_t a, uint32_t b) {
+            return _mortonCodes[a] < _mortonCodes[b];
+        });
+
+        _nodes.reserve(instanceCount * 2);
+        _allocNode();
+        _buildLBVH(0, 0, instanceCount - 1);
+    }
+
+    uint32_t TLAS::_findSplit(uint32_t first, uint32_t last) const noexcept {
+            return 0;
+        }
+
+
+    void TLAS::_buildLBVH(uint32_t nodeIndex, uint32_t first, uint32_t last) {
+        // 1 object
+        if (first == last) {
+            _nodes[nodeIndex].leftOrFirst = first;
+            _nodes[nodeIndex].count = 1;
+            _nodes[nodeIndex].bounds = _instances[_indices[first]].worldAABB();
+            return;
+        }
+
+        // 2 objects
+        if (last == first + 1) {
+            const uint32_t left = _allocNode();
+            const uint32_t right = _allocNode();
+            _nodes[nodeIndex].leftOrFirst = left;
+            _nodes[nodeIndex].count = 0;
+            _buildLBVH(left, first, first);
+            _buildLBVH(right, last, last);
+            AABB box;
+            box.expand(_nodes[left].bounds);
+            box.expand(_nodes[right].bounds);
+            _nodes[nodeIndex].bounds = box;
+            return;
+        }
+
+        const uint32_t split = _findSplit(first, last);
+        const uint32_t left = _allocNode();
+        const uint32_t right = _allocNode();
+        _nodes[nodeIndex].leftOrFirst = left;
+        _nodes[nodeIndex].count = 0;
+
+        _buildLBVH(left, first, split);
+        _buildLBVH(right, split + 1, last);
+
+        AABB box;
+        box.expand(_nodes[left].bounds);
+        box.expand(_nodes[right].bounds);
+        _nodes[nodeIndex].bounds = box;
+
+    }
+
+    uint32_t TLAS::_allocNode() {
+        _nodes.emplace_back();
+        return static_cast<uint32_t>(_nodes.size() - 1);
+    }
 
     double TLAS::_slabTest(const TLASNode& node, const double* ro, const double* invd, double tmax) noexcept {
         const Math::Vector3D boxMin = node.bounds.min();
