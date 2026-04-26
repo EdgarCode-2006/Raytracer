@@ -3,10 +3,13 @@
 
 #include "opti/BVH/AABB.hpp"
 #include "opti/BVH/BVHNode.hpp"
+#include "opti/BVH/RayHit.hpp"
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
 #include <cstdint>
 #include <vector>
+
+#define STACK_SIZE 64
 
 namespace RayTracer {
     inline constexpr int BUCKETS = 32;
@@ -23,6 +26,8 @@ namespace RayTracer {
             BVH(BVH &&) = default;
             BVH &operator=(BVH &&) = default;
 
+            RayHit traverse(const Ray &ray) const noexcept;
+
         private:
 
             struct BoundsResult {
@@ -36,6 +41,9 @@ namespace RayTracer {
             BoundsResult _computeBounds(uint32_t first, uint32_t count) const noexcept;
             void _subdivide(uint32_t nodeIndex, uint32_t first, uint32_t count, int depth);
             bool _splitSAH(uint32_t first, uint32_t count, const AABB& nodeBounds, const AABB& centBounds, int& bestAxis, double& bestPos) const noexcept;
+
+            static double _slabTest(const BVHNode& node, const double* ro, const double* invd, double tmax) noexcept;
+            static double _mollerTrumbore(const Triangle &tri, const Ray &ray) noexcept;
 
             const std::vector<Triangle>* _triangles;
             std::vector<BVHNode> _nodes;
