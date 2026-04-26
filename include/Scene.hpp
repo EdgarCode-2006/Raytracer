@@ -32,11 +32,11 @@ namespace RayTracer {
             Scene(Scene&&) = default;
             Scene& operator=(Scene&&) = default;
 
-            void reserveMeshes(uint32_t meshCount, uint32_t totalTriangles) {
+            void reserveMeshes(uint32_t meshCount, uint32_t totalTriangles, uint32_t totalInstances) {
                 _allTriangles.reserve(totalTriangles);
                 _meshRanges.reserve(meshCount);
                 _blases.reserve(meshCount);
-                _instances.reserve(meshCount);
+                _instances.reserve(totalInstances);
             }
 
             uint32_t addMesh(std::vector<Triangle> tris) {
@@ -67,7 +67,15 @@ namespace RayTracer {
                 );
             }
             
-            void buildTLAS() {_tlas.build(std::span<const Instance>(_instances));}
+            void buildTLAS() {
+                const auto startChrono = std::chrono::high_resolution_clock::now();
+
+                _tlas.build(std::span<const Instance>(_instances));
+                const auto endChrono = std::chrono::high_resolution_clock::now();
+
+                std::cout << "TLAS build time: " << std::chrono::duration<double, std::milli>(endChrono - startChrono).count() << " ms\n";
+                
+            }
             
             const TLAS &getTLAS() const noexcept {return _tlas;}
             Instance& getInstance(uint32_t i) noexcept { return _instances[i]; }

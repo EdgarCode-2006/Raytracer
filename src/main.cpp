@@ -52,7 +52,7 @@ int main(int argc, char** argv)
             return 84;
         }
         RayTracer::Scene scene(screenWidth, screenHeight);
-        scene.reserveMeshes(1, triangles.size());
+        scene.reserveMeshes(1, triangles.size(), 2);
         uint32_t meshId = scene.addMesh(std::move(triangles));
         scene.addInstance(meshId);
         scene.addInstance(meshId); // add a second instance of the same mesh to test instancing

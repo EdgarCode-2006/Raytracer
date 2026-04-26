@@ -262,10 +262,10 @@ namespace RayTracer {
                 if (tLeft < tRight) {
                     if (tRight < hit.t())
                         stack[top++] = rightIndex;
-                    if (leftIndex < hit.t())
+                    if (tLeft < hit.t())
                         stack[top++] = leftIndex;
                 } else {
-                    if (leftIndex < hit.t())
+                    if (tLeft < hit.t())
                         stack[top++] = leftIndex;
                     if (tRight < hit.t())
                         stack[top++] = rightIndex;
