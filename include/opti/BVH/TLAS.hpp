@@ -15,7 +15,7 @@ namespace RayTracer {
             TLAS() = default;
             
             void build(std::span<const Instance> instances);
-            TLASHit traverse(const Ray &ray);
+            TLASHit traverse(const Ray &ray) const noexcept;
 
         private:
 
