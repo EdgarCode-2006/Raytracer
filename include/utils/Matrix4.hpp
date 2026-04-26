@@ -12,6 +12,8 @@ namespace RayTracer {
                 {0, 0, 0, 1},
             } {}
 
+            Matrix4 inverse() const noexcept;
+
             double m[4][4] = {};
     };
 
