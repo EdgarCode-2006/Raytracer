@@ -19,6 +19,7 @@ namespace Graphic {
             void pixelsToScreenBuffer(Pixel *pixels) override;
             void renderPixelBuffer(Pixel *pixels) override;
             bool windowOpen() override {return !WindowShouldClose();};
+            void applyBlur(Pixel *pixels, int h, int w);
         private:
             Color *_screenBuffer;
             Image _canvas;
