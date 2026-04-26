@@ -44,4 +44,21 @@ namespace RayTracer {
                 result.m[i][j] = inv[i * 4 + j] * det; // i * 4 + j for the transposed cofactor index (adj(M))
         return result;
     }
+
+    Math::Vector3D Matrix4::transformPoint(const Math::Vector3D &p) const noexcept {
+        return {
+            m[0][0]*p.x() + m[0][1]*p.y() + m[0][2]*p.z() + m[0][3],
+            m[1][0]*p.x() + m[1][1]*p.y() + m[1][2]*p.z() + m[1][3],
+            m[2][0]*p.x() + m[2][1]*p.y() + m[2][2]*p.z() + m[2][3]
+        };
+    }
+
+    Math::Vector3D Matrix4::transformDirection(const Math::Vector3D &d) const noexcept {
+        return {
+            m[0][0]*d.x() + m[0][1]*d.y() + m[0][2]*d.z(),
+            m[1][0]*d.x() + m[1][1]*d.y() + m[1][2]*d.z(),
+            m[2][0]*d.x() + m[2][1]*d.y() + m[2][2]*d.z()
+        };
+    }
+    
 }
