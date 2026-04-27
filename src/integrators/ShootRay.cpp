@@ -10,7 +10,7 @@ namespace RayTracer
         RenderData data{
             .lights = this->_scene.getLights(),
             .ambientLight = this->_scene.getAmbientLight(),
-            .scene = this->_scene,
+            .scene = this->_scene
         };
         SurfaceIntersection intersection{
             .normal = {0, 0, 0},
@@ -23,21 +23,14 @@ namespace RayTracer
         };
 
         for (size_t i = 0; i < MAX_DEPTH; i++) {
-            double closest_t = 1e9;
-            const Triangle* hit = nullptr;
-
-            for (const auto& tri : data.scene.getTriangles()) {
-                double t = Utils::intersectTriangle(ray, tri);
-                if (t > 0 && t < closest_t) {
-                    closest_t = t;
-                    hit = &tri;
-                }
-            }
-
-            if (!hit)
+            const TLASHit tlasHit = _scene.getTLAS().traverse(ray);
+            if (!tlasHit.hasHit())
                 break;
-            intersection.hitPoint = ray.origin + ray.direction * closest_t;
-            intersection.normal = (hit->b() - hit->a()).cross(hit->c() - hit->a()).normalize();
+            const Instance &instance = _scene.getInstance(tlasHit.instanceIndex());
+            const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
+
+            intersection.hitPoint = ray.origin + ray.direction * tlasHit.t();
+            intersection.normal = (tri.b() - tri.a()).cross(tri.c() - tri.a()).normalize();
             intersection.rayDir = ray.direction;
             intersection.shouldBounce = false;
 

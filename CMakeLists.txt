@@ -11,43 +11,6 @@ set(EXECUTABLE_NAME "raytracer")
 
 set(FEATURES_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/rayFeatures")
 
-# __________________ Ray features
-add_library(basicLight_feat MODULE
-    src/integrators/features/BasicLighting.cpp
-)
-
-target_include_directories(basicLight_feat PRIVATE include include/utils)
-
-set_target_properties(basicLight_feat PROPERTIES
-    PREFIX ""
-    SUFFIX ".so"
-    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
-)
-
-add_library(SpecularHandler_feat MODULE
-    src/integrators/features/SpecularHandler.cpp
-)
-
-target_include_directories(SpecularHandler_feat PRIVATE include include/utils)
-
-set_target_properties(SpecularHandler_feat PROPERTIES
-    PREFIX ""
-    SUFFIX ".so"
-    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
-)
-
-add_library(AmbientOcclusion_feat MODULE
-    src/integrators/features/AmbientOcclusion.cpp
-)
-
-target_include_directories(AmbientOcclusion_feat PRIVATE include include/utils)
-
-set_target_properties(AmbientOcclusion_feat PROPERTIES
-    PREFIX ""
-    SUFFIX ".so"
-    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
-)
-
 # ________________ compile of rest of C++ files.
 include_directories(include include/utils)
 
@@ -61,13 +24,43 @@ file(GLOB_RECURSE FEATURE_SRC
 
 list(REMOVE_ITEM SRC ${FEATURE_SRC})
 
-add_executable(${EXECUTABLE_NAME} ${SRC})
+add_library(raytracer_core STATIC ${SRC})
+target_include_directories(raytracer_core PUBLIC include include/utils)
+target_compile_options(raytracer_core PRIVATE -fPIC)
+
+# --- link plugins to core lib. 
+add_library(basicLight_feat SHARED src/integrators/features/BasicLighting.cpp)
+target_link_libraries(basicLight_feat PRIVATE raytracer_core)  
+
+set_target_properties(basicLight_feat PROPERTIES
+    PREFIX "" SUFFIX ".so"
+    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+)
+
+add_library(SpecularHandler_feat SHARED src/integrators/features/SpecularHandler.cpp)
+target_link_libraries(SpecularHandler_feat PRIVATE raytracer_core)  
+
+set_target_properties(SpecularHandler_feat PROPERTIES
+    PREFIX "" SUFFIX ".so"
+    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+)
+
+add_library(AmbientOcclusion_feat SHARED src/integrators/features/AmbientOcclusion.cpp)
+target_link_libraries(AmbientOcclusion_feat PRIVATE raytracer_core)  
+
+set_target_properties(AmbientOcclusion_feat PROPERTIES
+    PREFIX "" SUFFIX ".so"
+    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+)
+
+add_executable(${EXECUTABLE_NAME} src/main.cpp)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE raytracer_core basicLight_feat SpecularHandler_feat AmbientOcclusion_feat)
 
 find_library(RAYLIB_LIB raylib)
 find_path(RAYLIB_INC raylib.h)
 if(RAYLIB_LIB AND RAYLIB_INC)
     target_include_directories(${EXECUTABLE_NAME} PRIVATE ${RAYLIB_INC})
-    target_link_libraries(${EXECUTABLE_NAME} ${RAYLIB_LIB} GL m pthread dl X11 rt)
+    target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${RAYLIB_LIB} GL m pthread dl X11 rt)
 else()
     message(FATAL_ERROR "raylib not found")
 endif()
