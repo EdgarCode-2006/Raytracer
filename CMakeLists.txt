@@ -132,3 +132,7 @@ add_custom_target(re
 )
 
 target_compile_options(${EXECUTABLE_NAME} PRIVATE -O3 -flto -march=native)
+target_compile_options(basicLight_feat PRIVATE -O3 -flto -march=native)
+target_compile_options(SpecularHandler_feat PRIVATE -O3 -flto -march=native)
+target_compile_options(AmbientOcclusion_feat PRIVATE -O3 -flto -march=native)
+target_compile_options(raytracer_core PRIVATE -O3 -march=native -flto)
