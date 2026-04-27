@@ -16,16 +16,11 @@ namespace RayTracer {
         } catch (const IntegratorException &e) {
             throw IntegratorException(e.what());
         }
-        // Initialize integrator with scene
 
-        // const auto &tris = scene.getAllTriangles();
-        // if (!tris.empty()) {
-        //     const auto start = std::chrono::high_resolution_clock::now();
-        //     _bvh = std::make_unique<BVH>(tris);
-        //     const auto end = std::chrono::high_resolution_clock::now();
+        _samplesPerSide = std::sqrt(RAYS_PER_PIXEL);
+        if (_samplesPerSide < 1) _samplesPerSide = 1;
 
-        //     std::cout << "BVH build time: " << std::chrono::duration<double, std::milli>(end - start).count() << " ms\n";
-        // }
+        _step = 1.0f / _samplesPerSide;
     }
 
     Integrator::~Integrator()
@@ -34,6 +29,33 @@ namespace RayTracer {
             _threadPool->wait();
             _threadPool.reset();
         }
+    }
+
+    void Integrator::getPixelColor(int x, int y, const Camera &cam, Graphic::Pixel *pixels)
+    {
+        float sumR = 0, sumG = 0, sumB = 0;
+
+        for (int sY = 0; sY < _samplesPerSide; sY++) {
+            for (int sX = 0; sX < _samplesPerSide; sX++) {
+                
+                float offsetX = (sX + 0.5f) * _step - 0.5f;
+                float offsetY = (sY + 0.5f) * _step - 0.5f;
+
+                Ray ray = cam.generateRay(x + offsetX, y + offsetY);
+                Graphic::Pixel sampleColor = this->shootRay(ray);
+                
+                sumR += sampleColor._r;
+                sumG += sampleColor._g;
+                sumB += sampleColor._b;
+            }
+        }
+
+        int totalSamples = _samplesPerSide * _samplesPerSide;
+        
+        pixels[y * cam.getWidth() + x] = Graphic::Pixel(
+            (unsigned char)(sumR / totalSamples),
+            (unsigned char)(sumG / totalSamples),
+            (unsigned char)(sumB / totalSamples));
     }
 
     void Integrator::computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels)
@@ -46,8 +68,7 @@ namespace RayTracer {
         for (int y = startY; y < startY + height; y++) {
             if (_stopRendering) return;
             for (int x = startX; x < startX + width; x++) {
-                Ray ray = cam.generateRay(x, y);
-                pixels[y * cam.getWidth() + x] = this->shootRay(ray);
+                this->getPixelColor(x, y, cam, pixels);
             }
         }
     }
@@ -79,85 +100,19 @@ namespace RayTracer {
         }
     }
 
-    double Integrator::intersectTriangle(const Ray& ray, const Triangle& tri)
-    {
-        const double EPSILON = 1e-7;
-        Math::Vector3D edge1 = tri.b() - tri.a();
-        Math::Vector3D edge2 = tri.c() - tri.a();
-        Math::Vector3D h = ray.direction.cross(edge2);
-        double a = edge1.dot(h);
-        if (a > -EPSILON && a < EPSILON)
-            return -1;
-        double f = 1.0 / a;
-        Math::Vector3D s = ray.origin - tri.a();
-        double u = f * s.dot(h);
-        if (u < 0.0 || u > 1.0)
-            return -1;
-        Math::Vector3D q = s.cross(edge1);
-        double v = f * ray.direction.dot(q);
-        if (v < 0.0 || u + v > 1.0)
-            return -1;
-        double t = f * edge2.dot(q);
-        return (t > EPSILON) ? t : -1;
-    }
-
-    Graphic::Pixel Integrator::shootRay(Ray &ray)
-    {
-        float energy = 1.0;
-        RenderData data{
-            .lights = this->_scene.getLights(),
-            .ambientLight = this->_scene.getAmbientLight(),
-            .scene = this->_scene,
-        };
-        SurfaceIntersection intersection{
-            .normal = {0, 0, 0},
-            .hitPoint = {0, 0, 0},
-            .rayDir = ray.direction,
-            .accumulatedColor = {0, 0, 0, 255},
-            .nextRay = ray,
-            .shouldBounce = false,
-            .attenuation = 1.0f
-        };
-
-        for (size_t i = 0; i < MAX_DEPTH; i++) {
-            const TLASHit tlasHit = _scene.getTLAS().traverse(ray);
-            if (!tlasHit.hasHit())
-                break;
-            const Instance &instance = _scene.getInstance(tlasHit.instanceIndex());
-            const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
-
-            
-
-            // double closest_t = 1e9;
-            // const Triangle* hit = nullptr;
-
-            // for (const auto& tri : data.scene.getAllTriangles()) {
-            //     double t = intersectTriangle(ray, tri);
-            //     if (t > 0 && t < closest_t) {
-            //         closest_t = t;
-            //         hit = &tri;
-            //     }
-            // }
-            // if (!hit)
-            //     break;
-            intersection.hitPoint = ray.origin + ray.direction * tlasHit.t();
-            intersection.normal = (tri.b() - tri.a()).cross(tri.c() - tri.a()).normalize();
-            intersection.rayDir = ray.direction;
-            for (auto &rayFeature : _pipeline) {
-                rayFeature->process(data, intersection);
-            }
-            if (intersection.shouldBounce) {
-                energy /= intersection.attenuation + 0.00001f;
-                ray = intersection.nextRay;
-            } else {
-                break;
-            }
-        }
-        return intersection.accumulatedColor;
-    }
-
     void Integrator::waitForRendering()
     {
         _threadPool->wait();
+    }
+
+    void Integrator::setPluginState(const std::string &pluginName, const bool &state)
+    {
+        for (auto& plugin : _pipeline) {
+            if (plugin->getName() == pluginName) {
+                plugin->setActivity(state);
+                return;
+            }
+        }
+        std::cout << "plugin not found couldn't disable." << std::endl;
     }
 }

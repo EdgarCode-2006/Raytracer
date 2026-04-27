@@ -27,6 +27,41 @@ namespace Graphic {
         SetTargetFPS(60);
     }
 
+    void RaylibRenderer::applyBlur(Pixel *pixels, int h, int w)
+    {
+        std::vector<Pixel> source = _pixels;
+        float strength = 0.4;
+
+        for (int y = 1; y < h - 1; y++) {
+            for (int x = 1; x < w - 1; x++) {
+                int r, g, b = 0;
+                // [1, 2, 1]
+                // [2, 4, 2] / 16
+                // [1, 2, 1]
+                auto getP = [&](int dx, int dy) { return source[(y + dy) * w + (x + dx)]; };
+
+                unsigned char blurR = (getP(-1,-1)._r * 1 + getP(0,-1)._r * 2 + getP(1,-1)._r * 1 +
+                    getP(-1, 0)._r * 2 + getP(0, 0)._r * 4 + getP(1, 0)._r * 2 +
+                    getP(-1, 1)._r * 1 + getP(0, 1)._r * 2 + getP(1, 1)._r * 1) >> 4;
+
+                unsigned char blurG = (getP(-1,-1)._g * 1 + getP(0,-1)._g * 2 + getP(1,-1)._g * 1 +
+                    getP(-1, 0)._g * 2 + getP(0, 0)._g * 4 + getP(1, 0)._g * 2 +
+                    getP(-1, 1)._g * 1 + getP(0, 1)._g * 2 + getP(1, 1)._g * 1) >> 4;
+
+                unsigned char blurB = (getP(-1,-1)._b * 1 + getP(0,-1)._b * 2 + getP(1,-1)._b * 1 +
+                    getP(-1, 0)._b * 2 + getP(0, 0)._b * 4 + getP(1, 0)._b * 2 +
+                    getP(-1, 1)._b * 1 + getP(0, 1)._b * 2 + getP(1, 1)._b * 1) >> 4;
+
+                Pixel original = getP(0, 0);
+
+                unsigned char finalR = original._r + (unsigned char)((blurR - original._r) * strength);
+                unsigned char finalG = original._g + (unsigned char)((blurG - original._g) * strength);
+                unsigned char finalB = original._b + (unsigned char)((blurB - original._b) * strength);
+
+                pixels[y * w + x] = Pixel(finalR, finalG, finalB);
+            }
+        }
+    }
 
     void RaylibRenderer::pixelsToScreenBuffer(Pixel *pixels)
     {
@@ -34,6 +69,7 @@ namespace Graphic {
         int w = GetScreenWidth();
         size_t totalBytes = h * w * sizeof(Color);
 
+        // this->applyBlur(pixels, h, w);
         std::memcpy(this->_screenBuffer, pixels, totalBytes);
     }
 

@@ -9,9 +9,9 @@ add_compile_options(-lraylib -lGL -lm -lpthread -ldl -lrt -lX11)
 
 set(EXECUTABLE_NAME "raytracer")
 
-# __________________ Ray features
 set(FEATURES_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/rayFeatures")
 
+# __________________ Ray features
 add_library(basicLight_feat MODULE
     src/integrators/features/BasicLighting.cpp
 )
@@ -23,9 +23,43 @@ set_target_properties(basicLight_feat PROPERTIES
     SUFFIX ".so"
     LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
 )
+
+add_library(SpecularHandler_feat MODULE
+    src/integrators/features/SpecularHandler.cpp
+)
+
+target_include_directories(SpecularHandler_feat PRIVATE include include/utils)
+
+set_target_properties(SpecularHandler_feat PROPERTIES
+    PREFIX ""
+    SUFFIX ".so"
+    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+)
+
+add_library(AmbientOcclusion_feat MODULE
+    src/integrators/features/AmbientOcclusion.cpp
+)
+
+target_include_directories(AmbientOcclusion_feat PRIVATE include include/utils)
+
+set_target_properties(AmbientOcclusion_feat PROPERTIES
+    PREFIX ""
+    SUFFIX ".so"
+    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+)
+
 # ________________ compile of rest of C++ files.
 include_directories(include include/utils)
-file(GLOB_RECURSE SRC "src/*.cpp")
+
+file(GLOB_RECURSE SRC
+    "src/*.cpp"
+)
+
+file(GLOB_RECURSE FEATURE_SRC
+    "src/integrators/features/*.cpp"
+)
+
+list(REMOVE_ITEM SRC ${FEATURE_SRC})
 
 add_executable(${EXECUTABLE_NAME} ${SRC})
 
