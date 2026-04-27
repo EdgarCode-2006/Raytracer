@@ -8,6 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(EXECUTABLE_NAME "raytracer")
 
+set(FEATURES_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/rayFeatures")
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -24,8 +26,18 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(rlimgui)
 
+# ________________ compile of rest of C++ files.
 include_directories(include include/utils)
-file(GLOB_RECURSE SRC "src/*.cpp")
+
+file(GLOB_RECURSE SRC
+    "src/*.cpp"
+)
+
+file(GLOB_RECURSE FEATURE_SRC
+    "src/integrators/features/*.cpp"
+)
+
+list(REMOVE_ITEM SRC ${FEATURE_SRC})
 
 set(IMGUI_SRC
     ${imgui_SOURCE_DIR}/imgui.cpp
@@ -35,18 +47,46 @@ set(IMGUI_SRC
     ${rlimgui_SOURCE_DIR}/rlImGui.cpp
 )
 
-add_executable(${EXECUTABLE_NAME} ${SRC} ${IMGUI_SRC})
+add_library(raytracer_core STATIC ${SRC} ${IMGUI_SRC})
+target_include_directories(raytracer_core PUBLIC include include/utils ${imgui_SOURCE_DIR} ${rlimgui_SOURCE_DIR})
+target_compile_options(raytracer_core PRIVATE -fPIC)
+
+# --- link plugins to core lib.
+add_library(basicLight_feat SHARED src/integrators/features/BasicLighting.cpp)
+target_link_libraries(basicLight_feat PRIVATE raytracer_core)
+
+set_target_properties(basicLight_feat PROPERTIES
+    PREFIX "" SUFFIX ".so"
+    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+)
+
+add_library(SpecularHandler_feat SHARED src/integrators/features/SpecularHandler.cpp)
+target_link_libraries(SpecularHandler_feat PRIVATE raytracer_core)
+
+set_target_properties(SpecularHandler_feat PROPERTIES
+    PREFIX "" SUFFIX ".so"
+    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+)
+
+add_library(AmbientOcclusion_feat SHARED src/integrators/features/AmbientOcclusion.cpp)
+target_link_libraries(AmbientOcclusion_feat PRIVATE raytracer_core)
+
+set_target_properties(AmbientOcclusion_feat PROPERTIES
+    PREFIX "" SUFFIX ".so"
+    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+)
+
+add_executable(${EXECUTABLE_NAME} src/main.cpp)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE raytracer_core basicLight_feat SpecularHandler_feat AmbientOcclusion_feat)
 
 find_library(RAYLIB_LIB raylib)
 find_path(RAYLIB_INC raylib.h)
 if(RAYLIB_LIB AND RAYLIB_INC)
-    target_include_directories(${EXECUTABLE_NAME} PRIVATE
-        ${RAYLIB_INC}
-        ${imgui_SOURCE_DIR}
-        ${rlimgui_SOURCE_DIR}
-    )
-    target_compile_definitions(${EXECUTABLE_NAME} PRIVATE "IsTextureValid=IsTextureReady")
-    target_link_libraries(${EXECUTABLE_NAME} ${RAYLIB_LIB} GL m pthread dl X11 rt)
+    target_include_directories(raytracer_core PUBLIC ${RAYLIB_INC})
+    target_compile_definitions(raytracer_core PUBLIC "IsTextureValid=IsTextureReady")
+    target_link_libraries(raytracer_core PUBLIC ${RAYLIB_LIB} GL m pthread dl X11 rt)
+    target_include_directories(${EXECUTABLE_NAME} PRIVATE ${RAYLIB_INC})
+    target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${RAYLIB_LIB} GL m pthread dl X11 rt)
 else()
     message(FATAL_ERROR "raylib not found")
 endif()
@@ -114,3 +154,5 @@ add_custom_target(re
     COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target fclean
     COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target all
 )
+
+target_compile_options(${EXECUTABLE_NAME} PRIVATE -O3 -flto -march=native)

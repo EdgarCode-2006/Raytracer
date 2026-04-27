@@ -1,6 +1,7 @@
 #include "GUI.hpp"
 #include "rlImGui.h"
 #include "imgui.h"
+#include "utils/Matrix4.hpp"
 
 namespace Graphic {
 
@@ -18,7 +19,23 @@ namespace Graphic {
             if (ImGui::SliderFloat("FOV", &fov, 10.0f, 150.0f))
                 cam.setFov((double)fov);
         }
+        if (ImGui::CollapsingHeader("Objects")) {
+            for (int i = 0; i < scene.getInstanceCount(); i++) {
+                ImGui::PushID(i);
 
+                const RayTracer::Matrix4& t = scene.getInstance(i).getTransform();
+                float pos[3] = { (float)t.m[0][3], (float)t.m[1][3], (float)t.m[2][3] };
+
+                if (ImGui::DragFloat3("Position", pos, 0.1f)) {
+                    scene.getInstance(i).setTransform(
+                        RayTracer::Matrix4{}.translation(pos[0], pos[1], pos[2])
+                    );
+                    scene.buildTLAS();
+                }
+
+                ImGui::PopID();
+            }
+        }
         ImGui::End();
 
         rlImGuiEnd();

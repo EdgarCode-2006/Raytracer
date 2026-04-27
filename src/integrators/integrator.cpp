@@ -1,12 +1,26 @@
 #include "integrators/Integrator.hpp"
+#include "integrators/rayFeature/IRayFeature.hpp"
+#include "opti/BVH/Instance.hpp"
+#include "opti/BVH/TLAS.hpp"
+#include "opti/BVH/TLASHit.hpp"
 #include "utils/math.hpp"
-#include <raylib.h>
+#include "utils/rayTracer.hpp"
+#include <memory>
 
 namespace RayTracer {
     Integrator::Integrator(const Scene& scene) : _scene(scene)
     {
-        this->_threadPool = std::make_unique<optimization::ThreadPool>(10); // init thread pool with 4 threads.
-        // Initialize integrator with scene
+        this->_threadPool = std::make_unique<optimization::ThreadPool>(13); // init thread pool with 4 threads.
+        try {
+            this->loadRayFeatures();
+        } catch (const IntegratorException &e) {
+            throw IntegratorException(e.what());
+        }
+
+        _samplesPerSide = std::sqrt(RAYS_PER_PIXEL);
+        if (_samplesPerSide < 1) _samplesPerSide = 1;
+
+        _step = 1.0f / _samplesPerSide;
     }
 
     Integrator::~Integrator()
@@ -15,6 +29,33 @@ namespace RayTracer {
             _threadPool->wait();
             _threadPool.reset();
         }
+    }
+
+    void Integrator::getPixelColor(int x, int y, const Camera &cam, Graphic::Pixel *pixels)
+    {
+        float sumR = 0, sumG = 0, sumB = 0;
+
+        for (int sY = 0; sY < _samplesPerSide; sY++) {
+            for (int sX = 0; sX < _samplesPerSide; sX++) {
+                
+                float offsetX = (sX + 0.5f) * _step - 0.5f;
+                float offsetY = (sY + 0.5f) * _step - 0.5f;
+
+                Ray ray = cam.generateRay(x + offsetX, y + offsetY);
+                Graphic::Pixel sampleColor = this->shootRay(ray);
+                
+                sumR += sampleColor._r;
+                sumG += sampleColor._g;
+                sumB += sampleColor._b;
+            }
+        }
+
+        int totalSamples = _samplesPerSide * _samplesPerSide;
+        
+        pixels[y * cam.getWidth() + x] = Graphic::Pixel(
+            (unsigned char)(sumR / totalSamples),
+            (unsigned char)(sumG / totalSamples),
+            (unsigned char)(sumB / totalSamples));
     }
 
     void Integrator::computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels)
@@ -27,8 +68,7 @@ namespace RayTracer {
         for (int y = startY; y < startY + height; y++) {
             if (_stopRendering) return;
             for (int x = startX; x < startX + width; x++) {
-                Ray ray = cam.generateRay(x, y);
-                pixels[y * cam.getWidth() + x] = this->shootRay(ray);
+                this->getPixelColor(x, y, cam, pixels);
             }
         }
     }
@@ -60,61 +100,19 @@ namespace RayTracer {
         }
     }
 
-    double Integrator::intersectTriangle(const Ray& ray, const Triangle& tri)
-    {
-        const double EPSILON = 1e-7;
-        Math::Vector3D edge1 = tri.b() - tri.a();
-        Math::Vector3D edge2 = tri.c() - tri.a();
-        Math::Vector3D h = ray.direction.cross(edge2);
-        double a = edge1.dot(h);
-        if (a > -EPSILON && a < EPSILON)
-            return -1;
-        double f = 1.0 / a;
-        Math::Vector3D s = ray.origin - tri.a();
-        double u = f * s.dot(h);
-        if (u < 0.0 || u > 1.0)
-            return -1;
-        Math::Vector3D q = s.cross(edge1);
-        double v = f * ray.direction.dot(q);
-        if (v < 0.0 || u + v > 1.0)
-            return -1;
-        double t = f * edge2.dot(q);
-        return (t > EPSILON) ? t : -1;
-    }
-
-    Graphic::Pixel Integrator::shootRay(const Ray &ray)
-    {
-        double closest_t = 1e9;
-        const Triangle* hit = nullptr;
-
-        for (const auto& tri : this->_scene.getTriangles()) {
-            double t = intersectTriangle(ray, tri);
-            if (t > 0 && t < closest_t) {
-                closest_t = t;
-                hit = &tri;
-            }
-        }
-
-        if (!hit)
-            return {20, 20, 20, 255};
-
-        Math::Vector3D normal = (hit->b() - hit->a()).cross(hit->c() - hit->a()).normalize();
-
-        double intensity = this->_scene.getAmbientLight().intensity;
-        for (const auto& light : this->_scene.getLights()) {
-            double diff = normal.dot(light.direction * -1.0);
-            if (diff > 0)
-                intensity += diff * light.intensity;
-        }
-        if (intensity > 1.0)
-            intensity = 1.0;
-
-        unsigned char c = (unsigned char)(intensity * 255);
-        return {c, c, c, 255};
-    }
-
     void Integrator::waitForRendering()
     {
         _threadPool->wait();
+    }
+
+    void Integrator::setPluginState(const std::string &pluginName, const bool &state)
+    {
+        for (auto& plugin : _pipeline) {
+            if (plugin->getName() == pluginName) {
+                plugin->setActivity(state);
+                return;
+            }
+        }
+        std::cout << "plugin not found couldn't disable." << std::endl;
     }
 }
