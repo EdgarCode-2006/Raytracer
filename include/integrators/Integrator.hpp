@@ -23,7 +23,7 @@
 #define TILE_DIM 64
 #define MIN_THROUGHPUT_LENGTH 0.001
 #define MAX_DEPTH 5
-#define RAYS_PER_PIXEL 1
+#define RAYS_PER_PIXEL 4
 
 namespace RayTracer {
     struct RenderData

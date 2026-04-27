@@ -13,13 +13,7 @@ namespace RayTracer {
             Ray AORay(interaction.hitPoint + (interaction.normal * 0.001), rayDir);
             bool blocked = false;
 
-            for (const auto& tri : data.scene.getTriangles()) {
-                double t = RayTracer::Utils::intersectTriangle(AORay, tri);
-                if (t > 0.001 && t < maxDistance) {
-                    blocked = true;
-                    break;
-                }
-            }
+            const TLASHit tlasHit = data.scene.getTLAS().traverse(AORay);
             if (!blocked)
                 hitNothing += 1.0;
         }

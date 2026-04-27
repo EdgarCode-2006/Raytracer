@@ -13,16 +13,9 @@ namespace RayTracer {
                 Ray shadowRay(interaction.hitPoint + (interaction.normal * 0.001), lightDir);
                 bool blocked = false;
 
-                for (const auto& tri : data.scene.getTriangles()) {
-                    double t = RayTracer::Utils::intersectTriangle(shadowRay, tri);
-                    if (t > 0.001) {
-                        blocked = true;
-                        break;
-                    }
-                }
-                if (!blocked) {
+                const TLASHit tlasHit = data.scene.getTLAS().traverse(shadowRay);
+                if (!tlasHit.hasHit())
                     totalIntensity += diff * light.intensity;
-                }
             }
         }
         totalIntensity = std::clamp(totalIntensity, 0.0, 1.0);
