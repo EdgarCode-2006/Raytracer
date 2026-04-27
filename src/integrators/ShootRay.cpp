@@ -2,6 +2,18 @@
 
 namespace RayTracer
 {
+    static void integrateColor(
+        Math::Vector3D &finalColor,
+        const Math::Vector3D &throughput,
+        const Graphic::Pixel &localColor
+    )
+    {
+        finalColor.x() += (localColor._r) * throughput.x();
+        finalColor.y() += (localColor._g) * throughput.y();
+        finalColor.z() += (localColor._b) * throughput.z();
+
+    }
+
     Graphic::Pixel Integrator::shootRay(Ray &ray)
     {
         Math::Vector3D finalColor = {0, 0, 0};
@@ -24,8 +36,11 @@ namespace RayTracer
 
         for (size_t i = 0; i < MAX_DEPTH; i++) {
             const TLASHit tlasHit = _scene.getTLAS().traverse(ray);
-            if (!tlasHit.hasHit())
+            if (!tlasHit.hasHit()) {
+                const Graphic::Pixel envPixel = data.scene.getHDRIPixel(ray.direction * -1);
+                integrateColor(finalColor, throughput, envPixel);
                 break;
+            }
             const Instance &instance = _scene.getInstance(tlasHit.instanceIndex());
             const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
 
@@ -39,9 +54,7 @@ namespace RayTracer
                     rayFeature->process(data, intersection);
             }
 
-            finalColor.x() += (intersection.localColor._r) * throughput.x();
-            finalColor.y() += (intersection.localColor._g) * throughput.y();
-            finalColor.z() += (intersection.localColor._b) * throughput.z();
+            integrateColor(finalColor, throughput, intersection.localColor);
 
             if (!intersection.shouldBounce) break;
 

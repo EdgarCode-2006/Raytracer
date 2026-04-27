@@ -14,6 +14,7 @@
 #include "entities/Light.hpp"
 #include <chrono>
 #include <iostream>
+#include "entities/HDRI.hpp"
 
 namespace RayTracer {
 
@@ -76,7 +77,8 @@ namespace RayTracer {
                 std::cout << "TLAS build time: " << std::chrono::duration<double, std::milli>(endChrono - startChrono).count() << " ms\n";
                 
             }
-            
+            const Graphic::Pixel getHDRIPixel(const Math::Vector3D &vec) const {return this->_hdri.getPixelColorFromVec(vec);};
+
             const TLAS &getTLAS() const noexcept {return _tlas;}
             Instance& getInstance(uint32_t i) noexcept { return _instances[i]; }
             const Instance &getInstance(uint32_t i) const noexcept {return _instances[i];}
@@ -110,6 +112,7 @@ namespace RayTracer {
             Camera _camera;
             std::vector<DirectionalLight> _directionalLights;
             AmbientLight _ambientLight;
+            HDRI _hdri;
     };
 }
 #endif
