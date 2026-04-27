@@ -1,8 +1,11 @@
 #include "integrators/Integrator.hpp"
 #include "integrators/rayFeature/IRayFeature.hpp"
+#include "opti/BVH/Instance.hpp"
+#include "opti/BVH/TLAS.hpp"
+#include "opti/BVH/TLASHit.hpp"
 #include "utils/math.hpp"
+#include "utils/rayTracer.hpp"
 #include <memory>
-#include <chrono>
 
 namespace RayTracer {
     Integrator::Integrator(const Scene& scene) : _scene(scene)
@@ -12,16 +15,6 @@ namespace RayTracer {
             this->loadRayFeatures();
         } catch (const IntegratorException &e) {
             throw IntegratorException(e.what());
-        }
-        // Initialize integrator with scene
-
-        const auto &tris = scene.getTriangles();
-        if (!tris.empty()) {
-            const auto start = std::chrono::high_resolution_clock::now();
-            _bvh = std::make_unique<BVH>(tris);
-            const auto end = std::chrono::high_resolution_clock::now();
-
-            std::cout << "BVH build time: " << std::chrono::duration<double, std::milli>(end - start).count() << " ms\n";
         }
 
         _samplesPerSide = std::sqrt(RAYS_PER_PIXEL);

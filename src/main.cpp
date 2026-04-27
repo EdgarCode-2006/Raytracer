@@ -5,6 +5,7 @@
 #include "renderer/RaylibRenderer.hpp"
 #include <memory>
 #include <iostream>
+#include <raylib.h>
 
 
 static void positionCamera(RayTracer::Scene& scene, const std::vector<RayTracer::Triangle>& triangles)
@@ -51,8 +52,12 @@ int main(int argc, char** argv)
             return 84;
         }
         RayTracer::Scene scene(screenWidth, screenHeight);
-        scene.addTriangles(triangles);
-        scene.getCamera().fitToScene(triangles);
+        scene.reserveMeshes(1, triangles.size(), 2);
+        uint32_t meshId = scene.addMesh(std::move(triangles));
+        scene.addInstance(meshId);
+        scene.addInstance(meshId); // add a second instance of the same mesh to test instancing
+        scene.buildTLAS();
+        scene.getCamera().fitToScene(scene.getAllTriangles());
 
         RayTracer::AmbientLight ambient;
         ambient.intensity = 0.2;
