@@ -1,4 +1,6 @@
 #include "Engine.hpp"
+#include "Scene.hpp"
+#include <iostream>
 #include <raylib.h>
 
 namespace RayTracer{
@@ -45,7 +47,15 @@ namespace RayTracer{
 
         while (this->_renderer->windowOpen()) {
             this->handleWindowResize(cam);
+            if (IsKeyDown(KEY_A)) {
+                RayTracer::Matrix4 t;
+                t = t.translation(1, 0, 0);
 
+                auto &inst = _scene.getInstance(0);
+                inst.setTransform(t * inst.getTransform());
+
+                _scene.buildTLAS();
+            }
             if (IsKeyDown(KEY_LEFT))
                 cam.addRotationY(-2);
             if (IsKeyDown(KEY_RIGHT))
