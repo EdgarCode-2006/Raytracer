@@ -5,6 +5,7 @@
 #include "opti/BVH/BVH.hpp"
 #include "opti/BVH/RayHit.hpp"
 #include "utils/Matrix4.hpp"
+#include "utils/Material.hpp"
 #include "utils/rayTracer.hpp"
 #include <cstdint>
 
@@ -27,8 +28,13 @@ namespace RayTracer {
             };
             
             const Matrix4& getTransform() const noexcept { return _transform; }
-            const AABB &worldAABB() const noexcept {return _worldAABB;};
-            const Triangle &getPrimitive(uint32_t idx) const noexcept {return _triangles[idx];}
+            const AABB &worldAABB() const noexcept { return _worldAABB; }
+            const Triangle &getPrimitive(uint32_t idx) const noexcept { return _triangles[idx]; }
+
+            Graphic::Material& getMaterial() noexcept { return _material; }
+            const Graphic::Material& getMaterial() const noexcept { return _material; }
+            void setMaterial(const Graphic::Material& mat) noexcept { _material = mat; }
+
         private:
             const BVH *_blas;
             const Triangle *_triangles;
@@ -36,6 +42,7 @@ namespace RayTracer {
             Matrix4 _transform;
             Matrix4 _invTransform;
             AABB _worldAABB;
+            Graphic::Material _material;
     };
 }
 

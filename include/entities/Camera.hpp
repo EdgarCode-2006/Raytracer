@@ -22,19 +22,23 @@ namespace RayTracer {
 
             const Math::Vector3D& getPosition() const { return _position; }
             double getFov() const { return _fov; }
+            double getYaw() const { return _yaw; }
+            double getPitch() const { return _pitch; }
 
-            void setPosition(const Math::Vector3D& position);
+            void setPosition(const Math::Vector3D& position) { _position = position; }
             void fitToScene(const std::vector<Triangle>& triangles);
 
             void addRotationX(double degrees);
             void addRotationY(double degrees);
 
+            void moveForward(double dist);
+            void moveRight(double dist);
+            void moveUp(double dist);
+
         private:
-            void _updatePosition();
+            Math::Vector3D _getForward() const;
 
             Math::Vector3D _position;
-            Math::Vector3D _target;
-            double _distance = 1.0;
             double _yaw   = 0.0;
             double _pitch = 0.0;
             double _fov   = 60.0;

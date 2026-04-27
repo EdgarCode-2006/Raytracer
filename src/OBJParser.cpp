@@ -27,11 +27,22 @@ namespace OBJParser {
         std::vector<int> indices;
         std::string token;
 
-        while (ss >> token)
-            indices.push_back(parseIndex(token) - 1);
+        while (ss >> token) {
+            int idx = parseIndex(token);
+            if (idx < 0)
+                idx = static_cast<int>(_vertices.size()) + idx;
+            else
+                idx -= 1;
+            indices.push_back(idx);
+        }
 
-        for (size_t i = 1; i + 1 < indices.size(); i++)
-            out.push_back({ this->_vertices[indices[0]], this->_vertices[indices[i]], this->_vertices[indices[i + 1]] });
+        const int vsize = static_cast<int>(_vertices.size());
+        for (size_t i = 1; i + 1 < indices.size(); i++) {
+            if (indices[0] < 0 || indices[0] >= vsize) continue;
+            if (indices[i] < 0 || indices[i] >= vsize) continue;
+            if (indices[i + 1] < 0 || indices[i + 1] >= vsize) continue;
+            out.push_back({ _vertices[indices[0]], _vertices[indices[i]], _vertices[indices[i + 1]] });
+        }
     }
 
     std::vector<RayTracer::Triangle> OBJParser::load(const std::string& path)
@@ -55,7 +66,7 @@ namespace OBJParser {
                 parseNormal(ss);
             else if (type == "f")
                 parseFace(ss, triangles);
-        }
+        };
         return triangles;
     }
 }

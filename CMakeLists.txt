@@ -38,6 +38,7 @@ file(GLOB_RECURSE FEATURE_SRC
 )
 
 list(REMOVE_ITEM SRC ${FEATURE_SRC})
+list(REMOVE_ITEM SRC "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 set(IMGUI_SRC
     ${imgui_SOURCE_DIR}/imgui.cpp
@@ -155,8 +156,8 @@ add_custom_target(re
     COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target all
 )
 
-target_compile_options(${EXECUTABLE_NAME} PRIVATE -O3 -flto -march=native)
-target_compile_options(basicLight_feat PRIVATE -O3 -flto -march=native)
-target_compile_options(SpecularHandler_feat PRIVATE -O3 -flto -march=native)
-target_compile_options(AmbientOcclusion_feat PRIVATE -O3 -flto -march=native)
-target_compile_options(raytracer_core PRIVATE -O3 -march=native -flto)
+target_compile_options(raytracer_core PRIVATE -O3 -march=native)
+target_compile_options(${EXECUTABLE_NAME} PRIVATE -O3 -march=native)
+target_compile_options(basicLight_feat PRIVATE -O3 -march=native)
+target_compile_options(SpecularHandler_feat PRIVATE -O3 -march=native)
+target_compile_options(AmbientOcclusion_feat PRIVATE -O3 -march=native)

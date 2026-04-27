@@ -2,6 +2,7 @@
 #include "rlImGui.h"
 #include "imgui.h"
 #include "utils/Matrix4.hpp"
+#include <string>
 
 namespace Graphic {
 
@@ -20,17 +21,33 @@ namespace Graphic {
                 cam.setFov((double)fov);
         }
         if (ImGui::CollapsingHeader("Objects")) {
-            for (int i = 0; i < scene.getInstanceCount(); i++) {
+            for (int i = 0; i < (int)scene.getInstanceCount(); i++) {
                 ImGui::PushID(i);
 
-                const RayTracer::Matrix4& t = scene.getInstance(i).getTransform();
-                float pos[3] = { (float)t.m[0][3], (float)t.m[1][3], (float)t.m[2][3] };
+                bool selected = (scene.getSelectedInstance() == i);
 
-                if (ImGui::DragFloat3("Position", pos, 0.1f)) {
-                    scene.getInstance(i).setTransform(
-                        RayTracer::Matrix4{}.translation(pos[0], pos[1], pos[2])
-                    );
-                    scene.buildTLAS();
+                if (selected)
+                    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.6f, 0.2f, 1.0f));
+
+                bool open = ImGui::CollapsingHeader(
+                    ("Object " + std::to_string(i)).c_str(),
+                    selected ? ImGuiTreeNodeFlags_DefaultOpen : 0
+                );
+
+                if (selected)
+                    ImGui::PopStyleColor();
+
+                if (open) {
+                    const RayTracer::Matrix4& t = scene.getInstance(i).getTransform();
+                    float pos[3] = { (float)t.m[0][3], (float)t.m[1][3], (float)t.m[2][3] };
+
+                    if (ImGui::DragFloat3("Position", pos, 0.1f)) {
+                        scene.getInstance(i).setTransform(
+                            RayTracer::Matrix4{}.translation(pos[0], pos[1], pos[2])
+                        );
+                        scene.buildTLAS();
+                    }
+
                 }
 
                 ImGui::PopID();

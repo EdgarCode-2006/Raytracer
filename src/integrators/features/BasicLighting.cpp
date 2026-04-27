@@ -19,8 +19,18 @@ namespace RayTracer {
             }
         }
         totalIntensity = std::clamp(totalIntensity, 0.0, 1.0);
-        unsigned char c = (unsigned char)(totalIntensity * 255);
-        interaction.localColor = {c, c, c, 255};
+        double r = totalIntensity, g = totalIntensity, b = totalIntensity;
+        if (interaction.mat) {
+            r *= interaction.mat->color._r / 255.0;
+            g *= interaction.mat->color._g / 255.0;
+            b *= interaction.mat->color._b / 255.0;
+        }
+        interaction.localColor = {
+            (unsigned char)(r * 255),
+            (unsigned char)(g * 255),
+            (unsigned char)(b * 255),
+            255
+        };
     }
 }
 extern "C" RayTracer::IRayFeature *getInstance() {

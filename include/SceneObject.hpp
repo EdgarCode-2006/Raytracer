@@ -3,6 +3,7 @@
 
 #include "Transform.hpp"
 #include "utils/rayTracer.hpp"
+#include "utils/Material.hpp"
 #include <vector>
 
 namespace RayTracer {
@@ -15,6 +16,9 @@ class SceneObject {
     
         Transform& getTransform() { return _transform; }
         const Transform& getTransform() const { return _transform; }
+
+        Graphic::Material& getMaterial() { return _material; }
+        const Graphic::Material& getMaterial() const { return _material; }
     
         std::vector<Triangle> worldTriangles() const
         {
@@ -27,6 +31,7 @@ class SceneObject {
     private:
         std::vector<Triangle> _triangles;
         Transform _transform;
+        Graphic::Material _material; 
     };
 }
 

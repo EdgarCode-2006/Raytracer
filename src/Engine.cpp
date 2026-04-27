@@ -1,6 +1,6 @@
 #include "Engine.hpp"
 #include "Scene.hpp"
-#include <iostream>
+#include "opti/BVH/TLASHit.hpp"
 #include <raylib.h>
 
 namespace RayTracer{
@@ -44,26 +44,33 @@ namespace RayTracer{
     void Engine::run()
     {
         Camera& cam = _scene.getCamera();
+        const float sensitivity = 2.0f;
+        const double speed = 0.05;
 
         while (this->_renderer->windowOpen()) {
             this->handleWindowResize(cam);
-            if (IsKeyDown(KEY_A)) {
-                RayTracer::Matrix4 t;
-                t = t.translation(1, 0, 0);
 
-                auto &inst = _scene.getInstance(0);
-                inst.setTransform(t * inst.getTransform());
+            if (IsKeyDown(KEY_LEFT)) cam.addRotationY(-sensitivity);
+            if (IsKeyDown(KEY_RIGHT)) cam.addRotationY(sensitivity);
+            if (IsKeyDown(KEY_UP)) cam.addRotationX(-sensitivity);
+            if (IsKeyDown(KEY_DOWN)) cam.addRotationX(sensitivity);
 
-                _scene.buildTLAS();
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                Vector2 mouse = GetMousePosition();
+                Ray ray = cam.generateRay((int)mouse.x, (int)mouse.y);
+                TLASHit hit = _scene.getTLAS().traverse(ray);
+                if (hit.hasHit())
+                    _scene.setSelectedInstance((int32_t)hit.instanceIndex());
+                else
+                    _scene.setSelectedInstance(-1);
             }
-            if (IsKeyDown(KEY_LEFT))
-                cam.addRotationY(-2);
-            if (IsKeyDown(KEY_RIGHT))
-                cam.addRotationY( 2);
-            if (IsKeyDown(KEY_UP))
-                cam.addRotationX(-2);
-            if (IsKeyDown(KEY_DOWN))
-                cam.addRotationX( 2);
+
+            if (IsKeyDown(KEY_W)) cam.moveForward(speed);
+            if (IsKeyDown(KEY_S)) cam.moveForward(-speed);
+            if (IsKeyDown(KEY_D)) cam.moveRight(speed);
+            if (IsKeyDown(KEY_A)) cam.moveRight(-speed);
+            if (IsKeyDown(KEY_E)) cam.moveUp(speed);
+            if (IsKeyDown(KEY_Q)) cam.moveUp(-speed);
 
             Graphic::Pixel *pixels = _renderer->getPixels();
             if (!pixels)

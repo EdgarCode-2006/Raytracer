@@ -27,6 +27,7 @@ namespace RayTracer
             if (!tlasHit.hasHit())
                 break;
             const Instance &instance = _scene.getInstance(tlasHit.instanceIndex());
+            intersection.mat = const_cast<Graphic::Material*>(&instance.getMaterial());
             const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
 
             intersection.hitPoint = ray.origin + ray.direction * tlasHit.t();

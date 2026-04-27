@@ -11,6 +11,7 @@
 #include "opti/BVH/TLAS.hpp"
 #include "utils/Matrix4.hpp"
 #include "utils/rayTracer.hpp"
+#include "utils/Material.hpp"
 #include "entities/Light.hpp"
 #include <chrono>
 #include <iostream>
@@ -53,18 +54,19 @@ namespace RayTracer {
                     std::span<const Triangle>(_allTriangles.data() + start, count)
                 );
                 const auto endChrono = std::chrono::high_resolution_clock::now();
-                std::cout << "BVH build time: " << std::chrono::duration<double, std::milli>(endChrono - startChrono).count() << " ms\n";
                 return id;
             }
 
-            Instance &addInstance(uint32_t meshId, const Matrix4 &transform =  {}) {
+            Instance &addInstance(uint32_t meshId, const Matrix4 &transform = Matrix4{}, const Graphic::Material &mat = Graphic::Material{}) {
                 const MeshRange &r = _meshRanges[meshId];
-                return  _instances.emplace_back(
+                Instance &inst = _instances.emplace_back(
                     &_blases[meshId],
                     _allTriangles.data() + r.start,
                     r.count,
                     transform
                 );
+                inst.setMaterial(mat);
+                return inst;
             }
 
             void buildTLAS() {
@@ -73,13 +75,15 @@ namespace RayTracer {
                 _tlas.build(std::span<const Instance>(_instances));
                 const auto endChrono = std::chrono::high_resolution_clock::now();
 
-                std::cout << "TLAS build time: " << std::chrono::duration<double, std::milli>(endChrono - startChrono).count() << " ms\n";
 
             }
 
             const TLAS &getTLAS() const noexcept {return _tlas;}
             Instance& getInstance(uint32_t i) noexcept { return _instances[i]; }
             const Instance &getInstance(uint32_t i) const noexcept {return _instances[i];}
+
+            void setSelectedInstance(int32_t i) noexcept { _selectedInstance = i; }
+            int32_t getSelectedInstance() const noexcept { return _selectedInstance; }
 
             std::span<const Triangle> getTriangles(uint32_t meshId) const noexcept {
                 const MeshRange &r = _meshRanges[meshId];
@@ -112,6 +116,7 @@ namespace RayTracer {
             Camera _camera;
             std::vector<DirectionalLight> _directionalLights;
             AmbientLight _ambientLight;
+            int32_t _selectedInstance = -1;
     };
 }
 #endif

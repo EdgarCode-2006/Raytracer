@@ -1,4 +1,5 @@
 #include "OBJParser.hpp"
+#include "utils/Material.hpp"
 #include "Engine.hpp"
 #include "Scene.hpp"
 #include <iostream>
@@ -54,8 +55,10 @@ int main(int argc, char** argv)
         RayTracer::Scene scene(screenWidth, screenHeight);
         scene.reserveMeshes(1, triangles.size(), 2);
         uint32_t meshId = scene.addMesh(std::move(triangles));
-        scene.addInstance(meshId);
-        scene.addInstance(meshId); // add a second instance of the same mesh to test instancing
+        Graphic::Material mat;
+        mat.color = Graphic::Pixel(50, 100, 255, 255);
+        scene.addInstance(meshId, RayTracer::Matrix4{}, mat);
+        scene.addInstance(meshId, RayTracer::Matrix4{}, mat);
         scene.buildTLAS();
         scene.getCamera().fitToScene(scene.getAllTriangles());
 

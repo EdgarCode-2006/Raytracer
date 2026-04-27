@@ -53,7 +53,7 @@ void RayTracer::Integrator::loadRayFeatures()
         );
 
         std::cout << "feature count = " << _pipeline.size() << std::endl;
-        // this->setPluginState("SpecularHandler", false);
+        //this->setPluginState("SpecularHandler", false);
         this->setPluginState("AmbientOcclusion", false);
     } catch (const std::filesystem::filesystem_error& ex) {
         throw IntegratorException("Failed to load ray features.");

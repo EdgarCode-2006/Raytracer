@@ -9,7 +9,7 @@ namespace RayTracer {
         Math::Vector3D normal;
         Math::Vector3D hitPoint;
         Math::Vector3D rayDir;
-        // Graphic::Material *mat;
+        Graphic::Material *mat;
         Graphic::Pixel localColor;
         RayTracer::Ray nextRay;
         bool shouldBounce;
