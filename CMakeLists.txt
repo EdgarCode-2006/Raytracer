@@ -95,12 +95,12 @@ find_path(RAYLIB_INC raylib.h)
 
 if(RAYLIB_LIB AND RAYLIB_INC)
     target_include_directories(raytracer_core PUBLIC ${RAYLIB_INC})
-    target_compile_definitions(raytracer_core PUBLIC "IsTextureValid=IsTextureReady")
-    target_link_libraries(raytracer_core PUBLIC ${RAYLIB_LIB} GL m pthread dl X11 rt)
-    target_include_directories(${EXECUTABLE_NAME} PRIVATE ${RAYLIB_INC})
-    target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${RAYLIB_LIB} GL m pthread dl X11 rt)
-else()
-    message(FATAL_ERROR "raylib not found")
+    target_compile_definitions(raytracer_core PUBLIC "IsTextureReady=IsTextureValid")
+    target_link_libraries(${EXECUTABLE_NAME} PRIVATE 
+        raytracer_core 
+        ${RAYLIB_LIB} 
+        GL m pthread dl X11 rt
+    )
 endif()
 
 add_custom_target(fclean
