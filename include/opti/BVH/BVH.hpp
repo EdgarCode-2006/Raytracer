@@ -3,10 +3,13 @@
 
 #include "opti/BVH/AABB.hpp"
 #include "opti/BVH/BVHNode.hpp"
+#include "opti/BVH/RayHit.hpp"
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
 #include <cstdint>
 #include <vector>
+#include <span>
+#define STACK_SIZE 64
 
 namespace RayTracer {
     inline constexpr int BUCKETS = 32;
@@ -15,13 +18,16 @@ namespace RayTracer {
     inline constexpr double BVH_TRAVERSAL_COST = 0.125; // le cout de descendre dans un noued 
     class BVH {
         public:
-            BVH(const std::vector<Triangle> &triangles, int leafThreshold = 4);
+            BVH(const std::span<const Triangle> &triangles, int leafThreshold = 4);
             
             ~BVH() = default;
             BVH(const BVH &) = delete;
             BVH &operator=(const BVH &) = delete;
             BVH(BVH &&) = default;
             BVH &operator=(BVH &&) = default;
+
+            RayHit traverse(const Ray &ray) const noexcept;
+            const AABB &rootBounds() const noexcept {return _nodes[0].bounds();}
 
         private:
 
@@ -37,7 +43,10 @@ namespace RayTracer {
             void _subdivide(uint32_t nodeIndex, uint32_t first, uint32_t count, int depth);
             bool _splitSAH(uint32_t first, uint32_t count, const AABB& nodeBounds, const AABB& centBounds, int& bestAxis, double& bestPos) const noexcept;
 
-            const std::vector<Triangle>* _triangles;
+            static double _slabTest(const BVHNode& node, const double* ro, const double* invd, double tmax) noexcept;
+            static double _mollerTrumbore(const Triangle &tri, const Ray &ray) noexcept;
+
+            std::span<const Triangle> _triangles;;
             std::vector<BVHNode> _nodes;
             std::vector<uint32_t> _indices;
             std::vector<Math::Vector3D> _centroids;

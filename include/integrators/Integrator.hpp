@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <unordered_map>
 #include <memory>
+#include <cmath>
 
 #include "Scene.hpp"
 #include <raylib.h>
@@ -14,26 +15,17 @@
 #include "opti/BVH/BVH.hpp"
 #include "opti/ThreadPool/threadPool.hpp"
 #include "utils/Pixel.hpp"
+#include "utils/surfaceIntersection.hpp"
 #include "entities/Light.hpp"
 #include "integrators/rayFeature/IRayFeature.hpp"
 #include "integrators/featureLoader/DLLoader.hpp"
 
 #define TILE_DIM 64
+#define MIN_THROUGHPUT_LENGTH 0.001
 #define MAX_DEPTH 5
+#define RAYS_PER_PIXEL 4
 
 namespace RayTracer {
-    struct SurfaceIntersection
-    {
-        Math::Vector3D normal;
-        Math::Vector3D hitPoint;
-        Math::Vector3D rayDir;
-        // Material *mat
-        Graphic::Pixel accumulatedColor;
-        RayTracer::Ray nextRay;
-        bool shouldBounce;
-        float attenuation;
-
-    };
     struct RenderData
     {
         std::vector<DirectionalLight> lights;
@@ -55,8 +47,9 @@ namespace RayTracer {
             void loadRayFeatures();
             
         private:
-            double intersectTriangle(const Ray& ray, const Triangle& tri);
             void computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels);
+            void setPluginState(const std::string &pluginName, const bool &state);
+            void getPixelColor(int x, int y, const Camera &cam, Graphic::Pixel *pixels);
             const Scene& _scene;
             std::unique_ptr<optimization::ThreadPool> _threadPool;
             std::vector<PixelTile> _tiles;
@@ -66,6 +59,8 @@ namespace RayTracer {
             std::vector<std::unique_ptr<IRayFeature>> _pipeline;
             std::unique_ptr<BVH> _bvh;
 
+            int _samplesPerSide;
+            float _step;
     };
 
     class IntegratorException : public std::exception {

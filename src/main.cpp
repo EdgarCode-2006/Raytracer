@@ -1,10 +1,12 @@
 #include "OBJParser.hpp"
+#include "utils/Material.hpp"
 #include "Engine.hpp"
 #include "Scene.hpp"
 #include <iostream>
 #include "renderer/RaylibRenderer.hpp"
 #include <memory>
 #include <iostream>
+#include <raylib.h>
 
 
 static void positionCamera(RayTracer::Scene& scene, const std::vector<RayTracer::Triangle>& triangles)
@@ -51,17 +53,27 @@ int main(int argc, char** argv)
             return 84;
         }
         RayTracer::Scene scene(screenWidth, screenHeight);
-        scene.addTriangles(triangles);
-        scene.getCamera().fitToScene(triangles);
+        scene.reserveMeshes(1, triangles.size(), 2);
+        uint32_t meshId = scene.addMesh(std::move(triangles));
+        Graphic::Material mat;
+        mat.color = Graphic::Pixel(50, 100, 255, 255);
+        scene.addInstance(meshId, RayTracer::Matrix4{}, mat);
+        scene.addInstance(meshId, RayTracer::Matrix4{}, mat);
+        scene.buildTLAS();
+        scene.getCamera().fitToScene(scene.getAllTriangles());
 
         RayTracer::AmbientLight ambient;
         ambient.intensity = 0.2;
         scene.setAmbientLight(ambient);
 
         RayTracer::DirectionalLight light;
-        light.direction = Math::Vector3D(1, 2, -1).normalize();
+        // RayTracer::DirectionalLight light2;
+        light.direction = Math::Vector3D(-1.2, 0.1, 0.1).normalize();
         light.intensity = 0.8;
+        // light2.direction = Math::Vector3D(-1.5, -0.1, 4).normalize();
+        // light2.intensity = 0.7;
         scene.addLight(light);
+        // scene.addLight(light2);
 
         auto renderer = std::make_unique<Graphic::RaylibRenderer>(screenWidth, screenHeight);
 
