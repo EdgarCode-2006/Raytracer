@@ -10,7 +10,7 @@
 namespace RayTracer {
     Integrator::Integrator(const Scene& scene) : _scene(scene)
     {
-        this->_threadPool = std::make_unique<optimization::ThreadPool>(10); // init thread pool with 4 threads.
+        this->_threadPool = std::make_unique<optimization::ThreadPool>(15); // init thread pool with 4 threads.
         try {
             this->loadRayFeatures();
         } catch (const IntegratorException &e) {
