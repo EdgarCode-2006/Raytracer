@@ -2,7 +2,10 @@
 #include "entities/Light.hpp"
 
 namespace RayTracer {
-    Scene::Scene(const int width, const int height) : _camera(width, height) {}
+    Scene::Scene(const int width, const int height) :
+    _camera(width, height),
+    _hdri(HDRI("assets/HDRIs/HDRI.exr"))
+    {}
    
     void Scene::addLight(const DirectionalLight& light)
     {
@@ -21,5 +24,4 @@ namespace RayTracer {
     //      for (const auto& light : other.getLights())
     //          this->_directionalLights.push_back(light);
     // }
-
 }

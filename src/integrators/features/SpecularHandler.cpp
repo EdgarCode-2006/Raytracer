@@ -3,18 +3,24 @@
 namespace RayTracer {
     void SpecularHandler::process(RenderData &data, SurfaceIntersection &interaction)
     {
-        // look at material prop to tell wether the ray should reflect, refract, or diperse in every direction.
         Math::Vector3D N = interaction.normal;
         float diff = interaction.rayDir.dot(interaction.normal);
-        if (diff > 0.0)
-            N = N * -1;
+        Math::Vector3D reflectionDir = (interaction.rayDir - N * (2.0f * diff)).normalize();
+
+        double refraction = 0.67f;
+
+        double Fo = (refraction - 1 / refraction + 1);
+        Fo *= Fo; // reflectance at normal incidence.
+
+        double reflectionValue = Fo + (1 - Fo) * pow((1 - (N.dot(interaction.rayDir))), 5);
+
         interaction.shouldBounce = true;
-        Math::Vector3D reflectionDir = (interaction.rayDir - 2 * (interaction.rayDir.dot(N)) * N).normalize();
-        reflectionDir *= 0.001; // slight bias to make reflection not perfect
-        interaction.nextRay = Ray(interaction.hitPoint + (N * 0.0001), reflectionDir);
-        interaction.throughput.x() *= 0.5;
-        interaction.throughput.y() *= 0.5;
-        interaction.throughput.z() *= 0.5;
+        
+        interaction.nextRay = Ray(interaction.hitPoint + (N * 0.001f), reflectionDir);
+        
+        interaction.throughput.x() *= (1 / reflectionValue);
+        interaction.throughput.y() *= (1 / reflectionValue);
+        interaction.throughput.z() *= (1 / reflectionValue);
     }
 }
 extern "C" RayTracer::IRayFeature *getInstance() {
