@@ -5,7 +5,6 @@ namespace RayTracer
     HDRI::HDRI(const std::string &filePath) {
         _defaultColor = {130, 2, 50};
         this->initHDRIFromFilePath(filePath);
-        this->setExposure(40.0f);
     }
 
     HDRI::~HDRI() {
@@ -32,9 +31,9 @@ namespace RayTracer
 
     Graphic::Pixel HDRI::_applyExposure(float r, float g, float b) const
     {
-        r = r * _exposure;
-        g = g * _exposure;
-        b = b * _exposure;
+        r = r * ENV_EXPOSURE;
+        g = g * ENV_EXPOSURE;
+        b = b * ENV_EXPOSURE;
 
         r = r / (r + 1.0f);
         g = g / (g + 1.0f);

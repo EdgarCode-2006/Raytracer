@@ -10,6 +10,8 @@
 #include "utils/Pixel.hpp"
 #include "utils/math.hpp"
 
+#define ENV_EXPOSURE 40.0f
+
 namespace RayTracer {
     class HDRI {
         public:
@@ -17,8 +19,6 @@ namespace RayTracer {
             ~HDRI();
             void initHDRIFromFilePath(const std::string &filePath);
             Graphic::Pixel getPixelColorFromVec(const Math::Vector3D &vec) const;
-            void setExposure(float exposure) { _exposure = exposure; }
-            float getExposure() const { return _exposure; }
         private:
             int _getIndexFromUV(float u, float v) const;
             std::tuple<float, float> _getUVFromVec(const Math::Vector3D &vec) const;
@@ -29,7 +29,6 @@ namespace RayTracer {
             int _width = 0;
             int _height = 0;
             int _size;
-            float _exposure = 1.0f;
     };
 
 }
