@@ -18,7 +18,12 @@ namespace RayTracer {
             Matrix4 inverse() const noexcept;
 
             Matrix4 translation(double tx, double ty, double tz) noexcept;
+            Matrix4 scale(double sx, double sy, double sz) noexcept;
+            Matrix4 rotationX(double rad) noexcept;
+            Matrix4 rotationY(double rad) noexcept;
+            Matrix4 rotationZ(double rad) noexcept;
             
+
             Math::Vector3D transformPoint(const Math::Vector3D &p) const noexcept;
             Math::Vector3D transformDirection(const Math::Vector3D &d) const noexcept;
             Matrix4 operator*(const Matrix4& o) const noexcept;

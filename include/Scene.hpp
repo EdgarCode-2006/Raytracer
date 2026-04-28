@@ -13,6 +13,7 @@
 #include "utils/rayTracer.hpp"
 #include "utils/Material.hpp"
 #include "entities/Light.hpp"
+#include "entities/HDRI.hpp"
 #include <chrono>
 #include <iostream>
 
@@ -70,17 +71,14 @@ namespace RayTracer {
             }
 
             void buildTLAS() {
-                const auto startChrono = std::chrono::high_resolution_clock::now();
-
                 _tlas.build(std::span<const Instance>(_instances));
-                const auto endChrono = std::chrono::high_resolution_clock::now();
-
-
             }
 
-            const TLAS &getTLAS() const noexcept {return _tlas;}
+            const Graphic::Pixel getHDRIPixel(const Math::Vector3D &vec) const { return this->_hdri.getPixelColorFromVec(vec); }
+
+            const TLAS &getTLAS() const noexcept { return _tlas; }
             Instance& getInstance(uint32_t i) noexcept { return _instances[i]; }
-            const Instance &getInstance(uint32_t i) const noexcept {return _instances[i];}
+            const Instance &getInstance(uint32_t i) const noexcept { return _instances[i]; }
 
             void setSelectedInstance(int32_t i) noexcept { _selectedInstance = i; }
             int32_t getSelectedInstance() const noexcept { return _selectedInstance; }
@@ -94,17 +92,14 @@ namespace RayTracer {
                 return _allTriangles;
             }
 
-            Camera& getCamera() noexcept {return _camera;};
-            const Camera& getCamera() const noexcept {return _camera;};
+            Camera& getCamera() noexcept { return _camera; }
+            const Camera& getCamera() const noexcept { return _camera; }
 
             void addLight(const DirectionalLight& light);
             void setAmbientLight(const AmbientLight& light);
             const std::vector<DirectionalLight>& getLights() const { return _directionalLights; }
             const AmbientLight& getAmbientLight() const { return _ambientLight; }
-            uint32_t getInstanceCount() {
-                return this->_instances.size();
-            }
-            // void merge(const Scene& other);
+            uint32_t getInstanceCount() { return this->_instances.size(); }
 
         private:
             std::vector<Triangle> _allTriangles;
@@ -117,6 +112,7 @@ namespace RayTracer {
             std::vector<DirectionalLight> _directionalLights;
             AmbientLight _ambientLight;
             int32_t _selectedInstance = -1;
+            HDRI _hdri;
     };
 }
 #endif

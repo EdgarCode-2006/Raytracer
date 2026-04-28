@@ -12,7 +12,27 @@
 #include "opti/BVH/TLAS.hpp"
 
 namespace RayTracer {
+    
+    
+    uint32_t TLAS::_expandBits(uint32_t v) noexcept {
+        v &= 0x000003FFu; // garde les 10 bits utiles
+        v = (v | (v << 16)) & 0x030000FFu;
+        v = (v | (v <<  8)) & 0x0300F00Fu; // spread sur les octets
+        v = (v | (v <<  4)) & 0x030C30C3u; // spread encore
+        v = (v | (v <<  2)) & 0x09249249u; // un bit sur trois
+        return v;
+    }
 
+    uint32_t TLAS::_mortonCode(double x, double y, double z) noexcept {
+        const auto q = [](double v) -> uint32_t {
+            const double clamped = v < 0.0 ? 0.0 : (v > 1.0 ? 1.0 : v);
+            return static_cast<uint32_t>(clamped * 1023.0);
+        };
+        return (_expandBits(q(x)) << 2) |
+            (_expandBits(q(y)) << 1) |
+                _expandBits(q(z));
+    }
+    
     void TLAS::build(const std::span<const Instance> instances) {
         _instances = instances;
         _nodes.clear();
@@ -35,6 +55,15 @@ namespace RayTracer {
         _mortonCodes.resize(instanceCount);
 
         // compute morton code
+        for (uint32_t i = 0; i < instanceCount; i++) {
+            const Math::Vector3D c = _instances[i].worldAABB().center();
+
+            const double nx = sceneSize.x() > 1e-9 ? (c.x() - sceneMin.x()) / sceneSize.x() : 0.5;
+            const double ny = sceneSize.y() > 1e-9 ? (c.y() - sceneMin.y()) / sceneSize.y() : 0.5;
+            const double nz = sceneSize.z() > 1e-9 ? (c.z() - sceneMin.z()) / sceneSize.z() : 0.5;
+
+            _mortonCodes[i] = _mortonCode(nx, ny, nz);
+        }
 
         std::sort(_indices.begin(), _indices.end(), [this](uint32_t a, uint32_t b) {
             return _mortonCodes[a] < _mortonCodes[b];
@@ -46,8 +75,30 @@ namespace RayTracer {
     }
 
     uint32_t TLAS::_findSplit(uint32_t first, uint32_t last) const noexcept {
-            return 0;
-        }
+        const uint32_t firstCode = _mortonCodes[_indices[first]];
+        const uint32_t lastCode  = _mortonCodes[_indices[last]];
+
+        if (firstCode == lastCode)
+            return (first + last) >> 1;
+
+        const int commonPrefix = __builtin_clz(firstCode ^ lastCode);
+
+        uint32_t split = first;
+        uint32_t step  = last - first;
+
+        do {
+            step = (step + 1) >> 1;
+            const uint32_t candidate = split + step;
+            if (candidate < last) {
+                const uint32_t candidateCode = _mortonCodes[_indices[candidate]];
+                const int candidatePrefix = __builtin_clz(firstCode ^ candidateCode);
+                if (candidatePrefix > commonPrefix)
+                    split = candidate;
+            }
+        } while (step > 1);
+
+        return split;
+    }
 
 
     void TLAS::_buildLBVH(uint32_t nodeIndex, uint32_t first, uint32_t last) {

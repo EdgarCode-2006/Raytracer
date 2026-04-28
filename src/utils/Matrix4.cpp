@@ -83,6 +83,41 @@ namespace RayTracer {
         return r;
     }
 
+    Matrix4 Matrix4::scale(double sx, double sy, double sz) noexcept {
+        Matrix4 r;
+        r.m[0][0] = sx;
+        r.m[1][1] = sy;
+        r.m[2][2] = sz;
+        return r;
+    }
+
+    Matrix4 Matrix4::rotationX(double rad) noexcept {
+        Matrix4 r;
+        r.m[1][1] = std::cos(rad);
+        r.m[1][2] = -std::sin(rad);
+        r.m[2][1] = std::sin(rad);
+        r.m[2][2] = std::cos(rad);
+        return r;
+    }
+
+    Matrix4 Matrix4::rotationY(double rad) noexcept {
+        Matrix4 r;
+        r.m[0][0] = std::cos(rad);
+        r.m[0][2] = std::sin(rad);
+        r.m[2][0] = -std::sin(rad);
+        r.m[2][2] = std::cos(rad);
+        return r;
+    }
+
+    Matrix4 Matrix4::rotationZ(double rad) noexcept {
+        Matrix4 r;
+        r.m[0][0] = std::cos(rad);
+        r.m[0][1] = -std::sin(rad);
+        r.m[1][0] = std::sin(rad);
+        r.m[1][1] = std::cos(rad);
+        return r;
+    }
+
     Matrix4 Matrix4::operator*(const Matrix4& o) const noexcept {
         Matrix4 result;
         std::memset(result.m, 0, sizeof(result.m));

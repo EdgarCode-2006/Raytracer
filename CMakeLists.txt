@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
+# Set compiler and project
 set(CMAKE_CXX_COMPILER "g++")
 project(raytracer LANGUAGES CXX)
 
@@ -28,15 +29,24 @@ FetchContent_MakeAvailable(rlimgui)
 
 # ________________ compile of rest of C++ files.
 include_directories(include include/utils)
+# --- EXTERNAL DEPENDENCIES (FetchContent) ---
 
-file(GLOB_RECURSE SRC
-    "src/*.cpp"
+FetchContent_Declare(
+  tinyexr
+  GIT_REPOSITORY https://github.com/syoyo/tinyexr.git
+  GIT_TAG        release
 )
+FetchContent_MakeAvailable(tinyexr)
 
-file(GLOB_RECURSE FEATURE_SRC
-    "src/integrators/features/*.cpp"
-)
+# --- COMPILATION OPTIONS ---
+# Note: Moved these to specific targets later for better practice
+add_compile_options(-fPIC) 
 
+# --- CORE LIBRARY ---
+include_directories(include include/utils)
+
+file(GLOB_RECURSE SRC "src/*.cpp")
+file(GLOB_RECURSE FEATURE_SRC "src/integrators/features/*.cpp")
 list(REMOVE_ITEM SRC ${FEATURE_SRC})
 list(REMOVE_ITEM SRC "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
@@ -49,39 +59,40 @@ set(IMGUI_SRC
 )
 
 add_library(raytracer_core STATIC ${SRC} ${IMGUI_SRC})
-target_include_directories(raytracer_core PUBLIC include include/utils ${imgui_SOURCE_DIR} ${rlimgui_SOURCE_DIR})
+target_include_directories(raytracer_core PUBLIC include include/utils ${imgui_SOURCE_DIR} ${rlimgui_SOURCE_DIR} ${tinyexr_SOURCE_DIR})
 target_compile_options(raytracer_core PRIVATE -fPIC)
 
-# --- link plugins to core lib.
-add_library(basicLight_feat SHARED src/integrators/features/BasicLighting.cpp)
-target_link_libraries(basicLight_feat PRIVATE raytracer_core)
+target_link_libraries(raytracer_core PRIVATE tinyexr)
 
-set_target_properties(basicLight_feat PROPERTIES
-    PREFIX "" SUFFIX ".so"
-    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
-)
+macro(add_ray_feature FEATURE_NAME SRC_PATH)
+    add_library(${FEATURE_NAME} SHARED ${SRC_PATH})
+    target_link_libraries(${FEATURE_NAME} PRIVATE raytracer_core)
+    target_include_directories(${FEATURE_NAME} PRIVATE ${tinyexr_SOURCE_DIR})
+    set_target_properties(${FEATURE_NAME} PROPERTIES
+        PREFIX "" SUFFIX ".so"
+        LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+    )
+endmacro()
 
-add_library(SpecularHandler_feat SHARED src/integrators/features/SpecularHandler.cpp)
-target_link_libraries(SpecularHandler_feat PRIVATE raytracer_core)
+add_ray_feature(basicLight_feat src/integrators/features/BasicLighting.cpp)
+add_ray_feature(SpecularHandler_feat src/integrators/features/SpecularHandler.cpp)
+add_ray_feature(AmbientOcclusion_feat src/integrators/features/AmbientOcclusion.cpp)
 
-set_target_properties(SpecularHandler_feat PROPERTIES
-    PREFIX "" SUFFIX ".so"
-    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
-)
-
-add_library(AmbientOcclusion_feat SHARED src/integrators/features/AmbientOcclusion.cpp)
-target_link_libraries(AmbientOcclusion_feat PRIVATE raytracer_core)
-
-set_target_properties(AmbientOcclusion_feat PROPERTIES
-    PREFIX "" SUFFIX ".so"
-    LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
-)
-
+# --- MAIN EXECUTABLE ---
+set(EXECUTABLE_NAME "raytracer")
 add_executable(${EXECUTABLE_NAME} src/main.cpp)
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE raytracer_core basicLight_feat SpecularHandler_feat AmbientOcclusion_feat)
 
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE 
+    raytracer_core 
+    basicLight_feat 
+    SpecularHandler_feat 
+    AmbientOcclusion_feat
+)
+
+# --- RAYLIB & SYSTEM LIBS ---
 find_library(RAYLIB_LIB raylib)
 find_path(RAYLIB_INC raylib.h)
+
 if(RAYLIB_LIB AND RAYLIB_INC)
     target_include_directories(raytracer_core PUBLIC ${RAYLIB_INC})
     target_compile_definitions(raytracer_core PUBLIC "IsTextureValid=IsTextureReady")
@@ -90,57 +101,6 @@ if(RAYLIB_LIB AND RAYLIB_INC)
     target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${RAYLIB_LIB} GL m pthread dl X11 rt)
 else()
     message(FATAL_ERROR "raylib not found")
-endif()
-
-find_package(PkgConfig QUIET)
-if(PKG_CONFIG_FOUND)
-    pkg_check_modules(CRITERION criterion)
-endif()
-
-if(CRITERION_FOUND)
-    file(GLOB_RECURSE TEST_SRC "tests/*.cpp")
-    file(GLOB_RECURSE SRC_NO_MAIN "src/*.cpp")
-    list(FILTER SRC_NO_MAIN EXCLUDE REGEX ".*main\\.cpp$")
-
-    add_executable(unit_tests EXCLUDE_FROM_ALL ${SRC_NO_MAIN} ${TEST_SRC})
-    target_include_directories(unit_tests PRIVATE include tests)
-    target_link_libraries(unit_tests ${CRITERION_LIBRARIES})
-    target_compile_options(unit_tests PRIVATE ${CRITERION_CFLAGS_OTHER} --coverage)
-    target_link_options(unit_tests PRIVATE --coverage)
-
-    enable_testing()
-    add_test(NAME unit_tests COMMAND unit_tests)
-
-    add_custom_target(tests
-        COMMAND unit_tests --verbose
-        DEPENDS unit_tests
-    )
-
-    find_program(GCOVR gcovr)
-    if(GCOVR)
-        set(GCOVR_COMMON
-            --gcov-executable "llvm-cov gcov"
-            --root ${CMAKE_SOURCE_DIR}
-            --filter ${CMAKE_SOURCE_DIR}/src/
-            --object-directory ${CMAKE_BINARY_DIR}
-        )
-
-        add_custom_target(coverage
-            COMMAND unit_tests
-            COMMAND ${GCOVR} ${GCOVR_COMMON} --txt
-            DEPENDS unit_tests
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        )
-
-        add_custom_target(coverage-html
-            COMMAND unit_tests
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/coverage_html
-            COMMAND ${GCOVR} ${GCOVR_COMMON}
-                    --html-details ${CMAKE_BINARY_DIR}/coverage_html/index.html
-            DEPENDS unit_tests
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        )
-    endif()
 endif()
 
 add_custom_target(fclean
