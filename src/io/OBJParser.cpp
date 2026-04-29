@@ -41,7 +41,7 @@ namespace OBJParser {
             if (indices[0] < 0 || indices[0] >= vsize) continue;
             if (indices[i] < 0 || indices[i] >= vsize) continue;
             if (indices[i + 1] < 0 || indices[i + 1] >= vsize) continue;
-            out.push_back({ _vertices[indices[0]], _vertices[indices[i]], _vertices[indices[i + 1]] });
+            out.push_back({_vertices[indices[0]], _vertices[indices[i]], _vertices[indices[i + 1]]});
         }
     }
 
