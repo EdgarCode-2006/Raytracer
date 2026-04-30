@@ -1,0 +1,2352 @@
+Start testing: Apr 30 12:58 UTC
+----------------------------------------------------------
+1/87 Testing: Vector3D.DefaultConstructionIsZero
+1/87 Test: Vector3D.DefaultConstructionIsZero
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.DefaultConstructionIsZero" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.DefaultConstructionIsZero" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.DefaultConstructionIsZero
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.DefaultConstructionIsZero
+[       OK ] Vector3D.DefaultConstructionIsZero (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.DefaultConstructionIsZero" end time: Apr 30 12:58 UTC
+"Vector3D.DefaultConstructionIsZero" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/87 Testing: Vector3D.ParameterizedConstruction
+2/87 Test: Vector3D.ParameterizedConstruction
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.ParameterizedConstruction" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.ParameterizedConstruction" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.ParameterizedConstruction
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.ParameterizedConstruction
+[       OK ] Vector3D.ParameterizedConstruction (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.ParameterizedConstruction" end time: Apr 30 12:58 UTC
+"Vector3D.ParameterizedConstruction" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/87 Testing: Vector3D.IndexAccessorGet
+3/87 Test: Vector3D.IndexAccessorGet
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.IndexAccessorGet" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.IndexAccessorGet" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.IndexAccessorGet
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.IndexAccessorGet
+[       OK ] Vector3D.IndexAccessorGet (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.IndexAccessorGet" end time: Apr 30 12:58 UTC
+"Vector3D.IndexAccessorGet" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/87 Testing: Vector3D.IndexAccessorSet
+4/87 Test: Vector3D.IndexAccessorSet
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.IndexAccessorSet" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.IndexAccessorSet" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.IndexAccessorSet
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.IndexAccessorSet
+[       OK ] Vector3D.IndexAccessorSet (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.IndexAccessorSet" end time: Apr 30 12:58 UTC
+"Vector3D.IndexAccessorSet" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/87 Testing: Vector3D.MutableXYZSetters
+5/87 Test: Vector3D.MutableXYZSetters
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.MutableXYZSetters" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.MutableXYZSetters" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.MutableXYZSetters
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.MutableXYZSetters
+[       OK ] Vector3D.MutableXYZSetters (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.MutableXYZSetters" end time: Apr 30 12:58 UTC
+"Vector3D.MutableXYZSetters" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/87 Testing: Vector3D.Addition
+6/87 Test: Vector3D.Addition
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.Addition" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.Addition" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.Addition
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.Addition
+[       OK ] Vector3D.Addition (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.Addition" end time: Apr 30 12:58 UTC
+"Vector3D.Addition" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/87 Testing: Vector3D.Subtraction
+7/87 Test: Vector3D.Subtraction
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.Subtraction" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.Subtraction" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.Subtraction
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.Subtraction
+[       OK ] Vector3D.Subtraction (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.Subtraction" end time: Apr 30 12:58 UTC
+"Vector3D.Subtraction" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/87 Testing: Vector3D.ScalarMultiplicationRight
+8/87 Test: Vector3D.ScalarMultiplicationRight
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.ScalarMultiplicationRight" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.ScalarMultiplicationRight" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.ScalarMultiplicationRight
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.ScalarMultiplicationRight
+[       OK ] Vector3D.ScalarMultiplicationRight (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.ScalarMultiplicationRight" end time: Apr 30 12:58 UTC
+"Vector3D.ScalarMultiplicationRight" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/87 Testing: Vector3D.ScalarMultiplicationLeft
+9/87 Test: Vector3D.ScalarMultiplicationLeft
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.ScalarMultiplicationLeft" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.ScalarMultiplicationLeft" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.ScalarMultiplicationLeft
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.ScalarMultiplicationLeft
+[       OK ] Vector3D.ScalarMultiplicationLeft (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.ScalarMultiplicationLeft" end time: Apr 30 12:58 UTC
+"Vector3D.ScalarMultiplicationLeft" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/87 Testing: Vector3D.ScalarDivision
+10/87 Test: Vector3D.ScalarDivision
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.ScalarDivision" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.ScalarDivision" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.ScalarDivision
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.ScalarDivision
+[       OK ] Vector3D.ScalarDivision (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.ScalarDivision" end time: Apr 30 12:58 UTC
+"Vector3D.ScalarDivision" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/87 Testing: Vector3D.AddAssignVector
+11/87 Test: Vector3D.AddAssignVector
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.AddAssignVector" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.AddAssignVector" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.AddAssignVector
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.AddAssignVector
+[       OK ] Vector3D.AddAssignVector (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.AddAssignVector" end time: Apr 30 12:58 UTC
+"Vector3D.AddAssignVector" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/87 Testing: Vector3D.AddAssignScalar
+12/87 Test: Vector3D.AddAssignScalar
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.AddAssignScalar" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.AddAssignScalar" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.AddAssignScalar
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.AddAssignScalar
+[       OK ] Vector3D.AddAssignScalar (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.AddAssignScalar" end time: Apr 30 12:58 UTC
+"Vector3D.AddAssignScalar" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/87 Testing: Vector3D.SubAssignVector
+13/87 Test: Vector3D.SubAssignVector
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.SubAssignVector" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.SubAssignVector" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.SubAssignVector
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.SubAssignVector
+[       OK ] Vector3D.SubAssignVector (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.SubAssignVector" end time: Apr 30 12:58 UTC
+"Vector3D.SubAssignVector" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/87 Testing: Vector3D.MulAssignScalar
+14/87 Test: Vector3D.MulAssignScalar
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.MulAssignScalar" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.MulAssignScalar" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.MulAssignScalar
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.MulAssignScalar
+[       OK ] Vector3D.MulAssignScalar (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.MulAssignScalar" end time: Apr 30 12:58 UTC
+"Vector3D.MulAssignScalar" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/87 Testing: Vector3D.DivAssignScalar
+15/87 Test: Vector3D.DivAssignScalar
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.DivAssignScalar" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.DivAssignScalar" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.DivAssignScalar
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.DivAssignScalar
+[       OK ] Vector3D.DivAssignScalar (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.DivAssignScalar" end time: Apr 30 12:58 UTC
+"Vector3D.DivAssignScalar" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/87 Testing: Vector3D.DotProductOrthogonal
+16/87 Test: Vector3D.DotProductOrthogonal
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.DotProductOrthogonal" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.DotProductOrthogonal" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.DotProductOrthogonal
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.DotProductOrthogonal
+[       OK ] Vector3D.DotProductOrthogonal (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.DotProductOrthogonal" end time: Apr 30 12:58 UTC
+"Vector3D.DotProductOrthogonal" time elapsed: 00:00:00
+----------------------------------------------------------
+
+17/87 Testing: Vector3D.DotProductParallel
+17/87 Test: Vector3D.DotProductParallel
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.DotProductParallel" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.DotProductParallel" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.DotProductParallel
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.DotProductParallel
+[       OK ] Vector3D.DotProductParallel (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.DotProductParallel" end time: Apr 30 12:58 UTC
+"Vector3D.DotProductParallel" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/87 Testing: Vector3D.DotProductGeneral
+18/87 Test: Vector3D.DotProductGeneral
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.DotProductGeneral" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.DotProductGeneral" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.DotProductGeneral
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.DotProductGeneral
+[       OK ] Vector3D.DotProductGeneral (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.DotProductGeneral" end time: Apr 30 12:58 UTC
+"Vector3D.DotProductGeneral" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/87 Testing: Vector3D.CrossProductXY
+19/87 Test: Vector3D.CrossProductXY
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.CrossProductXY" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.CrossProductXY" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.CrossProductXY
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.CrossProductXY
+[       OK ] Vector3D.CrossProductXY (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.CrossProductXY" end time: Apr 30 12:58 UTC
+"Vector3D.CrossProductXY" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/87 Testing: Vector3D.CrossProductYZ
+20/87 Test: Vector3D.CrossProductYZ
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.CrossProductYZ" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.CrossProductYZ" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.CrossProductYZ
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.CrossProductYZ
+[       OK ] Vector3D.CrossProductYZ (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.CrossProductYZ" end time: Apr 30 12:58 UTC
+"Vector3D.CrossProductYZ" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/87 Testing: Vector3D.CrossProductAntiCommutative
+21/87 Test: Vector3D.CrossProductAntiCommutative
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.CrossProductAntiCommutative" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.CrossProductAntiCommutative" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.CrossProductAntiCommutative
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.CrossProductAntiCommutative
+[       OK ] Vector3D.CrossProductAntiCommutative (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.CrossProductAntiCommutative" end time: Apr 30 12:58 UTC
+"Vector3D.CrossProductAntiCommutative" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/87 Testing: Vector3D.LengthUnitX
+22/87 Test: Vector3D.LengthUnitX
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.LengthUnitX" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.LengthUnitX" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.LengthUnitX
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.LengthUnitX
+[       OK ] Vector3D.LengthUnitX (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.LengthUnitX" end time: Apr 30 12:58 UTC
+"Vector3D.LengthUnitX" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/87 Testing: Vector3D.LengthGeneral
+23/87 Test: Vector3D.LengthGeneral
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.LengthGeneral" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.LengthGeneral" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.LengthGeneral
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.LengthGeneral
+[       OK ] Vector3D.LengthGeneral (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.LengthGeneral" end time: Apr 30 12:58 UTC
+"Vector3D.LengthGeneral" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/87 Testing: Vector3D.Length3D
+24/87 Test: Vector3D.Length3D
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.Length3D" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.Length3D" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.Length3D
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.Length3D
+[       OK ] Vector3D.Length3D (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.Length3D" end time: Apr 30 12:58 UTC
+"Vector3D.Length3D" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/87 Testing: Vector3D.NormalizeUnit
+25/87 Test: Vector3D.NormalizeUnit
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.NormalizeUnit" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.NormalizeUnit" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.NormalizeUnit
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.NormalizeUnit
+[       OK ] Vector3D.NormalizeUnit (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.NormalizeUnit" end time: Apr 30 12:58 UTC
+"Vector3D.NormalizeUnit" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/87 Testing: Vector3D.NormalizeGeneral
+26/87 Test: Vector3D.NormalizeGeneral
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.NormalizeGeneral" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.NormalizeGeneral" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.NormalizeGeneral
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.NormalizeGeneral
+[       OK ] Vector3D.NormalizeGeneral (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.NormalizeGeneral" end time: Apr 30 12:58 UTC
+"Vector3D.NormalizeGeneral" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/87 Testing: Vector3D.NormalizeZeroVectorReturnsZero
+27/87 Test: Vector3D.NormalizeZeroVectorReturnsZero
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.NormalizeZeroVectorReturnsZero" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.NormalizeZeroVectorReturnsZero" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.NormalizeZeroVectorReturnsZero
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.NormalizeZeroVectorReturnsZero
+[       OK ] Vector3D.NormalizeZeroVectorReturnsZero (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.NormalizeZeroVectorReturnsZero" end time: Apr 30 12:58 UTC
+"Vector3D.NormalizeZeroVectorReturnsZero" time elapsed: 00:00:00
+----------------------------------------------------------
+
+28/87 Testing: Vector3D.MinFreeFunction
+28/87 Test: Vector3D.MinFreeFunction
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.MinFreeFunction" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.MinFreeFunction" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.MinFreeFunction
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.MinFreeFunction
+[       OK ] Vector3D.MinFreeFunction (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.MinFreeFunction" end time: Apr 30 12:58 UTC
+"Vector3D.MinFreeFunction" time elapsed: 00:00:00
+----------------------------------------------------------
+
+29/87 Testing: Vector3D.MaxFreeFunction
+29/87 Test: Vector3D.MaxFreeFunction
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.MaxFreeFunction" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.MaxFreeFunction" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.MaxFreeFunction
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.MaxFreeFunction
+[       OK ] Vector3D.MaxFreeFunction (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.MaxFreeFunction" end time: Apr 30 12:58 UTC
+"Vector3D.MaxFreeFunction" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/87 Testing: Vector3D.ClampInsideRange
+30/87 Test: Vector3D.ClampInsideRange
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.ClampInsideRange" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.ClampInsideRange" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.ClampInsideRange
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.ClampInsideRange
+[       OK ] Vector3D.ClampInsideRange (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.ClampInsideRange" end time: Apr 30 12:58 UTC
+"Vector3D.ClampInsideRange" time elapsed: 00:00:00
+----------------------------------------------------------
+
+31/87 Testing: Vector3D.ClampBelowMin
+31/87 Test: Vector3D.ClampBelowMin
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.ClampBelowMin" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.ClampBelowMin" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.ClampBelowMin
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.ClampBelowMin
+[       OK ] Vector3D.ClampBelowMin (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.ClampBelowMin" end time: Apr 30 12:58 UTC
+"Vector3D.ClampBelowMin" time elapsed: 00:00:00
+----------------------------------------------------------
+
+32/87 Testing: Vector3D.ClampAboveMax
+32/87 Test: Vector3D.ClampAboveMax
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Vector3D.ClampAboveMax" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Vector3D.ClampAboveMax" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Vector3D.ClampAboveMax
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Vector3D
+[ RUN      ] Vector3D.ClampAboveMax
+[       OK ] Vector3D.ClampAboveMax (0 ms)
+[----------] 1 test from Vector3D (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Vector3D.ClampAboveMax" end time: Apr 30 12:58 UTC
+"Vector3D.ClampAboveMax" time elapsed: 00:00:00
+----------------------------------------------------------
+
+33/87 Testing: Triangle.VertexAccessors
+33/87 Test: Triangle.VertexAccessors
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Triangle.VertexAccessors" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Triangle.VertexAccessors" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Triangle.VertexAccessors
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Triangle
+[ RUN      ] Triangle.VertexAccessors
+[       OK ] Triangle.VertexAccessors (0 ms)
+[----------] 1 test from Triangle (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Triangle.VertexAccessors" end time: Apr 30 12:58 UTC
+"Triangle.VertexAccessors" time elapsed: 00:00:00
+----------------------------------------------------------
+
+34/87 Testing: Triangle.MutableVertexAccessors
+34/87 Test: Triangle.MutableVertexAccessors
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Triangle.MutableVertexAccessors" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Triangle.MutableVertexAccessors" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Triangle.MutableVertexAccessors
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Triangle
+[ RUN      ] Triangle.MutableVertexAccessors
+[       OK ] Triangle.MutableVertexAccessors (0 ms)
+[----------] 1 test from Triangle (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Triangle.MutableVertexAccessors" end time: Apr 30 12:58 UTC
+"Triangle.MutableVertexAccessors" time elapsed: 00:00:00
+----------------------------------------------------------
+
+35/87 Testing: Triangle.CentroidOriginTriangle
+35/87 Test: Triangle.CentroidOriginTriangle
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Triangle.CentroidOriginTriangle" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Triangle.CentroidOriginTriangle" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Triangle.CentroidOriginTriangle
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Triangle
+[ RUN      ] Triangle.CentroidOriginTriangle
+[       OK ] Triangle.CentroidOriginTriangle (0 ms)
+[----------] 1 test from Triangle (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Triangle.CentroidOriginTriangle" end time: Apr 30 12:58 UTC
+"Triangle.CentroidOriginTriangle" time elapsed: 00:00:00
+----------------------------------------------------------
+
+36/87 Testing: Triangle.CentroidGeneral
+36/87 Test: Triangle.CentroidGeneral
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Triangle.CentroidGeneral" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Triangle.CentroidGeneral" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Triangle.CentroidGeneral
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Triangle
+[ RUN      ] Triangle.CentroidGeneral
+[       OK ] Triangle.CentroidGeneral (0 ms)
+[----------] 1 test from Triangle (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Triangle.CentroidGeneral" end time: Apr 30 12:58 UTC
+"Triangle.CentroidGeneral" time elapsed: 00:00:00
+----------------------------------------------------------
+
+37/87 Testing: Triangle.CentroidSymmetric
+37/87 Test: Triangle.CentroidSymmetric
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Triangle.CentroidSymmetric" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Triangle.CentroidSymmetric" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Triangle.CentroidSymmetric
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Triangle
+[ RUN      ] Triangle.CentroidSymmetric
+[       OK ] Triangle.CentroidSymmetric (0 ms)
+[----------] 1 test from Triangle (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Triangle.CentroidSymmetric" end time: Apr 30 12:58 UTC
+"Triangle.CentroidSymmetric" time elapsed: 00:00:00
+----------------------------------------------------------
+
+38/87 Testing: Triangle.DirectArrayAccess
+38/87 Test: Triangle.DirectArrayAccess
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Triangle.DirectArrayAccess" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Triangle.DirectArrayAccess" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Triangle.DirectArrayAccess
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Triangle
+[ RUN      ] Triangle.DirectArrayAccess
+[       OK ] Triangle.DirectArrayAccess (0 ms)
+[----------] 1 test from Triangle (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Triangle.DirectArrayAccess" end time: Apr 30 12:58 UTC
+"Triangle.DirectArrayAccess" time elapsed: 00:00:00
+----------------------------------------------------------
+
+39/87 Testing: Ray.ConstructionStoresOriginAndDirection
+39/87 Test: Ray.ConstructionStoresOriginAndDirection
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Ray.ConstructionStoresOriginAndDirection" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Ray.ConstructionStoresOriginAndDirection" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Ray.ConstructionStoresOriginAndDirection
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Ray
+[ RUN      ] Ray.ConstructionStoresOriginAndDirection
+[       OK ] Ray.ConstructionStoresOriginAndDirection (0 ms)
+[----------] 1 test from Ray (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Ray.ConstructionStoresOriginAndDirection" end time: Apr 30 12:58 UTC
+"Ray.ConstructionStoresOriginAndDirection" time elapsed: 00:00:00
+----------------------------------------------------------
+
+40/87 Testing: Ray.MutableFields
+40/87 Test: Ray.MutableFields
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Ray.MutableFields" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Ray.MutableFields" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Ray.MutableFields
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Ray
+[ RUN      ] Ray.MutableFields
+[       OK ] Ray.MutableFields (0 ms)
+[----------] 1 test from Ray (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Ray.MutableFields" end time: Apr 30 12:58 UTC
+"Ray.MutableFields" time elapsed: 00:00:00
+----------------------------------------------------------
+
+41/87 Testing: Ray.PointAlongRay
+41/87 Test: Ray.PointAlongRay
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Ray.PointAlongRay" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Ray.PointAlongRay" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Ray.PointAlongRay
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Ray
+[ RUN      ] Ray.PointAlongRay
+[       OK ] Ray.PointAlongRay (0 ms)
+[----------] 1 test from Ray (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Ray.PointAlongRay" end time: Apr 30 12:58 UTC
+"Ray.PointAlongRay" time elapsed: 00:00:00
+----------------------------------------------------------
+
+42/87 Testing: AABB.DefaultConstructionIsInvalid
+42/87 Test: AABB.DefaultConstructionIsInvalid
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.DefaultConstructionIsInvalid" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.DefaultConstructionIsInvalid" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.DefaultConstructionIsInvalid
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.DefaultConstructionIsInvalid
+[       OK ] AABB.DefaultConstructionIsInvalid (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.DefaultConstructionIsInvalid" end time: Apr 30 12:58 UTC
+"AABB.DefaultConstructionIsInvalid" time elapsed: 00:00:00
+----------------------------------------------------------
+
+43/87 Testing: AABB.ExpandSinglePointBecomesValid
+43/87 Test: AABB.ExpandSinglePointBecomesValid
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.ExpandSinglePointBecomesValid" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.ExpandSinglePointBecomesValid" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.ExpandSinglePointBecomesValid
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.ExpandSinglePointBecomesValid
+[       OK ] AABB.ExpandSinglePointBecomesValid (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.ExpandSinglePointBecomesValid" end time: Apr 30 12:58 UTC
+"AABB.ExpandSinglePointBecomesValid" time elapsed: 00:00:00
+----------------------------------------------------------
+
+44/87 Testing: AABB.ExpandSinglePointBoundsMatch
+44/87 Test: AABB.ExpandSinglePointBoundsMatch
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.ExpandSinglePointBoundsMatch" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.ExpandSinglePointBoundsMatch" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.ExpandSinglePointBoundsMatch
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.ExpandSinglePointBoundsMatch
+[       OK ] AABB.ExpandSinglePointBoundsMatch (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.ExpandSinglePointBoundsMatch" end time: Apr 30 12:58 UTC
+"AABB.ExpandSinglePointBoundsMatch" time elapsed: 00:00:00
+----------------------------------------------------------
+
+45/87 Testing: AABB.ExpandTwoPointsCorrectMinMax
+45/87 Test: AABB.ExpandTwoPointsCorrectMinMax
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.ExpandTwoPointsCorrectMinMax" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.ExpandTwoPointsCorrectMinMax" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.ExpandTwoPointsCorrectMinMax
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.ExpandTwoPointsCorrectMinMax
+[       OK ] AABB.ExpandTwoPointsCorrectMinMax (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.ExpandTwoPointsCorrectMinMax" end time: Apr 30 12:58 UTC
+"AABB.ExpandTwoPointsCorrectMinMax" time elapsed: 00:00:00
+----------------------------------------------------------
+
+46/87 Testing: AABB.ExpandNegativePoints
+46/87 Test: AABB.ExpandNegativePoints
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.ExpandNegativePoints" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.ExpandNegativePoints" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.ExpandNegativePoints
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.ExpandNegativePoints
+[       OK ] AABB.ExpandNegativePoints (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.ExpandNegativePoints" end time: Apr 30 12:58 UTC
+"AABB.ExpandNegativePoints" time elapsed: 00:00:00
+----------------------------------------------------------
+
+47/87 Testing: AABB.ExpandWithOtherAABB
+47/87 Test: AABB.ExpandWithOtherAABB
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.ExpandWithOtherAABB" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.ExpandWithOtherAABB" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.ExpandWithOtherAABB
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.ExpandWithOtherAABB
+[       OK ] AABB.ExpandWithOtherAABB (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.ExpandWithOtherAABB" end time: Apr 30 12:58 UTC
+"AABB.ExpandWithOtherAABB" time elapsed: 00:00:00
+----------------------------------------------------------
+
+48/87 Testing: AABB.CenterOfUnitCube
+48/87 Test: AABB.CenterOfUnitCube
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.CenterOfUnitCube" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.CenterOfUnitCube" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.CenterOfUnitCube
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.CenterOfUnitCube
+[       OK ] AABB.CenterOfUnitCube (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.CenterOfUnitCube" end time: Apr 30 12:58 UTC
+"AABB.CenterOfUnitCube" time elapsed: 00:00:00
+----------------------------------------------------------
+
+49/87 Testing: AABB.CenterGeneral
+49/87 Test: AABB.CenterGeneral
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.CenterGeneral" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.CenterGeneral" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.CenterGeneral
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.CenterGeneral
+[       OK ] AABB.CenterGeneral (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.CenterGeneral" end time: Apr 30 12:58 UTC
+"AABB.CenterGeneral" time elapsed: 00:00:00
+----------------------------------------------------------
+
+50/87 Testing: AABB.SizeOfBox
+50/87 Test: AABB.SizeOfBox
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.SizeOfBox" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.SizeOfBox" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.SizeOfBox
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.SizeOfBox
+[       OK ] AABB.SizeOfBox (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.SizeOfBox" end time: Apr 30 12:58 UTC
+"AABB.SizeOfBox" time elapsed: 00:00:00
+----------------------------------------------------------
+
+51/87 Testing: AABB.SurfaceAreaCube
+51/87 Test: AABB.SurfaceAreaCube
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.SurfaceAreaCube" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.SurfaceAreaCube" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.SurfaceAreaCube
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.SurfaceAreaCube
+[       OK ] AABB.SurfaceAreaCube (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.SurfaceAreaCube" end time: Apr 30 12:58 UTC
+"AABB.SurfaceAreaCube" time elapsed: 00:00:00
+----------------------------------------------------------
+
+52/87 Testing: AABB.SurfaceAreaRectangularBox
+52/87 Test: AABB.SurfaceAreaRectangularBox
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.SurfaceAreaRectangularBox" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.SurfaceAreaRectangularBox" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.SurfaceAreaRectangularBox
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.SurfaceAreaRectangularBox
+[       OK ] AABB.SurfaceAreaRectangularBox (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.SurfaceAreaRectangularBox" end time: Apr 30 12:58 UTC
+"AABB.SurfaceAreaRectangularBox" time elapsed: 00:00:00
+----------------------------------------------------------
+
+53/87 Testing: AABB.SurfaceAreaInvalidReturnsZero
+53/87 Test: AABB.SurfaceAreaInvalidReturnsZero
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.SurfaceAreaInvalidReturnsZero" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.SurfaceAreaInvalidReturnsZero" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.SurfaceAreaInvalidReturnsZero
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.SurfaceAreaInvalidReturnsZero
+[       OK ] AABB.SurfaceAreaInvalidReturnsZero (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.SurfaceAreaInvalidReturnsZero" end time: Apr 30 12:58 UTC
+"AABB.SurfaceAreaInvalidReturnsZero" time elapsed: 00:00:00
+----------------------------------------------------------
+
+54/87 Testing: AABB.IsValidAfterMultipleExpands
+54/87 Test: AABB.IsValidAfterMultipleExpands
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=AABB.IsValidAfterMultipleExpands" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"AABB.IsValidAfterMultipleExpands" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = AABB.IsValidAfterMultipleExpands
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AABB
+[ RUN      ] AABB.IsValidAfterMultipleExpands
+[       OK ] AABB.IsValidAfterMultipleExpands (0 ms)
+[----------] 1 test from AABB (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"AABB.IsValidAfterMultipleExpands" end time: Apr 30 12:58 UTC
+"AABB.IsValidAfterMultipleExpands" time elapsed: 00:00:00
+----------------------------------------------------------
+
+55/87 Testing: RayHit.DefaultConstructionIsNoHit
+55/87 Test: RayHit.DefaultConstructionIsNoHit
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=RayHit.DefaultConstructionIsNoHit" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"RayHit.DefaultConstructionIsNoHit" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = RayHit.DefaultConstructionIsNoHit
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from RayHit
+[ RUN      ] RayHit.DefaultConstructionIsNoHit
+[       OK ] RayHit.DefaultConstructionIsNoHit (0 ms)
+[----------] 1 test from RayHit (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"RayHit.DefaultConstructionIsNoHit" end time: Apr 30 12:58 UTC
+"RayHit.DefaultConstructionIsNoHit" time elapsed: 00:00:00
+----------------------------------------------------------
+
+56/87 Testing: RayHit.DefaultTIsInfinity
+56/87 Test: RayHit.DefaultTIsInfinity
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=RayHit.DefaultTIsInfinity" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"RayHit.DefaultTIsInfinity" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = RayHit.DefaultTIsInfinity
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from RayHit
+[ RUN      ] RayHit.DefaultTIsInfinity
+[       OK ] RayHit.DefaultTIsInfinity (0 ms)
+[----------] 1 test from RayHit (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"RayHit.DefaultTIsInfinity" end time: Apr 30 12:58 UTC
+"RayHit.DefaultTIsInfinity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+57/87 Testing: RayHit.ConstructWithSmallTIsHit
+57/87 Test: RayHit.ConstructWithSmallTIsHit
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=RayHit.ConstructWithSmallTIsHit" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"RayHit.ConstructWithSmallTIsHit" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = RayHit.ConstructWithSmallTIsHit
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from RayHit
+[ RUN      ] RayHit.ConstructWithSmallTIsHit
+[       OK ] RayHit.ConstructWithSmallTIsHit (0 ms)
+[----------] 1 test from RayHit (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"RayHit.ConstructWithSmallTIsHit" end time: Apr 30 12:58 UTC
+"RayHit.ConstructWithSmallTIsHit" time elapsed: 00:00:00
+----------------------------------------------------------
+
+58/87 Testing: RayHit.ConstructWithExactThresholdIsNoHit
+58/87 Test: RayHit.ConstructWithExactThresholdIsNoHit
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=RayHit.ConstructWithExactThresholdIsNoHit" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"RayHit.ConstructWithExactThresholdIsNoHit" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = RayHit.ConstructWithExactThresholdIsNoHit
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from RayHit
+[ RUN      ] RayHit.ConstructWithExactThresholdIsNoHit
+[       OK ] RayHit.ConstructWithExactThresholdIsNoHit (0 ms)
+[----------] 1 test from RayHit (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"RayHit.ConstructWithExactThresholdIsNoHit" end time: Apr 30 12:58 UTC
+"RayHit.ConstructWithExactThresholdIsNoHit" time elapsed: 00:00:00
+----------------------------------------------------------
+
+59/87 Testing: RayHit.ConstructWithJustBelowThresholdIsHit
+59/87 Test: RayHit.ConstructWithJustBelowThresholdIsHit
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=RayHit.ConstructWithJustBelowThresholdIsHit" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"RayHit.ConstructWithJustBelowThresholdIsHit" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = RayHit.ConstructWithJustBelowThresholdIsHit
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from RayHit
+[ RUN      ] RayHit.ConstructWithJustBelowThresholdIsHit
+[       OK ] RayHit.ConstructWithJustBelowThresholdIsHit (0 ms)
+[----------] 1 test from RayHit (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"RayHit.ConstructWithJustBelowThresholdIsHit" end time: Apr 30 12:58 UTC
+"RayHit.ConstructWithJustBelowThresholdIsHit" time elapsed: 00:00:00
+----------------------------------------------------------
+
+60/87 Testing: RayHit.ZeroDistanceIsHit
+60/87 Test: RayHit.ZeroDistanceIsHit
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=RayHit.ZeroDistanceIsHit" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"RayHit.ZeroDistanceIsHit" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = RayHit.ZeroDistanceIsHit
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from RayHit
+[ RUN      ] RayHit.ZeroDistanceIsHit
+[       OK ] RayHit.ZeroDistanceIsHit (0 ms)
+[----------] 1 test from RayHit (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"RayHit.ZeroDistanceIsHit" end time: Apr 30 12:58 UTC
+"RayHit.ZeroDistanceIsHit" time elapsed: 00:00:00
+----------------------------------------------------------
+
+61/87 Testing: RayHit.PrimitiveIndexIsPreserved
+61/87 Test: RayHit.PrimitiveIndexIsPreserved
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=RayHit.PrimitiveIndexIsPreserved" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"RayHit.PrimitiveIndexIsPreserved" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = RayHit.PrimitiveIndexIsPreserved
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from RayHit
+[ RUN      ] RayHit.PrimitiveIndexIsPreserved
+[       OK ] RayHit.PrimitiveIndexIsPreserved (0 ms)
+[----------] 1 test from RayHit (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"RayHit.PrimitiveIndexIsPreserved" end time: Apr 30 12:58 UTC
+"RayHit.PrimitiveIndexIsPreserved" time elapsed: 00:00:00
+----------------------------------------------------------
+
+62/87 Testing: Pixel.DefaultConstructionIsBlackOpaque
+62/87 Test: Pixel.DefaultConstructionIsBlackOpaque
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Pixel.DefaultConstructionIsBlackOpaque" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Pixel.DefaultConstructionIsBlackOpaque" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Pixel.DefaultConstructionIsBlackOpaque
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Pixel
+[ RUN      ] Pixel.DefaultConstructionIsBlackOpaque
+[       OK ] Pixel.DefaultConstructionIsBlackOpaque (0 ms)
+[----------] 1 test from Pixel (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Pixel.DefaultConstructionIsBlackOpaque" end time: Apr 30 12:58 UTC
+"Pixel.DefaultConstructionIsBlackOpaque" time elapsed: 00:00:00
+----------------------------------------------------------
+
+63/87 Testing: Pixel.ThreeArgCtorSetsFullAlpha
+63/87 Test: Pixel.ThreeArgCtorSetsFullAlpha
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Pixel.ThreeArgCtorSetsFullAlpha" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Pixel.ThreeArgCtorSetsFullAlpha" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Pixel.ThreeArgCtorSetsFullAlpha
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Pixel
+[ RUN      ] Pixel.ThreeArgCtorSetsFullAlpha
+[       OK ] Pixel.ThreeArgCtorSetsFullAlpha (0 ms)
+[----------] 1 test from Pixel (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Pixel.ThreeArgCtorSetsFullAlpha" end time: Apr 30 12:58 UTC
+"Pixel.ThreeArgCtorSetsFullAlpha" time elapsed: 00:00:00
+----------------------------------------------------------
+
+64/87 Testing: Pixel.FourArgCtorSetsAllChannels
+64/87 Test: Pixel.FourArgCtorSetsAllChannels
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Pixel.FourArgCtorSetsAllChannels" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Pixel.FourArgCtorSetsAllChannels" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Pixel.FourArgCtorSetsAllChannels
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Pixel
+[ RUN      ] Pixel.FourArgCtorSetsAllChannels
+[       OK ] Pixel.FourArgCtorSetsAllChannels (0 ms)
+[----------] 1 test from Pixel (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Pixel.FourArgCtorSetsAllChannels" end time: Apr 30 12:58 UTC
+"Pixel.FourArgCtorSetsAllChannels" time elapsed: 00:00:00
+----------------------------------------------------------
+
+65/87 Testing: Pixel.MaxValues
+65/87 Test: Pixel.MaxValues
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Pixel.MaxValues" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Pixel.MaxValues" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Pixel.MaxValues
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Pixel
+[ RUN      ] Pixel.MaxValues
+[       OK ] Pixel.MaxValues (0 ms)
+[----------] 1 test from Pixel (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Pixel.MaxValues" end time: Apr 30 12:58 UTC
+"Pixel.MaxValues" time elapsed: 00:00:00
+----------------------------------------------------------
+
+66/87 Testing: Material.DefaultIsWhiteWithNoReflection
+66/87 Test: Material.DefaultIsWhiteWithNoReflection
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Material.DefaultIsWhiteWithNoReflection" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Material.DefaultIsWhiteWithNoReflection" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Material.DefaultIsWhiteWithNoReflection
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Material
+[ RUN      ] Material.DefaultIsWhiteWithNoReflection
+[       OK ] Material.DefaultIsWhiteWithNoReflection (0 ms)
+[----------] 1 test from Material (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Material.DefaultIsWhiteWithNoReflection" end time: Apr 30 12:58 UTC
+"Material.DefaultIsWhiteWithNoReflection" time elapsed: 00:00:00
+----------------------------------------------------------
+
+67/87 Testing: Material.ParameterizedConstructionStoresValues
+67/87 Test: Material.ParameterizedConstructionStoresValues
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Material.ParameterizedConstructionStoresValues" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Material.ParameterizedConstructionStoresValues" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Material.ParameterizedConstructionStoresValues
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Material
+[ RUN      ] Material.ParameterizedConstructionStoresValues
+[       OK ] Material.ParameterizedConstructionStoresValues (0 ms)
+[----------] 1 test from Material (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Material.ParameterizedConstructionStoresValues" end time: Apr 30 12:58 UTC
+"Material.ParameterizedConstructionStoresValues" time elapsed: 00:00:00
+----------------------------------------------------------
+
+68/87 Testing: Material.FullyReflective
+68/87 Test: Material.FullyReflective
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Material.FullyReflective" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Material.FullyReflective" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Material.FullyReflective
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Material
+[ RUN      ] Material.FullyReflective
+[       OK ] Material.FullyReflective (0 ms)
+[----------] 1 test from Material (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Material.FullyReflective" end time: Apr 30 12:58 UTC
+"Material.FullyReflective" time elapsed: 00:00:00
+----------------------------------------------------------
+
+69/87 Testing: Material.FullyRefractive
+69/87 Test: Material.FullyRefractive
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Material.FullyRefractive" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Material.FullyRefractive" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Material.FullyRefractive
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Material
+[ RUN      ] Material.FullyRefractive
+[       OK ] Material.FullyRefractive (0 ms)
+[----------] 1 test from Material (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Material.FullyRefractive" end time: Apr 30 12:58 UTC
+"Material.FullyRefractive" time elapsed: 00:00:00
+----------------------------------------------------------
+
+70/87 Testing: Matrix4.DefaultIsIdentity
+70/87 Test: Matrix4.DefaultIsIdentity
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.DefaultIsIdentity" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.DefaultIsIdentity" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.DefaultIsIdentity
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.DefaultIsIdentity
+[       OK ] Matrix4.DefaultIsIdentity (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.DefaultIsIdentity" end time: Apr 30 12:58 UTC
+"Matrix4.DefaultIsIdentity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+71/87 Testing: Matrix4.IdentityTransformPoint
+71/87 Test: Matrix4.IdentityTransformPoint
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.IdentityTransformPoint" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.IdentityTransformPoint" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.IdentityTransformPoint
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.IdentityTransformPoint
+[       OK ] Matrix4.IdentityTransformPoint (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.IdentityTransformPoint" end time: Apr 30 12:58 UTC
+"Matrix4.IdentityTransformPoint" time elapsed: 00:00:00
+----------------------------------------------------------
+
+72/87 Testing: Matrix4.IdentityTransformDirection
+72/87 Test: Matrix4.IdentityTransformDirection
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.IdentityTransformDirection" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.IdentityTransformDirection" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.IdentityTransformDirection
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.IdentityTransformDirection
+[       OK ] Matrix4.IdentityTransformDirection (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.IdentityTransformDirection" end time: Apr 30 12:58 UTC
+"Matrix4.IdentityTransformDirection" time elapsed: 00:00:00
+----------------------------------------------------------
+
+73/87 Testing: Matrix4.TranslationMovesPoint
+73/87 Test: Matrix4.TranslationMovesPoint
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.TranslationMovesPoint" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.TranslationMovesPoint" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.TranslationMovesPoint
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.TranslationMovesPoint
+[       OK ] Matrix4.TranslationMovesPoint (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.TranslationMovesPoint" end time: Apr 30 12:58 UTC
+"Matrix4.TranslationMovesPoint" time elapsed: 00:00:00
+----------------------------------------------------------
+
+74/87 Testing: Matrix4.TranslationDoesNotAffectDirection
+74/87 Test: Matrix4.TranslationDoesNotAffectDirection
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.TranslationDoesNotAffectDirection" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.TranslationDoesNotAffectDirection" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.TranslationDoesNotAffectDirection
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.TranslationDoesNotAffectDirection
+[       OK ] Matrix4.TranslationDoesNotAffectDirection (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.TranslationDoesNotAffectDirection" end time: Apr 30 12:58 UTC
+"Matrix4.TranslationDoesNotAffectDirection" time elapsed: 00:00:00
+----------------------------------------------------------
+
+75/87 Testing: Matrix4.ScaleMultipliesComponents
+75/87 Test: Matrix4.ScaleMultipliesComponents
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.ScaleMultipliesComponents" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.ScaleMultipliesComponents" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.ScaleMultipliesComponents
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.ScaleMultipliesComponents
+[       OK ] Matrix4.ScaleMultipliesComponents (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.ScaleMultipliesComponents" end time: Apr 30 12:58 UTC
+"Matrix4.ScaleMultipliesComponents" time elapsed: 00:00:00
+----------------------------------------------------------
+
+76/87 Testing: Matrix4.ScaleUniform
+76/87 Test: Matrix4.ScaleUniform
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.ScaleUniform" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.ScaleUniform" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.ScaleUniform
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.ScaleUniform
+[       OK ] Matrix4.ScaleUniform (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.ScaleUniform" end time: Apr 30 12:58 UTC
+"Matrix4.ScaleUniform" time elapsed: 00:00:00
+----------------------------------------------------------
+
+77/87 Testing: Matrix4.RotationXHalfPi
+77/87 Test: Matrix4.RotationXHalfPi
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.RotationXHalfPi" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.RotationXHalfPi" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.RotationXHalfPi
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.RotationXHalfPi
+[       OK ] Matrix4.RotationXHalfPi (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.RotationXHalfPi" end time: Apr 30 12:58 UTC
+"Matrix4.RotationXHalfPi" time elapsed: 00:00:00
+----------------------------------------------------------
+
+78/87 Testing: Matrix4.RotationYHalfPi
+78/87 Test: Matrix4.RotationYHalfPi
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.RotationYHalfPi" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.RotationYHalfPi" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.RotationYHalfPi
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.RotationYHalfPi
+[       OK ] Matrix4.RotationYHalfPi (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.RotationYHalfPi" end time: Apr 30 12:58 UTC
+"Matrix4.RotationYHalfPi" time elapsed: 00:00:00
+----------------------------------------------------------
+
+79/87 Testing: Matrix4.RotationZHalfPi
+79/87 Test: Matrix4.RotationZHalfPi
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.RotationZHalfPi" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.RotationZHalfPi" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.RotationZHalfPi
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.RotationZHalfPi
+[       OK ] Matrix4.RotationZHalfPi (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.RotationZHalfPi" end time: Apr 30 12:58 UTC
+"Matrix4.RotationZHalfPi" time elapsed: 00:00:00
+----------------------------------------------------------
+
+80/87 Testing: Matrix4.RotationXFullCircleIsIdentity
+80/87 Test: Matrix4.RotationXFullCircleIsIdentity
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.RotationXFullCircleIsIdentity" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.RotationXFullCircleIsIdentity" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.RotationXFullCircleIsIdentity
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.RotationXFullCircleIsIdentity
+[       OK ] Matrix4.RotationXFullCircleIsIdentity (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.RotationXFullCircleIsIdentity" end time: Apr 30 12:58 UTC
+"Matrix4.RotationXFullCircleIsIdentity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+81/87 Testing: Matrix4.MultiplyByIdentityIsUnchanged
+81/87 Test: Matrix4.MultiplyByIdentityIsUnchanged
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.MultiplyByIdentityIsUnchanged" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.MultiplyByIdentityIsUnchanged" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.MultiplyByIdentityIsUnchanged
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.MultiplyByIdentityIsUnchanged
+[       OK ] Matrix4.MultiplyByIdentityIsUnchanged (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.MultiplyByIdentityIsUnchanged" end time: Apr 30 12:58 UTC
+"Matrix4.MultiplyByIdentityIsUnchanged" time elapsed: 00:00:00
+----------------------------------------------------------
+
+82/87 Testing: Matrix4.MultiplyTwoTranslations
+82/87 Test: Matrix4.MultiplyTwoTranslations
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.MultiplyTwoTranslations" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.MultiplyTwoTranslations" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.MultiplyTwoTranslations
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.MultiplyTwoTranslations
+[       OK ] Matrix4.MultiplyTwoTranslations (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.MultiplyTwoTranslations" end time: Apr 30 12:58 UTC
+"Matrix4.MultiplyTwoTranslations" time elapsed: 00:00:00
+----------------------------------------------------------
+
+83/87 Testing: Matrix4.InverseOfIdentityIsIdentity
+83/87 Test: Matrix4.InverseOfIdentityIsIdentity
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.InverseOfIdentityIsIdentity" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.InverseOfIdentityIsIdentity" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.InverseOfIdentityIsIdentity
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.InverseOfIdentityIsIdentity
+[       OK ] Matrix4.InverseOfIdentityIsIdentity (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.InverseOfIdentityIsIdentity" end time: Apr 30 12:58 UTC
+"Matrix4.InverseOfIdentityIsIdentity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+84/87 Testing: Matrix4.InverseOfTranslationUndoesMovePoint
+84/87 Test: Matrix4.InverseOfTranslationUndoesMovePoint
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.InverseOfTranslationUndoesMovePoint" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.InverseOfTranslationUndoesMovePoint" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.InverseOfTranslationUndoesMovePoint
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.InverseOfTranslationUndoesMovePoint
+[       OK ] Matrix4.InverseOfTranslationUndoesMovePoint (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.InverseOfTranslationUndoesMovePoint" end time: Apr 30 12:58 UTC
+"Matrix4.InverseOfTranslationUndoesMovePoint" time elapsed: 00:00:00
+----------------------------------------------------------
+
+85/87 Testing: Matrix4.MultiplyByInverseIsIdentity
+85/87 Test: Matrix4.MultiplyByInverseIsIdentity
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.MultiplyByInverseIsIdentity" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.MultiplyByInverseIsIdentity" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.MultiplyByInverseIsIdentity
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.MultiplyByInverseIsIdentity
+[       OK ] Matrix4.MultiplyByInverseIsIdentity (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.MultiplyByInverseIsIdentity" end time: Apr 30 12:58 UTC
+"Matrix4.MultiplyByInverseIsIdentity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+86/87 Testing: Matrix4.TransformAABBByTranslation
+86/87 Test: Matrix4.TransformAABBByTranslation
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.TransformAABBByTranslation" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.TransformAABBByTranslation" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.TransformAABBByTranslation
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.TransformAABBByTranslation
+[       OK ] Matrix4.TransformAABBByTranslation (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.TransformAABBByTranslation" end time: Apr 30 12:58 UTC
+"Matrix4.TransformAABBByTranslation" time elapsed: 00:00:00
+----------------------------------------------------------
+
+87/87 Testing: Matrix4.TransformAABBByScale
+87/87 Test: Matrix4.TransformAABBByScale
+Command: "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests" "--gtest_filter=Matrix4.TransformAABBByScale" "--gtest_also_run_disabled_tests"
+Directory: /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test
+"Matrix4.TransformAABBByScale" start time: Apr 30 12:58 UTC
+Output:
+----------------------------------------------------------
+Running main() from /home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Matrix4.TransformAABBByScale
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Matrix4
+[ RUN      ] Matrix4.TransformAABBByScale
+[       OK ] Matrix4.TransformAABBByScale (0 ms)
+[----------] 1 test from Matrix4 (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Matrix4.TransformAABBByScale" end time: Apr 30 12:58 UTC
+"Matrix4.TransformAABBByScale" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Apr 30 12:58 UTC

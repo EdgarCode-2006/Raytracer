@@ -12,7 +12,6 @@ namespace RayTracer
         finalColor.x() += (localColor._r) * (throughput.x() + emission);
         finalColor.y() += (localColor._g) * (throughput.y() + emission);
         finalColor.z() += (localColor._b) * (throughput.z() + emission);
-
     }
 
     static void initializeIntersection(
@@ -39,7 +38,7 @@ namespace RayTracer
                 rayData.throughput,
                 currentRayData.depth + 1,
             };
-            rayQueue.push(newRay); 
+            rayQueue.push(newRay);
         }
         nextRays.clear();
     }
@@ -50,16 +49,13 @@ namespace RayTracer
         Math::Vector3D finalColor = {0.0, 0.0, 0.0};
         rayQueue.push(ray); // initial ray
 
-        // loop until the queue is done.
         while (!rayQueue.empty()) {
             Ray currentRay = rayQueue.front();
             rayQueue.pop();
 
-            // check if the rays is at max depth or still has energy.
             if (currentRay.depth >= MAX_DEPTH || currentRay.throughput.length() < MIN_THROUGHPUT_LENGTH)
                 continue;
 
-            // check for collision using the TLAS.
             const TLASHit tlasHit = scene->tlas->traverse(currentRay);
             if (!tlasHit.hasHit()) {
                 const Graphic::Pixel envPixel = scene->lights.getHDRIPixel(currentRay.direction * -1);
@@ -68,8 +64,7 @@ namespace RayTracer
             }
             const Instance &instance = scene->world.getInstance(tlasHit.instanceIndex());
             const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
-    
-            // initialize the intersection struct with the new TLAS data.
+
             initializeIntersection(intersection,
                 const_cast<Graphic::Material*>(&instance.getMaterial()),
                 currentRay.origin + currentRay.direction * tlasHit.t(),
@@ -77,15 +72,12 @@ namespace RayTracer
                 currentRay.direction);
             intersection.throughput = currentRay.throughput;
 
-            // execute the plugin pipeline which
-            // can potentially add to the currentQUeue of rays.
             for (auto &rayFeature : _pipeline) {
                 if (rayFeature->isActive())
                     rayFeature->process(scene, intersection);
             }
-    
+
             integrateColor(finalColor, currentRay.throughput, intersection.localColor);
-    
             instanceNewRays(intersection.nextRays, currentRay, rayQueue);
         }
         return {
