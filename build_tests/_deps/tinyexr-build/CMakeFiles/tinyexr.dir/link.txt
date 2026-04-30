@@ -1,0 +1,2 @@
+/nix/store/rdc1jnyw74mwr2gszqc5zwi433zxs089-gcc-wrapper-13.2.0/bin/ar qc libtinyexr.a CMakeFiles/tinyexr.dir/tinyexr.cc.o
+/nix/store/rdc1jnyw74mwr2gszqc5zwi433zxs089-gcc-wrapper-13.2.0/bin/ranlib libtinyexr.a

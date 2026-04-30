@@ -1,0 +1,11 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/nix/store/z98wicx6x78vlyksv69axn5zqwdah5l8-cmake-3.29.2/share/cmake-3.29/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:16 (project)"
+    message: |
+      The system is: Linux - 6.12.80 - x86_64
+...
