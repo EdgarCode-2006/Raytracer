@@ -3,7 +3,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <poll.h>
 #include <netinet/in.h>
 #include <unordered_map>
 #include <memory>
@@ -19,11 +18,12 @@
 #include "entities/Light.hpp"
 #include "integrators/rayFeature/IRayFeature.hpp"
 #include "integrators/featureLoader/DLLoader.hpp"
+#include <memory>
 
 #define TILE_DIM 64
 #define MIN_THROUGHPUT_LENGTH 0.001
 #define MAX_DEPTH 5
-#define RAYS_PER_PIXEL 4
+#define RAYS_PER_PIXEL 8
 
 namespace RayTracer {
     struct RenderData
@@ -47,6 +47,7 @@ namespace RayTracer {
             void loadRayFeatures();
             
         private:
+            Graphic::Pixel consumeRays(Ray &ray, RenderData &data, SurfaceIntersection &intersection);
             void computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels);
             void setPluginState(const std::string &pluginName, const bool &state);
             void getPixelColor(int x, int y, const Camera &cam, Graphic::Pixel *pixels);

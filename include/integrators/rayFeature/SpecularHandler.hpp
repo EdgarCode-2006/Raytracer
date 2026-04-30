@@ -10,7 +10,7 @@ namespace RayTracer {
         public:
             SpecularHandler() : ARayFeature("SpecularHandler") {};
             void process(RenderData &data, SurfaceIntersection &interaction) override;
-            int getPriority() const noexcept override {return 10;};
+            int getPriority() const noexcept override {return 0;};
     };
 }
 #endif

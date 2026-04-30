@@ -5,10 +5,10 @@
 #include "opti/BVH/TLASHit.hpp"
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
-#include <memory>
+#include <utility>
 
 namespace RayTracer {
-    Integrator::Integrator(const Scene& scene) : _scene(scene)
+    Integrator::Integrator(const Scene &scene) : _scene(scene)
     {
         this->_threadPool = std::make_unique<optimization::ThreadPool>(15); // init thread pool with 4 threads.
         try {
