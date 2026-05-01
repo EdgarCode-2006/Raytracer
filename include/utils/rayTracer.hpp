@@ -5,15 +5,22 @@
 
 namespace RayTracer {
         
-    class Ray {
+    struct Ray {
         public:
-            Ray(Math::Vector3D origin, Math::Vector3D direction)
+            Ray(Math::Vector3D ro,
+                Math::Vector3D rd,
+                Math::Vector3D throughput = {1.0, 1.0, 1.0},
+                int depth = 0)
             {
-                this->origin = origin;
-                this->direction = direction;
+                this->origin = ro;
+                this->direction= rd;
+                this->throughput = throughput;
+                this->depth = depth;
             }
             Math::Vector3D origin;
             Math::Vector3D direction;
+            Math::Vector3D throughput;
+            int depth;
     };
     
     class Triangle {

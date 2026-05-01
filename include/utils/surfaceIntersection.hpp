@@ -11,8 +11,7 @@ namespace RayTracer {
         Math::Vector3D rayDir;
         Graphic::Material *mat;
         Graphic::Pixel localColor;
-        RayTracer::Ray nextRay;
-        bool shouldBounce;
+        std::vector<Ray> nextRays;
         Math::Vector3D throughput;
 
         Math::Vector3D getOmega() {
@@ -30,7 +29,6 @@ namespace RayTracer {
             double y = r * std::sin(phi);
             double z = std::sqrt(1 - r1);
 
-            // Build coordinate system from normal
             Math::Vector3D n = normal;
             Math::Vector3D ref = (std::abs(n.z()) < 0.999) ? Math::Vector3D(0, 0, 1) : Math::Vector3D(1, 0, 0);
             Math::Vector3D tangent = n.cross(ref).normalize();

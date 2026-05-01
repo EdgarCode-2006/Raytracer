@@ -8,6 +8,13 @@ namespace RayTracer {
         return Fo + (1.0 - Fo) * pow((1.0 - cosi), 5);
     }
 
+    static void reflectRay(SurfaceIntersection &interaction, double cosi, Math::Vector3D N, double Re)
+    {
+        Math::Vector3D reflectionDir = (interaction.rayDir - N * (2.0f * cosi)).normalize();
+        Math::Vector3D throughput = interaction.throughput * Re;
+        interaction.nextRays.push_back({interaction.hitPoint + (N * 0.001f), reflectionDir, throughput, 0});
+    }
+
     void SpecularHandler::process(RenderData &data, SurfaceIntersection &interaction)
     {
         Math::Vector3D N = interaction.normal;
@@ -16,7 +23,8 @@ namespace RayTracer {
         float cosi = I.dot(N);
 
         double n1 = 1.0;
-        double n2 = 1.8;
+        double n2 = interaction.mat->ior;
+
         bool entering = cosi < 0.0;
 
         if (entering) {
@@ -28,21 +36,26 @@ namespace RayTracer {
 
         float eta = (float)n1/n2;
         float k = 1.0 - (eta * eta) * (1.0 - (cosi * cosi));
-        
-        interaction.shouldBounce = true;
 
-        if (k < 0.0f) {
+        double F = calculateFresnel(n1, n2, cosi);
+        double Re = F * interaction.mat->reflectivity; 
+        double Ra = (1 - F) * interaction.mat->refractivity;
+
+        if (k < 0.0 || Re >= 0.001) {
             // reflection
-            Math::Vector3D reflectionDir = (I - N * (2.0f * cosi)).normalize();
-            interaction.nextRay = Ray(interaction.hitPoint + (N * 0.001f), reflectionDir);
-        } else {
+            reflectRay(interaction, cosi, N, Re);
+        }
+        if (k >= 0.0 && Ra >= 0.001){
             // refraction
-            double FValue = calculateFresnel(n1, n2, cosi);
             Math::Vector3D refractionDir = (I * eta) + (N * (eta * cosi - sqrt(k)));
             refractionDir = refractionDir.normalize();
-            interaction.nextRay = Ray(interaction.hitPoint - (N * 0.001f), refractionDir);
-            interaction.throughput *= (1 - FValue);
+            Math::Vector3D throughput = interaction.throughput * Ra;
+            interaction.nextRays.push_back({interaction.hitPoint + (refractionDir* 0.001f), refractionDir, throughput, 0});
         }
+        double diffuseMultiplier = std::max(0.0, 1.0 - (Ra + Re));
+        interaction.localColor._r *= diffuseMultiplier;
+        interaction.localColor._g *= diffuseMultiplier;
+        interaction.localColor._b *= diffuseMultiplier;
     }
 }
 extern "C" RayTracer::IRayFeature *getInstance() {

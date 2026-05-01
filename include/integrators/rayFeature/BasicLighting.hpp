@@ -10,7 +10,7 @@ namespace RayTracer {
         public:
             BasicLighting() : ARayFeature("BasicLighting") {};
             void process(RenderData &data, SurfaceIntersection &interaction) override;
-            int getPriority() const noexcept override {return 0;};
+            int getPriority() const noexcept override {return 11;};
     };
 }
 #endif
