@@ -11,7 +11,7 @@ namespace RayTracer {
     
             bool isLeaf() const noexcept { return count > 0;}
     
-            RayTracer::AABB bounds;
+            Math::AABB bounds;
             uint32_t leftOrFirst = 0;
             uint32_t count = 0;
     };

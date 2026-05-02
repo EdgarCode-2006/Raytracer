@@ -38,12 +38,12 @@ namespace Graphic {
                     ImGui::PopStyleColor();
 
                 if (open) {
-                    const RayTracer::Matrix4& t = scene.getInstance(i).getTransform();
+                    const Math::Matrix4& t = scene.getInstance(i).getTransform();
                     float pos[3] = { (float)t.m[0][3], (float)t.m[1][3], (float)t.m[2][3] };
 
                     if (ImGui::DragFloat3("Position", pos, 0.1f)) {
                         scene.getInstance(i).setTransform(
-                            RayTracer::Matrix4{}.translation(pos[0], pos[1], pos[2])
+                            Math::Matrix4{}.translation(pos[0], pos[1], pos[2])
                         );
                         scene.buildTLAS();
                     }

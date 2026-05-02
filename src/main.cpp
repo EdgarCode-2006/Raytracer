@@ -56,10 +56,12 @@ int main(int argc, char** argv)
         scene.reserveMeshes(1, triangles.size(), 2);
         uint32_t meshId = scene.addMesh(std::move(triangles));
         Graphic::Material mat;
-        mat.emission = 1.3;
-        mat.color = Graphic::Pixel(50, 100, 255, 255);
-        scene.addInstance(meshId, RayTracer::Matrix4{}, mat);
-        scene.addInstance(meshId, RayTracer::Matrix4{}, mat);
+        mat.color = Graphic::Pixel(200, 230, 255, 255);
+        mat.ior = 1.33;
+        mat.refractivity = 0.69;
+        mat.reflectivity = 0.4;
+        scene.addInstance(meshId, Math::Matrix4{}, mat);
+        scene.addInstance(meshId, Math::Matrix4{}, mat);
         scene.buildTLAS();
         scene.getCamera().fitToScene(scene.getAllTriangles());
 
