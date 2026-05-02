@@ -99,7 +99,7 @@ namespace RayTracer
     Graphic::Pixel Integrator::shootRay(Ray &ray)
     {
         RenderData data = {
-            .lights = this->_scene.getLights(),
+            .lights = this->_scene.getDirectionalLights(),
             .ambientLight = this->_scene.getAmbientLight(),
             .scene = this->_scene
         };

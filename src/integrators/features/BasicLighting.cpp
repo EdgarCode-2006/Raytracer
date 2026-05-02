@@ -5,7 +5,7 @@ namespace RayTracer {
     {
         double totalIntensity = data.scene.getAmbientLight().intensity;
 
-        for (const auto& light : data.scene.getLights()) {
+        for (const auto& light : data.scene.getDirectionalLights()) {
             Math::Vector3D lightDir = light.direction * -1;
             double diff = interaction.normal.dot(lightDir);
             

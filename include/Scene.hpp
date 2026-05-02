@@ -5,6 +5,9 @@
 #include <span>
 #include <vector>
 
+#include "GeometricData.hpp"
+#include "World.hpp"
+#include "Lights.hpp"
 #include "entities/Camera.hpp"
 #include "opti/BVH/BVH.hpp"
 #include "opti/BVH/Instance.hpp"
@@ -18,101 +21,68 @@
 #include <iostream>
 
 namespace RayTracer {
-
-    struct MeshRange {
-        uint32_t start;
-        uint32_t count;
-    };
-
     class Scene {
         public:
-            Scene(const int width, const int height);
+            Scene(const int width, const int height) : _camera(width, height) {};
             ~Scene() = default;
 
             Scene(const Scene&) = delete;
-            Scene& operator=(const Scene&) = delete;
-            Scene(Scene&&) = default;
-            Scene& operator=(Scene&&) = default;
+            Scene &operator=(const Scene &) = delete;
+            Scene(Scene &&) = default;
+            Scene &operator=(Scene &&) = default;
 
-            void reserveMeshes(uint32_t meshCount, uint32_t totalTriangles, uint32_t totalInstances) {
-                _allTriangles.reserve(totalTriangles);
-                _meshRanges.reserve(meshCount);
-                _blases.reserve(meshCount);
-                _instances.reserve(totalInstances);
+            void reserve(uint32_t meshCount, uint32_t totalTriangles, uint32_t totalInstances) {
+                _geometry.reserve(meshCount, totalTriangles);
+                _world.reserve(totalInstances);
             }
 
-            uint32_t addMesh(std::vector<Triangle> tris) {
-                const uint32_t id = static_cast<uint32_t>(_meshRanges.size());
-                const uint32_t start = static_cast<uint32_t>(_allTriangles.size());
-                const uint32_t count = static_cast<uint32_t>(tris.size());
+            uint32_t addMesh(std::vector<Triangle> tris) {return _geometry.addMesh(std::move(tris));}
 
-                _allTriangles.insert(_allTriangles.end(), std::make_move_iterator(tris.begin()), std::make_move_iterator(tris.end()));
-                _meshRanges.push_back({start, count});
-
-                const auto startChrono = std::chrono::high_resolution_clock::now();
-
-                _blases.emplace_back(
-                    std::span<const Triangle>(_allTriangles.data() + start, count)
-                );
-                const auto endChrono = std::chrono::high_resolution_clock::now();
-                return id;
-            }
-
-            Instance &addInstance(uint32_t meshId, const Math::Matrix4&transform = Math::Matrix4{}, const Graphic::Material &mat = Graphic::Material{}) {
-                const MeshRange &r = _meshRanges[meshId];
-                Instance &inst = _instances.emplace_back(
-                    &_blases[meshId],
-                    _allTriangles.data() + r.start,
-                    r.count,
-                    transform
-                );
-                inst.setMaterial(mat);
-                return inst;
+            Instance& addInstance(uint32_t meshId,
+                const Math::Matrix4& transform = Math::Matrix4{},
+                const Graphic::Material& mat = Graphic::Material{}) {
+                return _world.addInstance(_geometry, meshId, transform, mat);
             }
 
             void buildTLAS() {
-                _tlas.build(std::span<const Instance>(_instances));
+                _world.buildTLAS();
             }
+            
+            void loadHDRI(const std::string& path) { _lights.loadHDRI(path); }
+            GeometricData &getGeometry() noexcept {return _geometry;}
+            const GeometricData &getGeometry() const noexcept {return _geometry;}
+            
+            World &getWorld() noexcept {return _world;}
+            const World &getWorld() const noexcept {return _world;}
 
-            const Graphic::Pixel getHDRIPixel(const Math::Vector3D &vec) const { return this->_hdri.getPixelColorFromVec(vec); }
+            Instance &getInstance(uint32_t index) noexcept {return _world.getInstance(index);}
+            const Instance &getInstance(uint32_t index) const noexcept {return _world.getInstance(index);}
+            uint32_t getInstanceCount() const noexcept {return _world.getInstanceCount();}
+            const TLAS &getTLAS() const noexcept {return _world.getTLAS();}
 
-            const TLAS &getTLAS() const noexcept { return _tlas; }
-            Instance& getInstance(uint32_t i) noexcept { return _instances[i]; }
-            const Instance &getInstance(uint32_t i) const noexcept { return _instances[i]; }
 
-            void setSelectedInstance(int32_t i) noexcept { _selectedInstance = i; }
-            int32_t getSelectedInstance() const noexcept { return _selectedInstance; }
+            Camera &getCamera() noexcept {return _camera;}
+            const Camera &getCamera() const noexcept {return _camera;}
 
-            std::span<const Triangle> getTriangles(uint32_t meshId) const noexcept {
-                const MeshRange &r = _meshRanges[meshId];
-                return {_allTriangles.data() + r.start, r.count};
-            }
+            Lights &getLights() noexcept {return _lights;}
+            const Lights &getLights() const noexcept {return _lights;}
 
-            const std::vector<Triangle> &getAllTriangles() const noexcept {
-                return _allTriangles;
-            }
+            void addLight(const DirectionalLight &light) {_lights.addLight(light);}
+            void setAmbientLight(const AmbientLight &light) {_lights.setAmbientLight(light);}
+            const std::vector<DirectionalLight> &getDirectionalLights() const {return _lights.getLights();}
+            const AmbientLight &getAmbientLight() const {return _lights.getAmbientLight();}
+            const Graphic::Pixel getHDRIPixel(const Math::Vector3D &v) const {return _lights.getHDRIPixel(v);}
 
-            Camera& getCamera() noexcept { return _camera; }
-            const Camera& getCamera() const noexcept { return _camera; }
 
-            void addLight(const DirectionalLight& light);
-            void setAmbientLight(const AmbientLight& light);
-            const std::vector<DirectionalLight>& getLights() const { return _directionalLights; }
-            const AmbientLight& getAmbientLight() const { return _ambientLight; }
-            uint32_t getInstanceCount() { return this->_instances.size(); }
+            void setSelectedInstance(int32_t i) noexcept  {_selectedInstance = i;}
+            int32_t getSelectedInstance() const noexcept  {return _selectedInstance;}
 
         private:
-            std::vector<Triangle> _allTriangles;
-            std::vector<MeshRange> _meshRanges;
-            std::vector<BVH> _blases;
-            std::vector<Instance> _instances;
-            TLAS _tlas;
-
+            GeometricData _geometry;
+            World _world;
             Camera _camera;
-            std::vector<DirectionalLight> _directionalLights;
-            AmbientLight _ambientLight;
+            Lights _lights;
             int32_t _selectedInstance = -1;
-            HDRI _hdri;
     };
 }
 #endif
