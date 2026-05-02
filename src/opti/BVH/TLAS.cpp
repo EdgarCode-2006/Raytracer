@@ -43,7 +43,7 @@ namespace RayTracer {
         if (instanceCount == 0)
             return;
 
-        AABB sceneBounds;
+        Math::AABB sceneBounds;
         for (const auto &instance : _instances)
             sceneBounds.expand(instance.worldAABB().center());
         
@@ -118,7 +118,7 @@ namespace RayTracer {
             _nodes[nodeIndex].count = 0;
             _buildLBVH(left, first, first);
             _buildLBVH(right, last, last);
-            AABB box;
+            Math::AABB box;
             box.expand(_nodes[left].bounds);
             box.expand(_nodes[right].bounds);
             _nodes[nodeIndex].bounds = box;
@@ -134,7 +134,7 @@ namespace RayTracer {
         _buildLBVH(left, first, split);
         _buildLBVH(right, split + 1, last);
 
-        AABB box;
+        Math::AABB box;
         box.expand(_nodes[left].bounds);
         box.expand(_nodes[right].bounds);
         _nodes[nodeIndex].bounds = box;

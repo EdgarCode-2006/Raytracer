@@ -2,7 +2,7 @@
 #include "utils/math.hpp"
 #include <limits>
 
-namespace RayTracer {
+namespace Math {
     AABB::AABB() noexcept : _min(
         std::numeric_limits<double>::infinity(),
         std::numeric_limits<double>::infinity(),
@@ -13,7 +13,7 @@ namespace RayTracer {
         -std::numeric_limits<double>::infinity()
     ) {}
 
-    void AABB::expand(const Math::Vector3D &p) noexcept {
+    void AABB::expand(const Vector3D &p) noexcept {
         _min[0] = std::min(_min[0], p[0]);
         _min[1] = std::min(_min[1], p[1]);
         _min[2] = std::min(_min[2], p[2]);
@@ -37,11 +37,11 @@ namespace RayTracer {
         return _min.x() <= _max.x() && _min.y() <= _max.y() && _min.z() <= _max.z();
     }
 
-    Math::Vector3D AABB::center() const noexcept {
+    Vector3D AABB::center() const noexcept {
         return (_min + _max) * 0.5;
     }
 
-    Math::Vector3D AABB::size() const noexcept {
+    Vector3D AABB::size() const noexcept {
         return _max - _min;
     }
 
@@ -54,6 +54,6 @@ namespace RayTracer {
         return 2.0 * (dx * dy + dy * dz + dx * dz);
     }
 
-    const Math::Vector3D& AABB::min() const noexcept { return _min; }
-    const Math::Vector3D& AABB::max() const noexcept { return _max; }
+    const Vector3D& AABB::min() const noexcept { return _min; }
+    const Vector3D& AABB::max() const noexcept { return _max; }
 }

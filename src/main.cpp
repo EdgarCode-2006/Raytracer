@@ -60,8 +60,8 @@ int main(int argc, char** argv)
         mat.ior = 1.33;
         mat.refractivity = 0.69;
         mat.reflectivity = 0.4;
-        scene.addInstance(meshId, RayTracer::Matrix4{}, mat);
-        scene.addInstance(meshId, RayTracer::Matrix4{}, mat);
+        scene.addInstance(meshId, Math::Matrix4{}, mat);
+        scene.addInstance(meshId, Math::Matrix4{}, mat);
         scene.buildTLAS();
         scene.getCamera().fitToScene(scene.getAllTriangles());
 

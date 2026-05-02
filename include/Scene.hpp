@@ -58,7 +58,7 @@ namespace RayTracer {
                 return id;
             }
 
-            Instance &addInstance(uint32_t meshId, const Matrix4 &transform = Matrix4{}, const Graphic::Material &mat = Graphic::Material{}) {
+            Instance &addInstance(uint32_t meshId, const Math::Matrix4&transform = Math::Matrix4{}, const Graphic::Material &mat = Graphic::Material{}) {
                 const MeshRange &r = _meshRanges[meshId];
                 Instance &inst = _instances.emplace_back(
                     &_blases[meshId],

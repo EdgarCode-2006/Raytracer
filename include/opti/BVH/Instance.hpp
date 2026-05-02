@@ -12,12 +12,12 @@
 namespace RayTracer {
     class Instance {
         public:
-            Instance(const BVH *blas, const Triangle *triangles, uint32_t count, const Matrix4 &transform = Matrix4{}) noexcept : 
+            Instance(const BVH *blas, const Triangle *triangles, uint32_t count, const Math::Matrix4&transform = Math::Matrix4{}) noexcept : 
             _blas(blas), _triangles(triangles), _triCount(count) {
                 setTransform(transform);
             }
 
-            void setTransform(const Matrix4 &t) noexcept {
+            void setTransform(const Math::Matrix4&t) noexcept {
                 _transform = t;
                 _invTransform = t.inverse();
                 _worldAABB = _transform.transformAABB(_blas->rootBounds());
@@ -27,8 +27,8 @@ namespace RayTracer {
                 return _blas->traverse(_invTransform.transformRay(worldRay));
             };
             
-            const Matrix4& getTransform() const noexcept { return _transform; }
-            const AABB &worldAABB() const noexcept { return _worldAABB; }
+            const Math::Matrix4& getTransform() const noexcept { return _transform; }
+            const Math::AABB &worldAABB() const noexcept { return _worldAABB; }
             const Triangle &getPrimitive(uint32_t idx) const noexcept { return _triangles[idx]; }
 
             Graphic::Material& getMaterial() noexcept { return _material; }
@@ -39,9 +39,9 @@ namespace RayTracer {
             const BVH *_blas;
             const Triangle *_triangles;
             uint32_t _triCount;
-            Matrix4 _transform;
-            Matrix4 _invTransform;
-            AABB _worldAABB;
+            Math::Matrix4 _transform;
+            Math::Matrix4 _invTransform;
+            Math::AABB _worldAABB;
             Graphic::Material _material;
     };
 }

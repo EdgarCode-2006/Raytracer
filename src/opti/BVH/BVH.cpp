@@ -100,9 +100,9 @@ namespace RayTracer {
         _subdivide(rightIdx, mid, (first + count) - mid, depth + 1);
     }
 
-    bool BVH::_splitSAH(uint32_t first, uint32_t count, const AABB &nodeBounds, const AABB &centBounds, int &bestAxis, double &bestPos) const noexcept {
+    bool BVH::_splitSAH(uint32_t first, uint32_t count, const Math::AABB &nodeBounds, const Math::AABB &centBounds, int &bestAxis, double &bestPos) const noexcept {
         struct Bucket {
-            AABB bounds;
+            Math::AABB bounds;
             int count = 0;
         };
 
@@ -131,9 +131,9 @@ namespace RayTracer {
                 buckets[bucketIdx].count++;
             }
 
-            AABB leftBounds[BUCKETS];
+            Math::AABB leftBounds[BUCKETS];
             int leftCount[BUCKETS] = {};
-            AABB left;
+            Math::AABB left;
             int lc = 0;
 
             for (int i = 0; i < BUCKETS; i++) {
@@ -143,7 +143,7 @@ namespace RayTracer {
                 leftCount[i] = lc;
             }
 
-            AABB right;
+            Math::AABB right;
             int rc = 0;
             for (int split = BUCKETS - 1; split >= 1; split--) {
                 right.expand(buckets[split].bounds);

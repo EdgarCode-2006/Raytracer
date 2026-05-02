@@ -2,7 +2,7 @@
 #define AABB_HPP_
 
 #include "utils/math.hpp"
-namespace RayTracer {
+namespace Math {
     class AABB {
         
         public:
