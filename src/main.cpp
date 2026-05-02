@@ -23,6 +23,7 @@ int main(int argc, char** argv)
         RayTracer::Scene scene(screenWidth, screenHeight);
         std::string arg = argv[1];
 
+
         if (arg.size() >= 4 && arg.substr(arg.size() - 4) == ".cfg") {
             RayTracer::SceneParser parser;
             parser.load(arg, scene);
