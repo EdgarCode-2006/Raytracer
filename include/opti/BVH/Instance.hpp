@@ -59,6 +59,7 @@ namespace RayTracer {
             const Graphic::Material &getMaterial() const noexcept {return _material;}
             void setMaterial(const Graphic::Material &mat) noexcept {_material = mat;}
 
+
         private:
             const GeometricData *_geometricData;
             uint32_t _meshId;
