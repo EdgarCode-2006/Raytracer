@@ -23,7 +23,6 @@ namespace RayTracer {
 
             void setTransform(const Math::Matrix4 &t) noexcept {
                 _transform    = t;
-
                 _invTransform = t.inverse();
                 _worldAABB    = _transform.transformAABB(_geometricData->getBLAS(_meshId).rootBounds());
             }
@@ -60,11 +59,9 @@ namespace RayTracer {
             const Graphic::Material &getMaterial() const noexcept {return _material;}
             void setMaterial(const Graphic::Material &mat) noexcept {_material = mat;}
 
-
         private:
             const GeometricData *_geometricData;
             uint32_t _meshId;
-
             Math::Matrix4 _transform;
             Math::Matrix4 _invTransform;
             Math::AABB _worldAABB;
