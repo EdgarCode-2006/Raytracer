@@ -41,9 +41,9 @@ set(IMGUI_SRC
 # 1. Core Library
 add_library(raytracer_core STATIC ${SRC} ${IMGUI_SRC})
 
-# THIS IS THE FIX: We use PUBLIC so anyone linking to raytracer_core 
+# THIS IS THE FIX: We use PUBLIC so anyone linking to raytracer_core
 # (like your features or main) automatically sees these folders.
-target_include_directories(raytracer_core PUBLIC 
+target_include_directories(raytracer_core PUBLIC
     "${CMAKE_SOURCE_DIR}/include"
     "${CMAKE_SOURCE_DIR}/include/utils"
     ${imgui_SOURCE_DIR}
@@ -62,7 +62,6 @@ macro(add_ray_feature FEATURE_NAME SRC_PATH)
     add_library(${FEATURE_NAME} SHARED ${SRC_PATH})
     # Linking to raytracer_core now automatically provides the includes
     target_link_libraries(${FEATURE_NAME} PRIVATE raytracer_core)
-    
     set_target_properties(${FEATURE_NAME} PROPERTIES
         PREFIX "" 
         SUFFIX ".so"
