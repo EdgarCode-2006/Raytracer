@@ -90,6 +90,7 @@ namespace RayTracer
 
     Graphic::Pixel Integrator::shootRay(Ray &ray, std::shared_ptr<const RenderScene> sceneLocked)
     {
+
         SurfaceIntersection intersection{
             .normal = {0, 0, 0},
             .hitPoint = {0, 0, 0},
