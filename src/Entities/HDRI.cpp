@@ -8,7 +8,24 @@ namespace RayTracer
     }
 
     HDRI::~HDRI() {
-        free(this->_rgbBuffer);
+        if (_rgbBuffer) {
+            free(this->_rgbBuffer);
+            this->_rgbBuffer = nullptr;
+        }
+    }
+
+    HDRI& HDRI::operator=(HDRI&& other) noexcept {
+        if (this != &other) {
+            if (_rgbBuffer)
+                free(_rgbBuffer);
+            _rgbBuffer   = other._rgbBuffer;
+            _width       = other._width;
+            _height      = other._height;
+            _size        = other._size;
+            _defaultColor = other._defaultColor;
+            other._rgbBuffer = nullptr;
+        }
+        return *this;
     }
 
     void HDRI::initHDRIFromFilePath(const std::string &filePath)

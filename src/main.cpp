@@ -53,7 +53,12 @@ int main(int argc, char** argv)
             return 84;
         }
         RayTracer::Scene scene(screenWidth, screenHeight);
-        scene.reserveMeshes(1, triangles.size(), 2);
+        scene.reserve(1, triangles.size(), 2);
+        try {
+            scene.loadHDRI("assets/HDRIs/HDRI.exr");
+        } catch (const std::exception& e) {
+            std::cerr << "HDRI load failed: " << e.what() << '\n';
+        }
         uint32_t meshId = scene.addMesh(std::move(triangles));
         Graphic::Material mat;
         mat.color = Graphic::Pixel(200, 230, 255, 255);
@@ -63,7 +68,7 @@ int main(int argc, char** argv)
         scene.addInstance(meshId, Math::Matrix4{}, mat);
         scene.addInstance(meshId, Math::Matrix4{}, mat);
         scene.buildTLAS();
-        scene.getCamera().fitToScene(scene.getAllTriangles());
+        scene.getCamera().fitToScene(scene.getGeometry().getAllTriangles());
 
         RayTracer::AmbientLight ambient;
         ambient.intensity = 0.2;
