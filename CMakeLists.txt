@@ -38,6 +38,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(tinyexr)
 
+# --- stb_image ---
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG        master  # Or a specific hash for stability
+)
+FetchContent_MakeAvailable(stb)
+
 # --- COMPILATION OPTIONS ---
 # Note: Moved these to specific targets later for better practice
 add_compile_options(-fPIC) 
@@ -59,7 +67,14 @@ set(IMGUI_SRC
 )
 
 add_library(raytracer_core STATIC ${SRC} ${IMGUI_SRC})
-target_include_directories(raytracer_core PUBLIC include include/utils ${imgui_SOURCE_DIR} ${rlimgui_SOURCE_DIR} ${tinyexr_SOURCE_DIR})
+target_include_directories(raytracer_core PUBLIC
+    include
+    include/utils
+    ${imgui_SOURCE_DIR}
+    ${rlimgui_SOURCE_DIR}
+    ${tinyexr_SOURCE_DIR}
+    ${stb_SOURCE_DIR}
+)
 target_compile_options(raytracer_core PRIVATE -fPIC)
 
 target_link_libraries(raytracer_core PRIVATE tinyexr)
@@ -67,7 +82,10 @@ target_link_libraries(raytracer_core PRIVATE tinyexr)
 macro(add_ray_feature FEATURE_NAME SRC_PATH)
     add_library(${FEATURE_NAME} SHARED ${SRC_PATH})
     target_link_libraries(${FEATURE_NAME} PRIVATE raytracer_core)
-    target_include_directories(${FEATURE_NAME} PRIVATE ${tinyexr_SOURCE_DIR})
+    target_include_directories(${FEATURE_NAME} PRIVATE
+        ${tinyexr_SOURCE_DIR}
+        ${stb_SOURCE_DIR}
+    )
     set_target_properties(${FEATURE_NAME} PROPERTIES
         PREFIX "" SUFFIX ".so"
         LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"

@@ -5,12 +5,13 @@ namespace RayTracer
     static void integrateColor(
         Math::Vector3D &finalColor,
         const Math::Vector3D &throughput,
-        const Graphic::Pixel &localColor
+        const Graphic::Pixel &localColor,
+        const float emission = 0.0
     )
     {
-        finalColor.x() += (localColor._r) * throughput.x();
-        finalColor.y() += (localColor._g) * throughput.y();
-        finalColor.z() += (localColor._b) * throughput.z();
+        finalColor.x() += (localColor._r) * (throughput.x() + emission);
+        finalColor.y() += (localColor._g) * (throughput.y() + emission);
+        finalColor.z() += (localColor._b) * (throughput.z() + emission);
 
     }
 
@@ -109,6 +110,49 @@ namespace RayTracer
             .localColor = {0, 0, 0, 255},
             .throughput = {1.0, 1.0, 1.0}
         };
+<<<<<<< HEAD
         return consumeRays(ray, data, intersection);
+=======
+
+        for (size_t i = 0; i < MAX_DEPTH; i++) {
+            const TLASHit tlasHit = _scene.getTLAS().traverse(ray);
+            if (!tlasHit.hasHit()) {
+                const Graphic::Pixel envPixel = data.scene.getHDRIPixel(ray.direction * -1);
+                integrateColor(finalColor, throughput, envPixel);
+                break;
+            }
+            const Instance &instance = _scene.getInstance(tlasHit.instanceIndex());
+            intersection.mat = const_cast<Graphic::Material*>(&instance.getMaterial());
+            const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
+
+            intersection.hitPoint = ray.origin + ray.direction * tlasHit.t();
+            intersection.normal = (tri.b() - tri.a()).cross(tri.c() - tri.a()).normalize();
+            intersection.rayDir = ray.direction;
+            intersection.shouldBounce = false;
+
+            for (auto &rayFeature : _pipeline) {
+                if (rayFeature->isActive())
+                    rayFeature->process(data, intersection);
+            }
+
+            integrateColor(finalColor, throughput, intersection.localColor, intersection.mat->emission);
+
+            if (!intersection.shouldBounce) break;
+
+            throughput.x() *= intersection.throughput.x();
+            throughput.y() *= intersection.throughput.y();
+            throughput.z() *= intersection.throughput.z();
+
+            ray = intersection.nextRay;
+
+            if (throughput.length() < MIN_THROUGHPUT_LENGTH) break;
+        }
+        return {
+            (unsigned char)std::min(255.0, finalColor.x()),
+            (unsigned char)std::min(255.0, finalColor.y()),
+            (unsigned char)std::min(255.0, finalColor.z()),
+            255
+        };
+>>>>>>> e23624f (feat: material emmission and setup for UVs)
     }
 } // namespace RayTracer
