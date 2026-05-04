@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include "utils/Matrix4.hpp"
 
-using RayTracer::Matrix4;
-using RayTracer::AABB;
+using Math::Matrix4;
+using Math::AABB;
 using Math::Vector3D;
 
 static constexpr double EPS = 1e-9;

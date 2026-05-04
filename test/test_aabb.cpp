@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "opti/BVH/AABB.hpp"
 
-using RayTracer::AABB;
+using Math::AABB;
 using Math::Vector3D;
 
 static constexpr double EPS = 1e-9;
