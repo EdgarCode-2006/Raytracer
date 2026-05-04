@@ -14,6 +14,7 @@ namespace RayTracer {
                 _snapShotQueue.push(scene);
             };
 
+
             std::shared_ptr<Frame> getAvailableFrame() {return this->_integrator->getAvailableFrame();};
             void stop() {this->_integrator->stop();};
             void instanceTiles(const Camera &cam) {this->_integrator->instanceTiles(cam);};
