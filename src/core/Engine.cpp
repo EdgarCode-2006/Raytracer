@@ -41,6 +41,7 @@ namespace RayTracer{
 
             cam.setWidth(currentWidth);
             cam.setHeight(currentHeight);
+            this->_currentFrame = std::make_shared<Frame>(currentWidth * currentHeight, 0);
 
             this->_renderer->resizeWindow(currentWidth, currentHeight);
             this->_integrationManager->instanceTiles(cam);
@@ -86,7 +87,7 @@ namespace RayTracer{
     void Engine::run()
     {
         Camera& cam = _scene.getCamera();
-        std::shared_ptr<Frame> currentFrame = std::make_shared<Frame>(cam.getWidth() * cam.getHeight(), 0);
+        _currentFrame = std::make_shared<Frame>(cam.getWidth() * cam.getHeight(), 0);
 
         while (this->_renderer->windowOpen()) {
             _frameCounter++;
@@ -99,12 +100,12 @@ namespace RayTracer{
                 this->generateSnapShot();
                 _sceneDirty = false;
             }
-            
+
             _integrationManager->renderSnapShot(cam);
             std::shared_ptr<Frame> tempFrame = _integrationManager->getAvailableFrame();
             if (tempFrame)
-                currentFrame = tempFrame;
-            _renderer->renderPixelBuffer(currentFrame->_pixelBuffer.data(), _scene, cam);
+                _currentFrame = tempFrame;
+            _renderer->renderPixelBuffer(_currentFrame->_pixelBuffer.data(), _scene, cam);
         }
         _integrationManager->stop();
         _integrationManager->waitForRendering();

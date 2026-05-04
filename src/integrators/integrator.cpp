@@ -92,7 +92,7 @@ namespace RayTracer {
 
     void Integrator::renderScene(const Camera &cam)
     {
-        if (this->_framesInFlight >= 3)
+        if (this->_framesInFlight >= 1)
             return;
 
         std::shared_ptr<const RenderScene> sceneLocked = this->_scene;\

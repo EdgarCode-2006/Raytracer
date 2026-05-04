@@ -4,7 +4,13 @@ namespace RayTracer {
     void Integrator::instanceTiles(const Camera &cam)
     {
         this->_cache.tiles.clear();
-    
+        this->_framesInFlight = 0;
+        {
+            std::lock_guard<std::mutex> lock(this->_queueMutex);
+            std::queue<std::shared_ptr<Frame>> empty;
+            std::swap(_readyPixelBuffers, empty);
+        }
+
         const int screenWidth = cam.getWidth();
         const int screenHeight = cam.getHeight();
 
