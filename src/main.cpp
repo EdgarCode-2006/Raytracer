@@ -1,7 +1,7 @@
-#include "OBJParser.hpp"
+#include "io/OBJParser.hpp"
 #include "utils/Material.hpp"
-#include "Engine.hpp"
-#include "Scene.hpp"
+#include "core/Engine.hpp"
+#include "core/Scene.hpp"
 #include <iostream>
 #include "renderer/RaylibRenderer.hpp"
 #include <memory>
@@ -67,42 +67,6 @@ int main(int argc, char** argv)
         mat.ior = 1.33;
         mat.refractivity = 0.69;
         mat.reflectivity = 0.4;
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
-        scene.addInstance(meshId, Math::Matrix4{}, mat);
         scene.addInstance(meshId, Math::Matrix4{}, mat);
         scene.addInstance(meshId, Math::Matrix4{}, mat);
         scene.buildTLAS();

@@ -1,6 +1,6 @@
 
 
-#include "GeometricData.hpp"
+#include "core/SceneComponents/GeometricData.hpp"
 namespace RayTracer {
     void GeometricData::reserve(uint32_t meshCount, uint32_t totalTriangles) {
         _allTriangles.reserve(totalTriangles);

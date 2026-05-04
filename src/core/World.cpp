@@ -1,5 +1,5 @@
 
-#include "World.hpp"
+#include "core/SceneComponents/World.hpp"
 #include "opti/BVH/Instance.hpp"
 namespace RayTracer {
     Instance &World::addInstance(const GeometricData& geo, uint32_t meshId, const Math::Matrix4 &transform, const Graphic::Material& mat) {

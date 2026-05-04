@@ -1,4 +1,4 @@
-#include "OBJParser.hpp"
+#include "io/OBJParser.hpp"
 #include <fstream>
 
 namespace OBJParser {

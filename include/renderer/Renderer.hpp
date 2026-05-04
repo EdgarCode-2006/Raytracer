@@ -1,9 +1,8 @@
 #ifndef IRENDERER_HPP_
 #define IRENDERER_HPP_
 #include "utils/Pixel.hpp"
-#include "Scene.hpp"
+#include "core/Scene.hpp"
 #include "entities/Camera.hpp"
-#include "Scene.hpp"
 #include <iostream>
 #include <vector>
 #include <functional>

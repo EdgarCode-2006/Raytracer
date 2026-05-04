@@ -5,9 +5,9 @@
 #include <span>
 #include <vector>
 
-#include "GeometricData.hpp"
-#include "World.hpp"
-#include "Lights.hpp"
+#include "core/SceneComponents/GeometricData.hpp"
+#include "core/SceneComponents/World.hpp"
+#include "core/SceneComponents/Lights.hpp"
 #include "entities/Camera.hpp"
 #include "opti/BVH/BVH.hpp"
 #include "opti/BVH/Instance.hpp"
