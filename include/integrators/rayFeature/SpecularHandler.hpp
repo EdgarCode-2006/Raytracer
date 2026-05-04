@@ -1,5 +1,5 @@
-#ifndef BASIC_LIGHT_HPP_
-#define BASIC_LIGHT_HPP_
+#ifndef SPECULAR_HPP_
+#define SPECULAR_HPP_
 #include "integrators/rayFeature/ARayFeature.hpp"
 
 namespace RayTracer {

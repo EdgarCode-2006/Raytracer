@@ -5,12 +5,13 @@ namespace RayTracer
     static void integrateColor(
         Math::Vector3D &finalColor,
         const Math::Vector3D &throughput,
-        const Graphic::Pixel &localColor
+        const Graphic::Pixel &localColor,
+        const float emission = 0.0
     )
     {
-        finalColor.x() += (localColor._r) * throughput.x();
-        finalColor.y() += (localColor._g) * throughput.y();
-        finalColor.z() += (localColor._b) * throughput.z();
+        finalColor.x() += (localColor._r) * (throughput.x() + emission);
+        finalColor.y() += (localColor._g) * (throughput.y() + emission);
+        finalColor.z() += (localColor._b) * (throughput.z() + emission);
 
     }
 

@@ -1,5 +1,5 @@
-#ifndef BASIC_LIGHT_HPP_
-#define BASIC_LIGHT_HPP_
+#ifndef AO_HPP_
+#define AO_HPP_
 #include "integrators/rayFeature/ARayFeature.hpp"
 #define AO_RAY_SAMPLE_COUNT 32
 
