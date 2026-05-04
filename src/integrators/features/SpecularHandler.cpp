@@ -15,7 +15,7 @@ namespace RayTracer {
         interaction.nextRays.push_back({interaction.hitPoint + (N * 0.001f), reflectionDir, throughput, 0});
     }
 
-    void SpecularHandler::process(RenderData &data, SurfaceIntersection &interaction)
+    void SpecularHandler::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
     {
         Math::Vector3D N = interaction.normal;
         Math::Vector3D I = interaction.rayDir;

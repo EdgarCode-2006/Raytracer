@@ -44,7 +44,7 @@ namespace RayTracer
         nextRays.clear();
     }
 
-    Graphic::Pixel Integrator::consumeRays(Ray &ray, RenderData &data, SurfaceIntersection &intersection)
+    Graphic::Pixel Integrator::consumeRays(Ray &ray, std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection)
     {
         std::queue<Ray> rayQueue;
         Math::Vector3D finalColor = {0.0, 0.0, 0.0};
@@ -60,13 +60,13 @@ namespace RayTracer
                 continue;
 
             // check for collision using the TLAS.
-            const TLASHit tlasHit = _scene.getTLAS().traverse(currentRay);
+            const TLASHit tlasHit = scene->world.getTLAS().traverse(currentRay);
             if (!tlasHit.hasHit()) {
-                const Graphic::Pixel envPixel = data.scene.getHDRIPixel(currentRay.direction * -1);
+                const Graphic::Pixel envPixel = scene->lights.getHDRIPixel(currentRay.direction * -1);
                 integrateColor(finalColor, currentRay.throughput, envPixel);
                 break;
             }
-            const Instance &instance = _scene.getInstance(tlasHit.instanceIndex());
+            const Instance &instance = scene->world.getInstance(tlasHit.instanceIndex());
             const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
     
             // initialize the intersection struct with the new TLAS data.
@@ -81,7 +81,7 @@ namespace RayTracer
             // can potentially add to the currentQUeue of rays.
             for (auto &rayFeature : _pipeline) {
                 if (rayFeature->isActive())
-                    rayFeature->process(data, intersection);
+                    rayFeature->process(scene, intersection);
             }
     
             integrateColor(finalColor, currentRay.throughput, intersection.localColor);
@@ -96,13 +96,8 @@ namespace RayTracer
         };
     }
 
-    Graphic::Pixel Integrator::shootRay(Ray &ray)
+    Graphic::Pixel Integrator::shootRay(Ray &ray, std::shared_ptr<const RenderScene> sceneLocked)
     {
-        RenderData data = {
-            .lights = this->_scene.getDirectionalLights(),
-            .ambientLight = this->_scene.getAmbientLight(),
-            .scene = this->_scene
-        };
         SurfaceIntersection intersection{
             .normal = {0, 0, 0},
             .hitPoint = {0, 0, 0},
@@ -110,49 +105,6 @@ namespace RayTracer
             .localColor = {0, 0, 0, 255},
             .throughput = {1.0, 1.0, 1.0}
         };
-<<<<<<< HEAD
-        return consumeRays(ray, data, intersection);
-=======
-
-        for (size_t i = 0; i < MAX_DEPTH; i++) {
-            const TLASHit tlasHit = _scene.getTLAS().traverse(ray);
-            if (!tlasHit.hasHit()) {
-                const Graphic::Pixel envPixel = data.scene.getHDRIPixel(ray.direction * -1);
-                integrateColor(finalColor, throughput, envPixel);
-                break;
-            }
-            const Instance &instance = _scene.getInstance(tlasHit.instanceIndex());
-            intersection.mat = const_cast<Graphic::Material*>(&instance.getMaterial());
-            const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
-
-            intersection.hitPoint = ray.origin + ray.direction * tlasHit.t();
-            intersection.normal = (tri.b() - tri.a()).cross(tri.c() - tri.a()).normalize();
-            intersection.rayDir = ray.direction;
-            intersection.shouldBounce = false;
-
-            for (auto &rayFeature : _pipeline) {
-                if (rayFeature->isActive())
-                    rayFeature->process(data, intersection);
-            }
-
-            integrateColor(finalColor, throughput, intersection.localColor, intersection.mat->emission);
-
-            if (!intersection.shouldBounce) break;
-
-            throughput.x() *= intersection.throughput.x();
-            throughput.y() *= intersection.throughput.y();
-            throughput.z() *= intersection.throughput.z();
-
-            ray = intersection.nextRay;
-
-            if (throughput.length() < MIN_THROUGHPUT_LENGTH) break;
-        }
-        return {
-            (unsigned char)std::min(255.0, finalColor.x()),
-            (unsigned char)std::min(255.0, finalColor.y()),
-            (unsigned char)std::min(255.0, finalColor.z()),
-            255
-        };
->>>>>>> e23624f (feat: material emmission and setup for UVs)
+        return consumeRays(ray, sceneLocked, intersection);
     }
 } // namespace RayTracer

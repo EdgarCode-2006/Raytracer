@@ -10,7 +10,7 @@ namespace RayTracer {
         public:
             virtual ~ARayFeature() = default;
             ARayFeature(const std::string &name) : _name(name) {};
-            virtual void process(RenderData &data, SurfaceIntersection &interaction) override = 0;
+            virtual void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override = 0;
             virtual int getPriority() const noexcept override = 0;
             virtual bool isActive() const noexcept override {return _active;};
             virtual const std::string getName() const noexcept {return _name;};

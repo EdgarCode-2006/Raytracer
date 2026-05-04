@@ -60,3 +60,14 @@ void RayTracer::Integrator::loadRayFeatures()
         throw IntegratorException("Failed to load ray features.");
     }
 }
+
+void RayTracer::Integrator::setPluginState(const std::string &pluginName, const bool &state)
+{
+    for (auto& plugin : _pipeline) {
+        if (plugin->getName() == pluginName) {
+            plugin->setActivity(state);
+            return;
+        }
+    }
+    std::cout << "plugin not found couldn't disable." << std::endl;
+}
