@@ -23,7 +23,6 @@ int main(int argc, char** argv)
         RayTracer::Scene scene(screenWidth, screenHeight);
         std::string arg = argv[1];
 
-
         if (arg.size() >= 4 && arg.substr(arg.size() - 4) == ".cfg") {
             RayTracer::SceneParser parser;
             parser.load(arg, scene);
@@ -52,7 +51,6 @@ int main(int argc, char** argv)
             light.intensity = 0.8;
             scene.addLight(light);
         }
-
 
         scene.getCamera().fitToScene(scene.getGeometry().getAllTriangles());
 
