@@ -24,6 +24,7 @@ namespace RayTracer {
     struct RenderScene {
         const GeometricData &geometry;
         const World &world;
+        std::shared_ptr<const TLAS> tlas;
         const Lights &lights;
     };
 
@@ -83,8 +84,7 @@ namespace RayTracer {
             int32_t getSelectedInstance() const noexcept  {return _selectedInstance;}
 
             inline std::shared_ptr<const RenderScene> generateSceneSnapShot() const {
-                // std::cout << "instance 0 changed? " << this->_world. 
-                return std::make_shared<const RayTracer::RenderScene>(_geometry, _world, _lights);
+                return std::make_shared<const RayTracer::RenderScene>(_geometry, _world, _world.getTLASSnapshot(), _lights);
             }
         private:
             GeometricData _geometry;

@@ -13,7 +13,7 @@ namespace RayTracer {
                 Ray shadowRay(interaction.hitPoint + (interaction.normal * 0.001), lightDir);
                 bool blocked = false;
 
-                const TLASHit tlasHit = scene->world.getTLAS().traverse(shadowRay);
+                const TLASHit tlasHit = scene->tlas->traverse(shadowRay);
                 if (!tlasHit.hasHit())
                     totalIntensity += diff * light.intensity;
             }

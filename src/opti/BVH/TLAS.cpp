@@ -34,7 +34,7 @@ namespace RayTracer {
     }
     
     void TLAS::build(const std::span<const Instance> instances) {
-        _instances = instances;
+        _instances.assign(instances.begin(), instances.end());
         _nodes.clear();
         _mortonCodes.clear();
 

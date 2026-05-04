@@ -28,7 +28,7 @@ namespace RayTracer {
 
             static double _slabTest(const TLASNode &node, const double *ro, const double *invd, double tmax) noexcept;
 
-            std::span<const Instance> _instances;
+            std::vector<Instance> _instances;
             std::vector<uint32_t> _indices;
             std::vector<uint32_t> _mortonCodes;
             std::vector<TLASNode> _nodes;
