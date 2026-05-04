@@ -54,6 +54,7 @@ namespace Graphic {
                         this->_sceneIsModified = true;
                         inst.setTRS(pos, rot, scale);
 
+
                         scene.buildTLAS();
                     }
 

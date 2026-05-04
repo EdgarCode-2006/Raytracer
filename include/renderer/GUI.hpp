@@ -16,6 +16,7 @@ namespace Graphic {
         private:
             bool _sceneIsModified = false;
             RayTracer::Integrator* _integrator = nullptr;
+
     };
 
 }

@@ -20,6 +20,7 @@ namespace Graphic {
             virtual bool windowOpen() = 0;
             std::function<void()> onSnapshotRequested;
             virtual void setIntegrator(RayTracer::Integrator*) noexcept {}
+
     };
 
     class ARenderer : public IRenderer {
