@@ -5,9 +5,9 @@
 #include "SceneParser.hpp"
 #include <iostream>
 #include "renderer/RaylibRenderer.hpp"
-#include <iostream>
 #include <memory>
 #include <string>
+
 
 int main(int argc, char** argv)
 {
@@ -51,6 +51,7 @@ int main(int argc, char** argv)
             light.intensity = 0.8;
             scene.addLight(light);
         }
+
 
         scene.getCamera().fitToScene(scene.getGeometry().getAllTriangles());
 
