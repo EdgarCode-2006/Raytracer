@@ -9,14 +9,13 @@ include(FetchContent)
 FetchContent_Declare(
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG        v1.14.0
+    GIT_TAG v1.14.0
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-set(PROJECT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/..")
-set(PROJECT_INCLUDE "${PROJECT_ROOT}/include")
+set(PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 set(TEST_SOURCES
     test_vector3d.cpp
@@ -34,13 +33,13 @@ set(TEST_SOURCES
 add_executable(raytracer_tests ${TEST_SOURCES})
 
 target_include_directories(raytracer_tests PRIVATE
-    ${PROJECT_INCLUDE}
-    ${PROJECT_INCLUDE}/utils
+    ${PROJECT_ROOT}/include
 )
 
 target_link_libraries(raytracer_tests PRIVATE GTest::gtest_main)
 
-target_compile_options(raytracer_tests PRIVATE -O0 -g -Wall -Wextra)
+target_compile_options(raytracer_tests PRIVATE -O0 -g --coverage)
+target_link_libraries(raytracer_tests PRIVATE --coverage)
 
 include(GoogleTest)
 gtest_discover_tests(raytracer_tests)
