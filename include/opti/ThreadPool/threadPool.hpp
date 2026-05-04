@@ -17,6 +17,7 @@ namespace optimization {
             ThreadPool(size_t numThreads);
             void enqueue(std::function<void()> task);
             void wait();
+            bool busy() {return _activeTasks > 0;};
             
         private:
             std::atomic<size_t> _activeTasks{0};

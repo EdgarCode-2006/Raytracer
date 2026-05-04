@@ -27,13 +27,13 @@ namespace RayTracer {
             BVH &operator=(BVH &&) = default;
 
             RayHit traverse(const Ray &ray) const noexcept;
-            const AABB &rootBounds() const noexcept {return _nodes[0].bounds();}
+            const Math::AABB &rootBounds() const noexcept {return _nodes[0].bounds();}
 
         private:
 
             struct BoundsResult {
-                AABB nodeAABB; // AABB of triangles (surface)
-                AABB centAABB; // AABB of centroids (for bucketing SAH)
+                Math::AABB nodeAABB; // AABB of triangles (surface)
+                Math::AABB centAABB; // AABB of centroids (for bucketing SAH)
             };
 
             void _build();
@@ -41,7 +41,7 @@ namespace RayTracer {
             
             BoundsResult _computeBounds(uint32_t first, uint32_t count) const noexcept;
             void _subdivide(uint32_t nodeIndex, uint32_t first, uint32_t count, int depth);
-            bool _splitSAH(uint32_t first, uint32_t count, const AABB& nodeBounds, const AABB& centBounds, int& bestAxis, double& bestPos) const noexcept;
+            bool _splitSAH(uint32_t first, uint32_t count, const Math::AABB& nodeBounds, const Math::AABB& centBounds, int& bestAxis, double& bestPos) const noexcept;
 
             static double _slabTest(const BVHNode& node, const double* ro, const double* invd, double tmax) noexcept;
             static double _mollerTrumbore(const Triangle &tri, const Ray &ray) noexcept;
@@ -50,7 +50,7 @@ namespace RayTracer {
             std::vector<BVHNode> _nodes;
             std::vector<uint32_t> _indices;
             std::vector<Math::Vector3D> _centroids;
-            std::vector<AABB> _primAABBs;
+            std::vector<Math::AABB> _primAABBs;
 
             int _leafThreshold;
         };

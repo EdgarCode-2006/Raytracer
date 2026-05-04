@@ -4,9 +4,9 @@
 #include "opti/BVH/AABB.hpp"
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
-namespace RayTracer {
+namespace Math {
 
-    class Matrix4 {
+    class Matrix4{
         public:
             Matrix4() noexcept : m{
                 {1, 0, 0, 0},
@@ -24,13 +24,13 @@ namespace RayTracer {
             Matrix4 rotationZ(double rad) noexcept;
             
 
-            Math::Vector3D transformPoint(const Math::Vector3D &p) const noexcept;
-            Math::Vector3D transformDirection(const Math::Vector3D &d) const noexcept;
+            Vector3D transformPoint(const Vector3D &p) const noexcept;
+            Vector3D transformDirection(const Vector3D &d) const noexcept;
             Matrix4 operator*(const Matrix4& o) const noexcept;
             AABB transformAABB(const AABB &box) const noexcept;
 
-            Ray transformRay(const Ray &ray) const noexcept {
-                return Ray(transformPoint(ray.origin), transformDirection(ray.direction));
+            RayTracer::Ray transformRay(const RayTracer::Ray &ray) const noexcept {
+                return RayTracer::Ray(transformPoint(ray.origin), transformDirection(ray.direction));
             }
             double m[4][4] = {};
     };

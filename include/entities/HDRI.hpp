@@ -10,12 +10,15 @@
 #include "utils/Pixel.hpp"
 #include "utils/math.hpp"
 
-#define ENV_EXPOSURE 40.0f
+#define ENV_EXPOSURE 10.0f
 
 namespace RayTracer {
     class HDRI {
         public:
+            HDRI() = default;
             HDRI(const std::string &filePath);
+            HDRI &operator=(HDRI &&other) noexcept;
+
             ~HDRI();
             void initHDRIFromFilePath(const std::string &filePath);
             Graphic::Pixel getPixelColorFromVec(const Math::Vector3D &vec) const;

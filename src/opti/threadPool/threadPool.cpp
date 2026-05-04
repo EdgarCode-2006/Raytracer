@@ -19,7 +19,7 @@ namespace optimization {
 
                         if  (this->_stop && this->_tasks.empty()) return;
 
-                        task = move(this->_tasks.front());
+                        task = std::move(this->_tasks.front());
                         this->_tasks.pop();
                     }
                     task(); // excute
@@ -30,7 +30,6 @@ namespace optimization {
                             _cv.notify_all();
                         }
                     }
-                    _cv.notify_all();
                 }
             });
         }

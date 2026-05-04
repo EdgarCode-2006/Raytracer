@@ -8,19 +8,22 @@
 #include <utility>
 
 namespace RayTracer {
-    Integrator::Integrator(const Scene &scene) : _scene(scene)
+    Integrator::Integrator(std::shared_ptr<const RenderScene> scene) : _scene(std::move(scene))
     {
         this->_threadPool = std::make_unique<optimization::ThreadPool>(15); // init thread pool with 4 threads.
+        this->_cache = {};
         try {
             this->loadRayFeatures();
         } catch (const IntegratorException &e) {
             throw IntegratorException(e.what());
         }
 
-        _samplesPerSide = std::sqrt(RAYS_PER_PIXEL);
-        if (_samplesPerSide < 1) _samplesPerSide = 1;
+        int samplesPerSide = std::sqrt(RAYS_PER_PIXEL);
+        if (samplesPerSide < 1) samplesPerSide = 1;
 
-        _step = 1.0f / _samplesPerSide;
+        float step = 1.0f / samplesPerSide;
+        this->_cache.step = step;
+        this->_cache.samplesPerSide = samplesPerSide;
     }
 
     Integrator::~Integrator()
@@ -31,18 +34,21 @@ namespace RayTracer {
         }
     }
 
-    void Integrator::getPixelColor(int x, int y, const Camera &cam, Graphic::Pixel *pixels)
+    Graphic::Pixel Integrator::getPixelColor(std::tuple<int, int> cords,
+        std::shared_ptr<const RenderScene> sceneLocked,
+        const Camera &cam)
     {
+        auto [x, y] = cords;
         float sumR = 0, sumG = 0, sumB = 0;
 
-        for (int sY = 0; sY < _samplesPerSide; sY++) {
-            for (int sX = 0; sX < _samplesPerSide; sX++) {
+        for (int sY = 0; sY < _cache.samplesPerSide; sY++) {
+            for (int sX = 0; sX < _cache.samplesPerSide; sX++) {
                 
-                float offsetX = (sX + 0.5f) * _step - 0.5f;
-                float offsetY = (sY + 0.5f) * _step - 0.5f;
+                float offsetX = (sX + 0.5f) * _cache.step - 0.5f;
+                float offsetY = (sY + 0.5f) * _cache.step - 0.5f;
 
                 Ray ray = cam.generateRay(x + offsetX, y + offsetY);
-                Graphic::Pixel sampleColor = this->shootRay(ray);
+                Graphic::Pixel sampleColor = this->shootRay(ray, sceneLocked);
                 
                 sumR += sampleColor._r;
                 sumG += sampleColor._g;
@@ -50,15 +56,18 @@ namespace RayTracer {
             }
         }
 
-        int totalSamples = _samplesPerSide * _samplesPerSide;
-        
-        pixels[y * cam.getWidth() + x] = Graphic::Pixel(
+        int totalSamples = _cache.samplesPerSide * _cache.samplesPerSide;
+
+        return Graphic::Pixel(
             (unsigned char)(sumR / totalSamples),
             (unsigned char)(sumG / totalSamples),
             (unsigned char)(sumB / totalSamples));
     }
 
-    void Integrator::computeTile(const PixelTile &tile, const Camera &cam, Graphic::Pixel *pixels)
+    void Integrator::computeTile(const PixelTile &tile,
+        std::shared_ptr<Frame> currentFrame,
+        std::shared_ptr<const RenderScene> sceneLocked,
+        const Camera &cam)
     {
         int startX = tile.getX();
         int startY = tile.getY();
@@ -68,51 +77,49 @@ namespace RayTracer {
         for (int y = startY; y < startY + height; y++) {
             if (_stopRendering) return;
             for (int x = startX; x < startX + width; x++) {
-                this->getPixelColor(x, y, cam, pixels);
+                Graphic::Pixel pColor = getPixelColor(std::tuple<int, int>(x, y), sceneLocked, cam);
+                currentFrame->_pixelBuffer[y * cam.getWidth() + x] = pColor;
             }
+        }
+        if (currentFrame->IncrementAndCheckCompletion()) {
+            {
+                std::lock_guard<std::mutex> lock(this->_queueMutex);
+                _readyPixelBuffers.push(currentFrame);
+            }
+            this->_framesInFlight--;
         }
     }
 
-    void Integrator::instanceTiles(const Camera &cam)
+    void Integrator::renderScene(const Camera &cam)
     {
-        this->_tiles.clear();
-    
-        const int screenWidth = cam.getWidth();
-        const int screenHeight = cam.getHeight();
+        if (this->_framesInFlight >= 3)
+            return;
 
-        for (int y = 0; y < screenHeight; y += TILE_DIM) {
-            for (int x = 0; x < screenWidth; x += TILE_DIM) {
-                
-                int currentWidth = std::min(TILE_DIM, screenWidth - x);
-                int currentHeight = std::min(TILE_DIM, screenHeight - y);
+        std::shared_ptr<const RenderScene> sceneLocked = this->_scene;\
 
-                _tiles.emplace_back(x, y, currentWidth, currentHeight);
-            }
-        }
-    }
-    
-    void Integrator::renderScene(const Camera &cam, Graphic::Pixel* pixels)
-    {
-        for (const auto& tile : _tiles) {
-            this->_threadPool->enqueue([this, tile, &cam, pixels]() {
-                this->computeTile(tile, cam, pixels);
+        _framesInFlight += 1;
+
+        int bufferSize = cam.getWidth() * cam.getHeight();
+        int tileCount = static_cast<int>(_cache.tiles.size());
+        auto currentFrame = std::make_shared<Frame>(bufferSize, tileCount);
+
+        for (const auto& tile : _cache.tiles) {
+            this->_threadPool->enqueue([this, tile, currentFrame, sceneLocked, cam]() {
+                this->computeTile(tile, currentFrame, sceneLocked, cam); 
             });
         }
     }
 
-    void Integrator::waitForRendering()
+    std::shared_ptr<Frame> Integrator::getAvailableFrame()
     {
-        _threadPool->wait();
-    }
-
-    void Integrator::setPluginState(const std::string &pluginName, const bool &state)
-    {
-        for (auto& plugin : _pipeline) {
-            if (plugin->getName() == pluginName) {
-                plugin->setActivity(state);
-                return;
+        std::shared_ptr<Frame> newFrame = nullptr;
+        {
+            std::lock_guard<std::mutex> lock(_queueMutex);
+            if (!_readyPixelBuffers.empty()) {
+                newFrame = _readyPixelBuffers.front();
+                _readyPixelBuffers.pop();
             }
         }
-        std::cout << "plugin not found couldn't disable." << std::endl;
+        return newFrame;
     }
 }

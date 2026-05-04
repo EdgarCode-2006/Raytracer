@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace RayTracer {
-    void AmbientOcclusion::process(RenderData &data, SurfaceIntersection &interaction)
+    void AmbientOcclusion::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
     {
         double hitNothing = 0;
         const double maxDistance = 1.0;
@@ -13,7 +13,7 @@ namespace RayTracer {
             Ray AORay(interaction.hitPoint + (interaction.normal * 0.001), rayDir);
             bool blocked = false;
 
-            const TLASHit tlasHit = data.scene.getTLAS().traverse(AORay);
+            const TLASHit tlasHit = scene->tlas->traverse(AORay);
             if (!blocked)
                 hitNothing += 1.0;
         }

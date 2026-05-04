@@ -43,7 +43,7 @@ namespace RayTracer
         nextRays.clear();
     }
 
-    Graphic::Pixel Integrator::consumeRays(Ray &ray, RenderData &data, SurfaceIntersection &intersection)
+    Graphic::Pixel Integrator::consumeRays(Ray &ray, std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection)
     {
         std::queue<Ray> rayQueue;
         Math::Vector3D finalColor = {0.0, 0.0, 0.0};
@@ -59,13 +59,13 @@ namespace RayTracer
                 continue;
 
             // check for collision using the TLAS.
-            const TLASHit tlasHit = _scene.getTLAS().traverse(currentRay);
+            const TLASHit tlasHit = scene->tlas->traverse(currentRay);
             if (!tlasHit.hasHit()) {
-                const Graphic::Pixel envPixel = data.scene.getHDRIPixel(currentRay.direction * -1);
+                const Graphic::Pixel envPixel = scene->lights.getHDRIPixel(currentRay.direction * -1);
                 integrateColor(finalColor, currentRay.throughput, envPixel);
                 break;
             }
-            const Instance &instance = _scene.getInstance(tlasHit.instanceIndex());
+            const Instance &instance = scene->world.getInstance(tlasHit.instanceIndex());
             const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
     
             // initialize the intersection struct with the new TLAS data.
@@ -80,7 +80,7 @@ namespace RayTracer
             // can potentially add to the currentQUeue of rays.
             for (auto &rayFeature : _pipeline) {
                 if (rayFeature->isActive())
-                    rayFeature->process(data, intersection);
+                    rayFeature->process(scene, intersection);
             }
     
             integrateColor(finalColor, currentRay.throughput, intersection.localColor);
@@ -95,13 +95,8 @@ namespace RayTracer
         };
     }
 
-    Graphic::Pixel Integrator::shootRay(Ray &ray)
+    Graphic::Pixel Integrator::shootRay(Ray &ray, std::shared_ptr<const RenderScene> sceneLocked)
     {
-        RenderData data = {
-            .lights = this->_scene.getLights(),
-            .ambientLight = this->_scene.getAmbientLight(),
-            .scene = this->_scene
-        };
         SurfaceIntersection intersection{
             .normal = {0, 0, 0},
             .hitPoint = {0, 0, 0},
@@ -109,6 +104,6 @@ namespace RayTracer
             .localColor = {0, 0, 0, 255},
             .throughput = {1.0, 1.0, 1.0}
         };
-        return consumeRays(ray, data, intersection);
+        return consumeRays(ray, sceneLocked, intersection);
     }
 } // namespace RayTracer
