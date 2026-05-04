@@ -1,7 +1,7 @@
 #ifndef INTEGRATION_MANAGER_HPP_
 #define INTEGRATION_MANAGER_HPP_
 #include <memory>
-#include "Scene.hpp"
+#include "core/Scene.hpp"
 #include "integrators/Integrator.hpp"
 
 namespace RayTracer {

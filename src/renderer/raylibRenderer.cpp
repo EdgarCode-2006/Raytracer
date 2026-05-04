@@ -1,9 +1,8 @@
 #ifndef RAYLIB_RENDERER_HPP_
 #define RAYLIB_RENDERER_HPP_
 
-#include "renderer/Renderer.hpp"
 #include "renderer/RaylibRenderer.hpp"
-#include "GUI.hpp"
+#include "renderer/GUI.hpp"
 #include "rlImGui.h"
 #include <cstring>
 

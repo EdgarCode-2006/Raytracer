@@ -1,7 +1,7 @@
 #ifndef INSTANCE_HPP_
 #define INSTANCE_HPP_
 
-#include "GeometricData.hpp"
+#include "core/SceneComponents/GeometricData.hpp"
 #include "opti/BVH/AABB.hpp"
 #include "opti/BVH/BVH.hpp"
 #include "opti/BVH/RayHit.hpp"

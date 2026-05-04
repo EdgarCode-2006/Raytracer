@@ -1,5 +1,5 @@
-#include "Engine.hpp"
-#include "Scene.hpp"
+#include "core/Engine.hpp"
+#include "core/Scene.hpp"
 #include "opti/BVH/TLASHit.hpp"
 #include <raylib.h>
 

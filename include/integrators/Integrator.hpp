@@ -4,18 +4,14 @@
 #include <string>
 #include <vector>
 #include <netinet/in.h>
-#include <unordered_map>
 #include <memory>
-#include <cmath>
 
-#include "Scene.hpp"
+#include "core/Scene.hpp"
 #include <raylib.h>
 #include "integrators/integratorElements/PixelTile.hpp"
-#include "opti/BVH/BVH.hpp"
 #include "opti/ThreadPool/threadPool.hpp"
 #include "utils/Pixel.hpp"
 #include "utils/surfaceIntersection.hpp"
-#include "entities/Light.hpp"
 #include "integrators/rayFeature/IRayFeature.hpp"
 #include "integrators/featureLoader/DLLoader.hpp"
 #include "integrators/integratorElements/frame.hpp"

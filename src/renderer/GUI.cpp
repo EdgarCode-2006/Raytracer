@@ -1,4 +1,4 @@
-#include "GUI.hpp"
+#include "renderer/GUI.hpp"
 #include "rlImGui.h"
 #include "imgui.h"
 #include "utils/Matrix4.hpp"
