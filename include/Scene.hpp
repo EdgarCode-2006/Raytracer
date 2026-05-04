@@ -21,6 +21,12 @@
 #include <iostream>
 
 namespace RayTracer {
+    struct RenderScene {
+        const GeometricData &geometry;
+        const World &world;
+        const Lights &lights;
+    };
+
     class Scene {
         public:
             Scene(const int width, const int height) : _camera(width, height) {};
@@ -73,10 +79,13 @@ namespace RayTracer {
             const AmbientLight &getAmbientLight() const {return _lights.getAmbientLight();}
             const Graphic::Pixel getHDRIPixel(const Math::Vector3D &v) const {return _lights.getHDRIPixel(v);}
 
-
             void setSelectedInstance(int32_t i) noexcept  {_selectedInstance = i;}
             int32_t getSelectedInstance() const noexcept  {return _selectedInstance;}
 
+            inline std::shared_ptr<const RenderScene> generateSceneSnapShot() const {
+                // std::cout << "instance 0 changed? " << this->_world. 
+                return std::make_shared<const RayTracer::RenderScene>(_geometry, _world, _lights);
+            }
         private:
             GeometricData _geometry;
             World _world;

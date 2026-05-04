@@ -9,6 +9,9 @@ namespace Graphic {
     class GUI {
         public:
             void Render(RayTracer::Scene& scene, RayTracer::Camera& cam);
+            bool wasSceneModified() const {return _sceneIsModified;};
+        private:
+            bool _sceneIsModified;
     };
 
 }

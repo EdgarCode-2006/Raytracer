@@ -89,6 +89,11 @@ namespace Graphic {
             DrawFPS(10, 10);
             _gui.Render(scene, cam);
         EndDrawing();
+        if (_gui.wasSceneModified()) {
+            if (onSnapshotRequested) {
+                this->onSnapshotRequested();
+            }
+        }
     }
 
     void RaylibRenderer::resizeWindow(int newWidth, int newHeight)

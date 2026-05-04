@@ -8,6 +8,7 @@ namespace Graphic {
 
     void GUI::Render(RayTracer::Scene& scene, RayTracer::Camera& cam)
     {
+        this->_sceneIsModified = false;
         rlImGuiBegin();
 
         ImGui::Begin("RayTracer");
@@ -38,6 +39,7 @@ namespace Graphic {
                     ImGui::PopStyleColor();
 
                 if (open) {
+                    this->_sceneIsModified = true;
                     const Math::Matrix4& t = scene.getInstance(i).getTransform();
                     float pos[3] = { (float)t.m[0][3], (float)t.m[1][3], (float)t.m[2][3] };
 

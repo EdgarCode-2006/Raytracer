@@ -1,11 +1,11 @@
 #include "integrators/rayFeature/BasicLighting.hpp"
 
 namespace RayTracer {
-    void BasicLighting::process(RenderData &data, SurfaceIntersection &interaction)
+    void BasicLighting::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
     {
-        double totalIntensity = data.scene.getAmbientLight().intensity;
+        double totalIntensity = scene->lights.getAmbientLight().intensity;
 
-        for (const auto& light : data.scene.getDirectionalLights()) {
+        for (const auto& light : scene->lights.getLights()) {
             Math::Vector3D lightDir = light.direction * -1;
             double diff = interaction.normal.dot(lightDir);
             
@@ -13,7 +13,7 @@ namespace RayTracer {
                 Ray shadowRay(interaction.hitPoint + (interaction.normal * 0.001), lightDir);
                 bool blocked = false;
 
-                const TLASHit tlasHit = data.scene.getTLAS().traverse(shadowRay);
+                const TLASHit tlasHit = scene->world.getTLAS().traverse(shadowRay);
                 if (!tlasHit.hasHit())
                     totalIntensity += diff * light.intensity;
             }

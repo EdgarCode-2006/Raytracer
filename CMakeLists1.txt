@@ -1,0 +1,136 @@
+cmake_minimum_required(VERSION 3.14)
+
+project(raytracer LANGUAGES CXX)
+
+# --- GLOBAL CONFIGURATION ---
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(EXECUTABLE_NAME "raytracer")
+set(FEATURES_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/rayFeatures")
+
+# Enforce -fPIC for all targets (required for shared library linking)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+# Optimization settings
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # -g: Adds debug symbols (for line numbers in backtraces)
+    # -fsanitize=address: Enables the memory error detector
+    add_compile_options(-g -O0 -fsanitize=address -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=address)
+endif()
+
+# --- EXTERNAL DEPENDENCIES (FetchContent) ---
+include(FetchContent)
+
+# TinyEXR
+FetchContent_Declare(
+    tinyexr
+    GIT_REPOSITORY https://github.com/syoyo/tinyexr.git
+    GIT_TAG        release
+)
+
+# ImGui
+FetchContent_Declare(
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG        v1.91.6
+)
+
+# rlImGui (Raylib integration for ImGui)
+FetchContent_Declare(
+    rlimgui
+    GIT_REPOSITORY https://github.com/raylib-extras/rlImGui.git
+    GIT_TAG        ceceffd5e8148d4781f5f58cffe1641cf50f8f68
+)
+
+FetchContent_MakeAvailable(tinyexr imgui rlimgui)
+
+# --- SYSTEM DEPENDENCIES ---
+find_library(RAYLIB_LIB raylib)
+find_path(RAYLIB_INC raylib.h)
+
+if(NOT RAYLIB_LIB OR NOT RAYLIB_INC)
+    message(FATAL_ERROR "raylib not found. Please install it on your system.")
+endif()
+
+# --- SOURCE FILE MANAGEMENT ---
+file(GLOB_RECURSE SRC "src/*.cpp")
+file(GLOB_RECURSE FEATURE_SRC "src/integrators/features/*.cpp")
+
+# Exclude main and plugin sources from the core library
+list(REMOVE_ITEM SRC "${CMAKE_SOURCE_DIR}/src/main.cpp")
+if(FEATURE_SRC)
+    list(REMOVE_ITEM SRC ${FEATURE_SRC})
+endif()
+
+# Prepare ImGui sources
+set(IMGUI_SRC
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${rlimgui_SOURCE_DIR}/rlImGui.cpp
+)
+
+# --- TARGETS ---
+
+# 1. Core Library (Static)
+add_library(raytracer_core STATIC ${SRC} ${IMGUI_SRC})
+
+target_include_directories(raytracer_core PUBLIC 
+    include 
+    include/utils 
+    ${RAYLIB_INC}
+    ${imgui_SOURCE_DIR} 
+    ${rlimgui_SOURCE_DIR} 
+    ${tinyexr_SOURCE_DIR}
+)
+
+# Compatibility fix for newer raylib/imgui versions
+target_compile_definitions(raytracer_core PUBLIC "IsTextureReady=IsTextureValid")
+target_link_libraries(raytracer_core PRIVATE tinyexr)
+
+# 2. Plugin Macro
+macro(add_ray_feature FEATURE_NAME SRC_PATH)
+    add_library(${FEATURE_NAME} SHARED ${SRC_PATH})
+    target_link_libraries(${FEATURE_NAME} PRIVATE raytracer_core)
+    
+    set_target_properties(${FEATURE_NAME} PROPERTIES
+        PREFIX "" 
+        SUFFIX ".so"
+        LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+    )
+endmacro()
+
+# Define Plugins
+add_ray_feature(basicLight_feat src/integrators/features/BasicLighting.cpp)
+add_ray_feature(SpecularHandler_feat src/integrators/features/SpecularHandler.cpp)
+add_ray_feature(AmbientOcclusion_feat src/integrators/features/AmbientOcclusion.cpp)
+
+# 3. Main Executable
+add_executable(${EXECUTABLE_NAME} src/main.cpp)
+
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE 
+    raytracer_core 
+    basicLight_feat 
+    SpecularHandler_feat 
+    AmbientOcclusion_feat
+    ${RAYLIB_LIB} 
+    GL m pthread dl X11 rt
+)
+
+# --- UTILITY TARGETS ---
+
+# fclean: Deletes build artifacts and the binary
+add_custom_target(fclean
+    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target clean
+    COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_SOURCE_DIR}/${EXECUTABLE_NAME}
+    COMMAND find ${CMAKE_BINARY_DIR} -name "*.gcda" -delete
+    COMMAND find ${CMAKE_BINARY_DIR} -name "*.gcno" -delete
+)
+
+# re: Full recompile
+add_custom_target(re
+    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target fclean
+    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target all
+)
