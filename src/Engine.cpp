@@ -72,6 +72,7 @@ namespace RayTracer{
             changed = true;
         }
 
+        if (IsKeyDown(KEY_M)) { scene.addInstance(0);}
         if (IsKeyDown(KEY_W)) { cam.moveForward(speed); changed = true; }
         if (IsKeyDown(KEY_S)) { cam.moveForward(-speed); changed = true; }
         if (IsKeyDown(KEY_D)) { cam.moveRight(speed); changed = true; }

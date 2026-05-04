@@ -13,7 +13,7 @@ namespace RayTracer {
             Ray AORay(interaction.hitPoint + (interaction.normal * 0.001), rayDir);
             bool blocked = false;
 
-            const TLASHit tlasHit = scene->world.getTLAS().traverse(AORay);
+            const TLASHit tlasHit = scene->tlas->traverse(AORay);
             if (!blocked)
                 hitNothing += 1.0;
         }

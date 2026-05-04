@@ -60,7 +60,7 @@ namespace RayTracer
                 continue;
 
             // check for collision using the TLAS.
-            const TLASHit tlasHit = scene->world.getTLAS().traverse(currentRay);
+            const TLASHit tlasHit = scene->tlas->traverse(currentRay);
             if (!tlasHit.hasHit()) {
                 const Graphic::Pixel envPixel = scene->lights.getHDRIPixel(currentRay.direction * -1);
                 integrateColor(finalColor, currentRay.throughput, envPixel);
