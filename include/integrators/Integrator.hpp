@@ -9,6 +9,11 @@
 #include "core/Scene.hpp"
 #include <raylib.h>
 #include "integrators/integratorElements/PixelTile.hpp"
+<<<<<<< HEAD
+=======
+#include "opti/BVH/BVH.hpp"
+
+>>>>>>> 8a63244 (chore: post-rebase build fixes and cleanup)
 #include "opti/ThreadPool/threadPool.hpp"
 #include "utils/Pixel.hpp"
 #include "utils/surfaceIntersection.hpp"

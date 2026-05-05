@@ -6,8 +6,8 @@
 #include "opti/BVH/TLASNode.hpp"
 #include <cstdint>
 #include <span>
-#include <raylib.h>
 #include <vector>
+
 
 namespace RayTracer {
     class TLAS {
