@@ -17,6 +17,18 @@ FetchContent_MakeAvailable(googletest)
 
 set(PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
+add_library(raytracer_lib STATIC
+    ${PROJECT_ROOT}/src/opti/BVH/AABB.cpp
+    ${PROJECT_ROOT}/src/opti/BVH/BVHNode.cpp
+    ${PROJECT_ROOT}/src/utils/Matrix4.cpp
+)
+
+target_include_directories(raytracer_lib PUBLIC
+    ${PROJECT_ROOT}/include
+)
+
+target_compile_features(raytracer_lib PUBLIC cxx_std_20)
+
 set(TEST_SOURCES
     test_vector3d.cpp
     test_triangle.cpp
@@ -25,9 +37,7 @@ set(TEST_SOURCES
     test_rayhit.cpp
     test_material.cpp
     test_matrix4.cpp
-    ${PROJECT_ROOT}/src/opti/BVH/AABB.cpp
-    ${PROJECT_ROOT}/src/opti/BVH/BVHNode.cpp
-    ${PROJECT_ROOT}/src/utils/Matrix4.cpp
+    test_bvhnode.cpp
 )
 
 add_executable(raytracer_tests ${TEST_SOURCES})
@@ -36,10 +46,28 @@ target_include_directories(raytracer_tests PRIVATE
     ${PROJECT_ROOT}/include
 )
 
-target_link_libraries(raytracer_tests PRIVATE GTest::gtest_main)
+target_link_libraries(raytracer_tests PRIVATE
+    raytracer_lib
+    GTest::gtest_main
+)
 
-target_compile_options(raytracer_tests PRIVATE -O0 -g --coverage)
-target_link_libraries(raytracer_tests PRIVATE --coverage)
+target_compile_options(raytracer_lib PRIVATE
+    -O0 -g --coverage
+)
+
+target_link_options(raytracer_lib PRIVATE
+    --coverage
+)
+
+target_compile_options(raytracer_tests PRIVATE
+    -O0 -g --coverage
+)
+
+target_link_options(raytracer_tests PRIVATE
+    --coverage
+)
+include(CTest)
+enable_testing()
 
 include(GoogleTest)
 gtest_discover_tests(raytracer_tests)
