@@ -45,6 +45,7 @@ namespace RayTracer {
             std::shared_ptr<Frame> getAvailableFrame();
             void setCurrentSceneSnapshot(std::shared_ptr<const RenderScene> scene) { this->_scene = std::move(scene); };
             void loadRayFeatures();
+            std::vector<std::unique_ptr<IRayFeature>>& getPipeline() noexcept { return _pipeline; }
             
         private:
             Graphic::Pixel consumeRays(Ray &ray, std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection);

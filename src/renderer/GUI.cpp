@@ -1,6 +1,7 @@
 #include "renderer/GUI.hpp"
 #include "rlImGui.h"
 #include "imgui.h"
+#include "integrators/Integrator.hpp"
 #include <string>
 
 namespace Graphic {
@@ -71,6 +72,14 @@ namespace Graphic {
                 ImGui::PopID();
             }
         }
+        if (_integrator && ImGui::CollapsingHeader("Features")) {
+            for (auto& feature : _integrator->getPipeline()) {
+                bool active = feature->isActive();
+                if (ImGui::Checkbox(feature->getName().c_str(), &active))
+                    feature->setActivity(active);
+            }
+        }
+
         ImGui::End();
 
         rlImGuiEnd();
