@@ -51,7 +51,7 @@ target_include_directories(raytracer_core PUBLIC
     ${tinyexr_SOURCE_DIR}
 )
 
-target_link_libraries(raytracer_core PRIVATE tinyexr)
+target_link_libraries(raytracer_core PRIVATE tinyexr config++)
 
 if(TARGET tinyexr)
     target_compile_options(tinyexr PRIVATE -w)
