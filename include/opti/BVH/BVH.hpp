@@ -44,7 +44,7 @@ namespace RayTracer {
             bool _splitSAH(uint32_t first, uint32_t count, const Math::AABB& nodeBounds, const Math::AABB& centBounds, int& bestAxis, double& bestPos) const noexcept;
 
             static double _slabTest(const BVHNode& node, const double* ro, const double* invd, double tmax) noexcept;
-            static double _mollerTrumbore(const Triangle &tri, const Ray &ray) noexcept;
+            static RayHit _mollerTrumbore(uint32_t primitiveIndex, const Triangle& tri, const Ray& ray) noexcept;
 
             std::span<const Triangle> _triangles;;
             std::vector<BVHNode> _nodes;

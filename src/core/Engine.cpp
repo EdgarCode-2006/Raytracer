@@ -14,6 +14,14 @@ namespace RayTracer{
         std::shared_ptr<const RenderScene> currentSnapshot = this->_scene.generateSceneSnapShot();
         _integrationManager = std::make_unique<IntegrationManager>(currentSnapshot);
         this->_integrationManager->instanceTiles(cam);
+        auto* integrator = _integrationManager->getIntegrator();
+        this->_renderer->setIntegrator(integrator);
+        for (auto& feature : integrator->getPipeline()) {
+            const auto& saved = _scene.getSavedFeatures();
+            auto it = saved.find(feature->getName());
+            if (it != saved.end())
+                feature->setActivity(it->second);
+        }
         this->_renderer->onSnapshotRequested = [this]() {
             this->_sceneDirty = true;
         };
@@ -96,7 +104,7 @@ namespace RayTracer{
             this->handleWindowResize(cam);
             this->moveCam(cam, this->_scene);
 
-            if (_sceneDirty && (_frameCounter % _snapshotInterval == 0)) {
+            if (_sceneDirty) {
                 this->generateSnapShot();
                 _sceneDirty = false;
             }

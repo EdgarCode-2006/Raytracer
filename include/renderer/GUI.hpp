@@ -3,6 +3,7 @@
 
 #include "core/Scene.hpp"
 #include "entities/Camera.hpp"
+#include <functional>
 
 namespace RayTracer { class Integrator; }
 
@@ -16,7 +17,7 @@ namespace Graphic {
         private:
             bool _sceneIsModified = false;
             RayTracer::Integrator* _integrator = nullptr;
-
+            char _savePath[256] = "scenes/saved.cfg";
     };
 
 }

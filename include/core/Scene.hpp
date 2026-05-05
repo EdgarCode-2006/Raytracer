@@ -2,6 +2,7 @@
 #define SCENE_HPP_
 #include <cstdint>
 #include <iterator>
+#include <map>
 #include <span>
 #include <vector>
 
@@ -43,7 +44,11 @@ namespace RayTracer {
                 _world.reserve(totalInstances);
             }
 
-            uint32_t addMesh(std::vector<Triangle> tris) {return _geometry.addMesh(std::move(tris));}
+            uint32_t addMesh(std::vector<Triangle> tris, const std::string& path = "") {
+                _meshPaths.push_back(path);
+                return _geometry.addMesh(std::move(tris));
+            }
+            const std::string& getMeshPath(uint32_t meshId) const noexcept { return _meshPaths[meshId]; }
 
             Instance& addInstance(uint32_t meshId,
                 const Math::Matrix4& transform = Math::Matrix4{},
@@ -56,6 +61,7 @@ namespace RayTracer {
             }
             
             void loadHDRI(const std::string& path) { _lights.loadHDRI(path); }
+            const std::string& getHDRIPath() const noexcept { return _lights.getHDRIPath(); }
             GeometricData &getGeometry() noexcept {return _geometry;}
             const GeometricData &getGeometry() const noexcept {return _geometry;}
             
@@ -83,15 +89,21 @@ namespace RayTracer {
             void setSelectedInstance(int32_t i) noexcept  {_selectedInstance = i;}
             int32_t getSelectedInstance() const noexcept  {return _selectedInstance;}
 
+            void setSavedFeature(const std::string& name, bool active) { _savedFeatures[name] = active; }
+            const std::map<std::string, bool>& getSavedFeatures() const noexcept { return _savedFeatures; }
+
+
             inline std::shared_ptr<const RenderScene> generateSceneSnapShot() const {
                 return std::make_shared<const RayTracer::RenderScene>(_geometry, _world, _world.getTLASSnapshot(), _lights);
             }
         private:
+            std::vector<std::string> _meshPaths;
             GeometricData _geometry;
             World _world;
             Camera _camera;
             Lights _lights;
             int32_t _selectedInstance = -1;
+            std::map<std::string, bool> _savedFeatures;
     };
 }
 #endif

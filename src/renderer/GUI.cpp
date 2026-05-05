@@ -1,4 +1,5 @@
 #include "renderer/GUI.hpp"
+#include "SceneParser.hpp"
 #include "rlImGui.h"
 #include "imgui.h"
 #include "integrators/Integrator.hpp"
@@ -53,8 +54,6 @@ namespace Graphic {
                     if (changed) {
                         this->_sceneIsModified = true;
                         inst.setTRS(pos, rot, scale);
-
-
                         scene.buildTLAS();
                     }
 
@@ -64,11 +63,15 @@ namespace Graphic {
                         mat.color._g / 255.0f,
                         mat.color._b / 255.0f
                     };
-                    if (ImGui::ColorPicker3("Color", col, ImGuiColorEditFlags_PickerHueWheel)) {
+                    if (ImGui::ColorPicker3("Color", col, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB)) {
                         mat.color._r = (unsigned char)(col[0] * 255);
                         mat.color._g = (unsigned char)(col[1] * 255);
                         mat.color._b = (unsigned char)(col[2] * 255);
                     }
+
+                    ImGui::SliderFloat("Reflectivity", &mat.reflectivity, 0.0f, 1.0f);
+                    ImGui::SliderFloat("Refractivity", &mat.refractivity, 0.0f, 1.0f);
+                    ImGui::SliderFloat("IOR", &mat.ior, 1.0f, 3.0f);
                 }
 
                 ImGui::PopID();
@@ -79,6 +82,24 @@ namespace Graphic {
                 bool active = feature->isActive();
                 if (ImGui::Checkbox(feature->getName().c_str(), &active))
                     feature->setActivity(active);
+            }
+        }
+
+        if (ImGui::CollapsingHeader("Scene")) {
+            ImGui::InputText("Path", _savePath, sizeof(_savePath));
+            if (ImGui::Button("Save")) {
+                try {
+                    std::vector<std::pair<std::string, bool>> feats;
+                    if (_integrator) {
+                        for (const auto& f : _integrator->getPipeline())
+                            feats.emplace_back(f->getName(), f->isActive());
+                    }
+                    RayTracer::SceneParser parser;
+                    parser.save(_savePath, scene, feats);
+                } catch (const std::exception& e) {
+                    ImGui::OpenPopup("SaveError");
+                    (void)e;
+                }
             }
         }
 
