@@ -51,7 +51,7 @@ target_include_directories(raytracer_core PUBLIC
     ${tinyexr_SOURCE_DIR}
 )
 
-target_link_libraries(raytracer_core PRIVATE tinyexr config++)
+target_link_libraries(raytracer_core PRIVATE tinyexr)
 
 if(TARGET tinyexr)
     target_compile_options(tinyexr PRIVATE -w)
@@ -81,6 +81,17 @@ target_link_libraries(${EXECUTABLE_NAME} PRIVATE
     SpecularHandler_feat 
     AmbientOcclusion_feat
 )
+
+# --- LIBCONFIG++ ---
+find_library(LIBCONFIGPP_LIB config++)
+find_path(LIBCONFIGPP_INC libconfig.h++)
+
+if(LIBCONFIGPP_LIB AND LIBCONFIGPP_INC)
+    target_include_directories(raytracer_core PUBLIC ${LIBCONFIGPP_INC})
+    target_link_libraries(raytracer_core PUBLIC ${LIBCONFIGPP_LIB})
+else()
+    message(FATAL_ERROR "libconfig++ not found")
+endif()
 
 # --- RAYLIB & SYSTEM LIBS ---
 find_library(RAYLIB_LIB raylib)
