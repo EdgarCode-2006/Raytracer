@@ -19,7 +19,8 @@ namespace RayTracer {
 
             void addLight(const DirectionalLight &light) {_directionalLights.push_back(light);}
             void setAmbientLight(const AmbientLight &light) {_ambientLight = light;}
-            void loadHDRI(const std::string& path) {_hdri = HDRI(path);}
+            void loadHDRI(const std::string& path) {_hdriPath = path; _hdri = HDRI(path);}
+            const std::string& getHDRIPath() const noexcept {return _hdriPath;}
 
             const std::vector<DirectionalLight> &getLights() const noexcept {return _directionalLights;}
             const AmbientLight &getAmbientLight() const noexcept {return _ambientLight;}
@@ -30,6 +31,7 @@ namespace RayTracer {
             std::vector<DirectionalLight> _directionalLights;
             AmbientLight _ambientLight;
             HDRI _hdri;
+            std::string _hdriPath;
         };
 
 }

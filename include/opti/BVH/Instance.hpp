@@ -49,6 +49,7 @@ namespace RayTracer {
             }
 
             const Math::Matrix4 &getTransform() const noexcept {return _transform;}
+            uint32_t getMeshId() const noexcept {return _meshId;}
             const Math::AABB &worldAABB() const noexcept {return _worldAABB;}
 
             const float* getPos() const noexcept { return _pos; }

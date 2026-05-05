@@ -196,25 +196,25 @@ namespace RayTracer {
         return (tmin <= tmax) ? tmin : 1e30;
     }
 
-    double BVH::_mollerTrumbore(const Triangle &tri, const Ray &ray) noexcept {
+    RayHit BVH::_mollerTrumbore(uint32_t primitiveIndex, const Triangle &tri, const Ray &ray) noexcept {
         const double EPSILON = 1e-7;
         Math::Vector3D edge1 = tri.b() - tri.a();
         Math::Vector3D edge2 = tri.c() - tri.a();
         Math::Vector3D h = ray.direction.cross(edge2);
         double a = edge1.dot(h);
         if (a > -EPSILON && a < EPSILON)
-            return 1e30;
+            return {};
         double f = 1.0 / a;
         Math::Vector3D s = ray.origin - tri.a();
         double u = f * s.dot(h);
         if (u < 0.0 || u > 1.0)
-            return 1e30;
+            return {};
         Math::Vector3D q = s.cross(edge1);
         double v = f * ray.direction.dot(q);
         if (v < 0.0 || u + v > 1.0)
-            return 1e30;
+            return {};
         double t = f * edge2.dot(q);
-        return (t > EPSILON) ? t : 1e30;
+        return (t > EPSILON) ? RayHit(t, primitiveIndex) : RayHit{};
     }
 
     RayHit BVH::traverse(const Ray &ray) const noexcept {
@@ -247,9 +247,9 @@ namespace RayTracer {
             if (node.isLeaf()) {
                 for (uint32_t i = 0; i < node.primCount(); i++) {
                     const uint32_t primitiveIndex = _indices[node.leftOrFirst() + i];
-                    const double t = _mollerTrumbore(_triangles[primitiveIndex], ray);
-                    if (t < hit.t())
-                        hit = RayHit(t, primitiveIndex);
+                    const RayHit candidate = _mollerTrumbore(primitiveIndex, _triangles[primitiveIndex], ray);
+                    if (candidate.t() < hit.t())
+                        hit = candidate;
                 }
             } else {
                 // near first far last

@@ -38,7 +38,9 @@ int main(int argc, char** argv)
             }
             scene.reserve(1, tris.size(), 1);
             uint32_t meshId = scene.addMesh(std::move(tris));
-            scene.addInstance(meshId);
+            Graphic::Material mat;
+            mat.color = Graphic::Pixel(180, 180, 180, 255);
+            scene.addInstance(meshId, Math::Matrix4{}, mat);
             scene.buildTLAS();
 
             RayTracer::AmbientLight ambient;
