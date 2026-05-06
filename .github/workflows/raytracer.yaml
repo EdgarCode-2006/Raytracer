@@ -22,7 +22,7 @@ jobs:
           apt-get install -y \
             cmake build-essential git \
             libgl1-mesa-dev libx11-dev libxrandr-dev \
-            libxi-dev libxcursor-dev libxinerama-dev
+            libxi-dev libxcursor-dev libxinerama-dev libconfig++-dev
           git clone --depth 1 --branch 6.0 https://github.com/raysan5/raylib.git /tmp/raylib
           cmake -B /tmp/raylib/build -S /tmp/raylib \
             -DBUILD_SHARED_LIBS=OFF \
