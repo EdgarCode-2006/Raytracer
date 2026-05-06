@@ -18,11 +18,10 @@
 #include <memory>
 #include <tuple>
 
-#define TILE_DIM 64
+#define TILE_DIM 16
 #define MIN_THROUGHPUT_LENGTH 0.001
 #define RAYS_PER_PIXEL 8
-#define MAX_DEPTH 5
-
+#define MAX_DEPTH 4
 
 namespace RayTracer {
     class IRayFeature;
