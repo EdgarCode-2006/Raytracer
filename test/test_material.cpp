@@ -55,7 +55,7 @@ TEST(Material, DefaultIsWhiteWithNoReflection)
 TEST(Material, ParameterizedConstructionStoresValues)
 {
     Pixel red(255, 0, 0, 255);
-    Material m(red, 0.5f, 0.2f, 1.5f);
+    Material m(red, 0.5f, 0.2f, 1.5f, 0.0f);
     EXPECT_EQ(m.color._r, 255);
     EXPECT_EQ(m.color._g, 0);
     EXPECT_EQ(m.color._b, 0);
@@ -66,14 +66,14 @@ TEST(Material, ParameterizedConstructionStoresValues)
 
 TEST(Material, FullyReflective)
 {
-    Material m(Pixel(255, 255, 255), 1.0f, 0.0f, 1.0f);
+    Material m(Pixel(255, 255, 255), 1.0f, 0.0f, 1.0f, 0.0f);
     EXPECT_FLOAT_EQ(m.reflectivity, 1.0f);
     EXPECT_FLOAT_EQ(m.refractivity, 0.0f);
 }
 
 TEST(Material, FullyRefractive)
 {
-    Material m(Pixel(200, 200, 200), 0.0f, 1.0f, 1.33f);
+    Material m(Pixel(200, 200, 200), 0.0f, 1.0f, 1.33f, 0.0f);
     EXPECT_FLOAT_EQ(m.refractivity, 1.0f);
     EXPECT_FLOAT_EQ(m.ior, 1.33f);
 }
