@@ -3,7 +3,7 @@
 namespace RayTracer
 {
     HDRI::HDRI(const std::string &filePath) {
-        _defaultColor = {130, 2, 50};
+        _defaultColor = {0, 0, 0, 255};
         this->initHDRIFromFilePath(filePath);
     }
 
@@ -30,10 +30,17 @@ namespace RayTracer
 
     void HDRI::initHDRIFromFilePath(const std::string &filePath)
     {
-        if (this->_rgbBuffer)
+        if (this->_rgbBuffer) {
             free(this->_rgbBuffer);
-        const char* err = nullptr;
+            this->_rgbBuffer = nullptr;
+        }
+        _width = 0;
+        _height = 0;
 
+        if (filePath.empty())
+            return;
+
+        const char* err = nullptr;
         int ret = LoadEXR(&_rgbBuffer, &_width, &_height, filePath.c_str(), &err);
 
         if (ret != TINYEXR_SUCCESS) {
@@ -41,6 +48,7 @@ namespace RayTracer
                 fprintf(stderr, "Detailed Error: %s\n", err);
                 FreeEXRErrorMessage(err);
             }
+            _rgbBuffer = nullptr;
             return;
         }
         this->_size = _width * _height;

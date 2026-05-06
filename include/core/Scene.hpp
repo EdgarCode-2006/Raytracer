@@ -61,6 +61,9 @@ namespace RayTracer {
             }
             
             void loadHDRI(const std::string& path) { _lights.loadHDRI(path); }
+            void requestHDRILoad(const std::string& path) { _pendingHdriPath = path; }
+            bool hasPendingHdri() const noexcept { return !_pendingHdriPath.empty(); }
+            void applyPendingHdri() { _lights.loadHDRI(_pendingHdriPath); _pendingHdriPath.clear(); }
             const std::string& getHDRIPath() const noexcept { return _lights.getHDRIPath(); }
             GeometricData &getGeometry() noexcept {return _geometry;}
             const GeometricData &getGeometry() const noexcept {return _geometry;}
@@ -104,6 +107,7 @@ namespace RayTracer {
             Lights _lights;
             int32_t _selectedInstance = -1;
             std::map<std::string, bool> _savedFeatures;
+            std::string _pendingHdriPath;
     };
 }
 #endif
