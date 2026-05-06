@@ -1,7 +1,6 @@
 #ifndef IRAYFEATURE_HPP_
 #define IRAYFEATURE_HPP_
 #include "integrators/Integrator.hpp"
-#include "utils/helper.hpp"
 #include <string>
 
 namespace RayTracer {
