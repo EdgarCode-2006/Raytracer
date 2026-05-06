@@ -73,7 +73,7 @@ namespace Graphic {
                     if (ImGui::SliderFloat("Reflectivity", &mat.reflectivity, 0.0f, 1.0f)) this->_sceneIsModified = true;
                     if (ImGui::SliderFloat("Refractivity", &mat.refractivity, 0.0f, 1.0f)) this->_sceneIsModified = true;
                     if (ImGui::SliderFloat("IOR", &mat.ior, 1.0f, 3.0f)) this->_sceneIsModified = true;
-                    if (ImGui::SliderFloat("Emission", &mat.emission, 0.0f, 100.0f)) this->_sceneIsModified = true;
+                    if (ImGui::SliderFloat("Emission", &mat.emission, 0.0f, 1.0f)) this->_sceneIsModified = true;
                 }
 
                 ImGui::PopID();

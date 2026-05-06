@@ -17,8 +17,8 @@ namespace Graphic {
         private:
             bool _sceneIsModified = false;
             RayTracer::Integrator* _integrator = nullptr;
-            char _savePath[256] = "scenes/saved.cfg";
-            char _hdriPath[256] = "";
+            char _savePath[256] = "assets/scenes/saved.cfg";
+            char _hdriPath[256] = "assets/HDRIs/";
     };
 
 }
