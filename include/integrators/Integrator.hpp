@@ -20,16 +20,15 @@
 
 #define TILE_DIM 16
 #define MIN_THROUGHPUT_LENGTH 0.001
-#define RAYS_PER_PIXEL 8
 #define MAX_DEPTH 4
+#define DEFAULT_SAMPLES_PER_PIXEL 8
 
 namespace RayTracer {
     class IRayFeature;
 
     struct CachedData {
         std::vector<PixelTile> tiles;
-        int samplesPerSide;
-        float step;
+        Math::Vector3D prevCamPos;
     };
 
     class Integrator {
@@ -63,6 +62,8 @@ namespace RayTracer {
             std::queue<std::shared_ptr<Frame>> _readyPixelBuffers; // frame ready to be rendered by main thread.
             std::mutex _queueMutex;
             std::atomic<int> _framesInFlight;
+
+            int _samplesPerPixel;
 
             // cached data.
             CachedData _cache;
