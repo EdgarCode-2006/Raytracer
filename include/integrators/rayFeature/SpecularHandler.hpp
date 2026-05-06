@@ -1,5 +1,5 @@
-#ifndef BASIC_LIGHT_HPP_
-#define BASIC_LIGHT_HPP_
+#ifndef SPECULAR_HPP_
+#define SPECULAR_HPP_
 #include "integrators/rayFeature/ARayFeature.hpp"
 
 namespace RayTracer {
@@ -9,8 +9,8 @@ namespace RayTracer {
     class SpecularHandler : public ARayFeature {
         public:
             SpecularHandler() : ARayFeature("SpecularHandler") {};
-            void process(RenderData &data, SurfaceIntersection &interaction) override;
-            int getPriority() const noexcept override {return 10;};
+            void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override;
+            int getPriority() const noexcept override {return 0;};
     };
 }
 #endif

@@ -53,10 +53,21 @@ void RayTracer::Integrator::loadRayFeatures()
         );
 
         std::cout << "feature count = " << _pipeline.size() << std::endl;
-        //this->setPluginState("SpecularHandler", false);
+        this->setPluginState("SpecularHandler", false);
         this->setPluginState("AmbientOcclusion", false);
         // this->setPluginState("BasicLighting", false);
     } catch (const std::filesystem::filesystem_error& ex) {
         throw IntegratorException("Failed to load ray features.");
     }
+}
+
+void RayTracer::Integrator::setPluginState(const std::string &pluginName, const bool &state)
+{
+    for (auto& plugin : _pipeline) {
+        if (plugin->getName() == pluginName) {
+            plugin->setActivity(state);
+            return;
+        }
+    }
+    std::cout << "plugin not found couldn't disable." << std::endl;
 }

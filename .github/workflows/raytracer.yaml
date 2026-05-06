@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build raytracer
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install raylib from source
+        run: |
+          apt-get update -y
+          apt-get install -y \
+            cmake build-essential git \
+            libgl1-mesa-dev libx11-dev libxrandr-dev \
+            libxi-dev libxcursor-dev libxinerama-dev libconfig++-dev
+          git clone --depth 1 --branch 6.0 https://github.com/raysan5/raylib.git /tmp/raylib
+          cmake -B /tmp/raylib/build -S /tmp/raylib \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/raylib/build --parallel $(nproc)
+          cmake --install /tmp/raylib/build
+
+      - name: Configure
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DFETCHCONTENT_QUIET=OFF
+
+      - name: Build
+        run: cmake --build build --parallel $(nproc)
+
+      - name: Verify binary exists
+        run: test -f build/raytracer || (echo "Binary not found!" && exit 1)
+
+  tests:
+    name: Unit tests & coverage
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+
+      - name: Install Python + gcovr
+        run: |
+            apt-get update
+            apt-get install -y python3 python3-pip gcovr
+    
+      - name: Clean build
+        run: rm -rf test/build
+
+      - name: Configure tests
+        run: |
+          cmake -B test/build -S test \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_CXX_COMPILER=g++ \
+            -DCMAKE_C_COMPILER=gcc \
+            -DCMAKE_CXX_FLAGS="--coverage" \
+            -DCMAKE_C_FLAGS="--coverage"
+      - name: Build tests
+        run: cmake --build test/build --parallel $(nproc)
+
+      - name: Run tests
+        working-directory: test/build
+        run: ./raytracer_tests --gtest_output=xml:test_results.xml
+
+      - name: Check coverage
+        working-directory: test/build
+        run: |
+          find . -name "*.gcda" -delete
+          ctest --output-on-failure
+          gcovr --gcov-executable gcov-13 \
+            -r ../.. \
+            --filter '.*src/.*' \
+            --filter '.*include/.*' \
+            --exclude '.*/usr/.*' \
+            --exclude '.*_deps.*' \
+            --exclude '.*CompilerId.*' \
+            --print-summary \
+            --fail-under-line 80

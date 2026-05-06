@@ -3,20 +3,44 @@
 namespace RayTracer
 {
     HDRI::HDRI(const std::string &filePath) {
-        _defaultColor = {130, 2, 50};
+        _defaultColor = {0, 0, 0, 255};
         this->initHDRIFromFilePath(filePath);
     }
 
     HDRI::~HDRI() {
-        free(this->_rgbBuffer);
+        if (_rgbBuffer) {
+            free(this->_rgbBuffer);
+            this->_rgbBuffer = nullptr;
+        }
+    }
+
+    HDRI& HDRI::operator=(HDRI&& other) noexcept {
+        if (this != &other) {
+            if (_rgbBuffer)
+                free(_rgbBuffer);
+            _rgbBuffer   = other._rgbBuffer;
+            _width       = other._width;
+            _height      = other._height;
+            _size        = other._size;
+            _defaultColor = other._defaultColor;
+            other._rgbBuffer = nullptr;
+        }
+        return *this;
     }
 
     void HDRI::initHDRIFromFilePath(const std::string &filePath)
     {
-        if (this->_rgbBuffer)
+        if (this->_rgbBuffer) {
             free(this->_rgbBuffer);
-        const char* err = nullptr;
+            this->_rgbBuffer = nullptr;
+        }
+        _width = 0;
+        _height = 0;
 
+        if (filePath.empty())
+            return;
+
+        const char* err = nullptr;
         int ret = LoadEXR(&_rgbBuffer, &_width, &_height, filePath.c_str(), &err);
 
         if (ret != TINYEXR_SUCCESS) {
@@ -24,6 +48,7 @@ namespace RayTracer
                 fprintf(stderr, "Detailed Error: %s\n", err);
                 FreeEXRErrorMessage(err);
             }
+            _rgbBuffer = nullptr;
             return;
         }
         this->_size = _width * _height;

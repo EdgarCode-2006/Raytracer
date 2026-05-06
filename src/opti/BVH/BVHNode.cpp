@@ -16,7 +16,7 @@ namespace RayTracer {
         return _primCount;
     }
 
-    const AABB &BVHNode::bounds() const noexcept  {
+    const Math::AABB &BVHNode::bounds() const noexcept  {
         return _bounds;
     }
 }

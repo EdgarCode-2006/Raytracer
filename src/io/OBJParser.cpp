@@ -1,4 +1,4 @@
-#include "OBJParser.hpp"
+#include "io/OBJParser.hpp"
 #include <fstream>
 
 namespace OBJParser {
@@ -12,14 +12,14 @@ namespace OBJParser {
     {
         double x, y, z;
         ss >> x >> y >> z;
-        this->_vertices.push_back(Math::Vector3D(x, y, z));
+        _vertices.push_back({x, y, z});
     }
 
     void OBJParser::parseNormal(std::istringstream& ss)
     {
         double x, y, z;
         ss >> x >> y >> z;
-        this->_normals.push_back(Math::Vector3D(x, y, z));
+        _normals.push_back({x, y, z});
     }
 
     void OBJParser::parseFace(std::istringstream& ss, std::vector<RayTracer::Triangle>& out)
@@ -41,7 +41,12 @@ namespace OBJParser {
             if (indices[0] < 0 || indices[0] >= vsize) continue;
             if (indices[i] < 0 || indices[i] >= vsize) continue;
             if (indices[i + 1] < 0 || indices[i + 1] >= vsize) continue;
-            out.push_back({ _vertices[indices[0]], _vertices[indices[i]], _vertices[indices[i + 1]] });
+            const Math::Vector3D& va = _vertices[indices[0]];
+            const Math::Vector3D& vb = _vertices[indices[i]];
+            const Math::Vector3D& vc = _vertices[indices[i + 1]];
+            RayTracer::Triangle tri(va, vb, vc);
+            tri.normal = (vb - va).cross(vc - va).normalize();
+            out.push_back(tri);
         }
     }
 
@@ -52,8 +57,9 @@ namespace OBJParser {
 
         if (!file.is_open())
             return triangles;
-        this->_vertices.clear();
-        this->_normals.clear();
+
+        _vertices.clear();
+        _normals.clear();
 
         std::string line;
         while (std::getline(file, line)) {
@@ -66,7 +72,7 @@ namespace OBJParser {
                 parseNormal(ss);
             else if (type == "f")
                 parseFace(ss, triangles);
-        };
+        }
         return triangles;
     }
 }

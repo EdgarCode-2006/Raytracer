@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 
-namespace RayTracer {
+namespace Math {
 
     Matrix4 Matrix4::inverse() const noexcept {
         // flatten to 1D for better visibility
@@ -46,7 +46,7 @@ namespace RayTracer {
         return result;
     }
 
-    Math::Vector3D Matrix4::transformPoint(const Math::Vector3D &p) const noexcept {
+    Vector3D Matrix4::transformPoint(const Vector3D &p) const noexcept {
         return {
             m[0][0]*p.x() + m[0][1]*p.y() + m[0][2]*p.z() + m[0][3],
             m[1][0]*p.x() + m[1][1]*p.y() + m[1][2]*p.z() + m[1][3],
@@ -54,7 +54,7 @@ namespace RayTracer {
         };
     }
 
-    Math::Vector3D Matrix4::transformDirection(const Math::Vector3D &d) const noexcept {
+    Vector3D Matrix4::transformDirection(const Vector3D &d) const noexcept {
         return {
             m[0][0]*d.x() + m[0][1]*d.y() + m[0][2]*d.z(),
             m[1][0]*d.x() + m[1][1]*d.y() + m[1][2]*d.z(),
@@ -63,9 +63,9 @@ namespace RayTracer {
     }
     
     AABB Matrix4::transformAABB(const AABB& box) const noexcept {
-        const Math::Vector3D& mn = box.min();
-        const Math::Vector3D& mx = box.max();
-        const Math::Vector3D corners[8] = {
+        const Vector3D& mn = box.min();
+        const Vector3D& mx = box.max();
+        const Vector3D corners[8] = {
             {mn.x(), mn.y(), mn.z()}, {mx.x(), mn.y(), mn.z()},
             {mn.x(), mx.y(), mn.z()}, {mx.x(), mx.y(), mn.z()},
             {mn.x(), mn.y(), mx.z()}, {mx.x(), mn.y(), mx.z()},

@@ -7,7 +7,8 @@ namespace RayTracer {
     class TLASHit {
         public:
             TLASHit() = default;
-            TLASHit(double t, uint32_t primitiveIndex, uint32_t instanceIndex) noexcept : _t(t), _primitiveIndex(primitiveIndex), _instanceIndex(instanceIndex) {};
+            TLASHit(double t, uint32_t primitiveIndex, uint32_t instanceIndex) noexcept
+                : _t(t), _primitiveIndex(primitiveIndex), _instanceIndex(instanceIndex) {}
 
             double t() const noexcept {return _t;}
             uint32_t primitiveIndex() const noexcept {return _primitiveIndex;}

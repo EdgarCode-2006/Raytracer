@@ -1,9 +1,8 @@
 #ifndef RAYLIB_RENDERER_HPP_
 #define RAYLIB_RENDERER_HPP_
 
-#include "renderer/Renderer.hpp"
 #include "renderer/RaylibRenderer.hpp"
-#include "GUI.hpp"
+#include "renderer/GUI.hpp"
 #include "rlImGui.h"
 #include <cstring>
 
@@ -89,6 +88,11 @@ namespace Graphic {
             DrawFPS(10, 10);
             _gui.Render(scene, cam);
         EndDrawing();
+        if (_gui.wasSceneModified()) {
+            if (onSnapshotRequested) {
+                this->onSnapshotRequested();
+            }
+        }
     }
 
     void RaylibRenderer::resizeWindow(int newWidth, int newHeight)
