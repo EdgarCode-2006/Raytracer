@@ -9,9 +9,9 @@ namespace RayTracer
         const float emission = 0.0
     )
     {
-        finalColor.x() += (localColor._r) * (throughput.x() + emission);
-        finalColor.y() += (localColor._g) * (throughput.y() + emission);
-        finalColor.z() += (localColor._b) * (throughput.z() + emission);
+        finalColor.x() += (localColor._r) * throughput.x();
+        finalColor.y() += (localColor._g) * throughput.y();
+        finalColor.z() += (localColor._b) * throughput.z();
     }
 
     static void initializeIntersection(

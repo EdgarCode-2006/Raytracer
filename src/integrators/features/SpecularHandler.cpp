@@ -8,11 +8,18 @@ namespace RayTracer {
         return Fo + (1.0 - Fo) * pow((1.0 - cosi), 5);
     }
 
-    static void reflectRay(SurfaceIntersection &interaction, double cosi, Math::Vector3D N, double Re)
+    static void reflectRay(SurfaceIntersection &interaction, double Re)
     {
-        Math::Vector3D reflectionDir = (interaction.rayDir - N * (2.0f * cosi)).normalize();
+        Math::Vector3D I = interaction.rayDir;
+        Math::Vector3D N = interaction.normal;
+        double dot = I.dot(N);
+
+        Math::Vector3D reflectionDir = (I - N * (2.0 * dot)).normalize();
+
+        Math::Vector3D offset = N * (dot > 0 ? -0.001f : 0.001f);
+
         Math::Vector3D throughput = interaction.throughput * Re;
-        interaction.nextRays.push_back({interaction.hitPoint + (N * 0.001f), reflectionDir, throughput, 0});
+        interaction.nextRays.push_back({interaction.hitPoint + offset, reflectionDir, throughput, 0});
     }
 
     void SpecularHandler::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
@@ -43,7 +50,7 @@ namespace RayTracer {
 
         if (k < 0.0 || Re >= 0.001) {
             // reflection
-            reflectRay(interaction, cosi, N, Re);
+            reflectRay(interaction, Re);
         }
         if (k >= 0.0 && Ra >= 0.001){
             // refraction
