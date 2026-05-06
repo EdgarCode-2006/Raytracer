@@ -8,6 +8,8 @@
 #include <functional>
 #include <memory>
 
+namespace RayTracer { class Integrator; }
+
 namespace Graphic {
     class IRenderer {
         public:
@@ -17,6 +19,7 @@ namespace Graphic {
             virtual void renderPixelBuffer(Pixel *pixels, RayTracer::Scene& scene, RayTracer::Camera& cam) = 0;
             virtual bool windowOpen() = 0;
             std::function<void()> onSnapshotRequested;
+            virtual void setIntegrator(RayTracer::Integrator*) noexcept {}
     };
 
     class ARenderer : public IRenderer {

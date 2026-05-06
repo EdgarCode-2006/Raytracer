@@ -11,10 +11,9 @@ namespace RayTracer {
         for (int i = 0; i < AO_RAY_SAMPLE_COUNT; i++) {
             Math::Vector3D rayDir = interaction.getOmega();
             Ray AORay(interaction.hitPoint + (interaction.normal * 0.001), rayDir);
-            bool blocked = false;
 
             const TLASHit tlasHit = scene->tlas->traverse(AORay);
-            if (!blocked)
+            if (!tlasHit.hasHit())
                 hitNothing += 1.0;
         }
         double intensity = hitNothing / AO_RAY_SAMPLE_COUNT;

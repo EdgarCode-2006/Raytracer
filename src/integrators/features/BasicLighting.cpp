@@ -8,10 +8,9 @@ namespace RayTracer {
         for (const auto& light : scene->lights.getLights()) {
             Math::Vector3D lightDir = light.direction * -1;
             double diff = interaction.normal.dot(lightDir);
-            
+
             if (diff > 0) {
                 Ray shadowRay(interaction.hitPoint + (interaction.normal * 0.001), lightDir);
-                bool blocked = false;
 
                 const TLASHit tlasHit = scene->tlas->traverse(shadowRay);
                 if (!tlasHit.hasHit())

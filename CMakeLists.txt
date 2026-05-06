@@ -41,9 +41,9 @@ set(IMGUI_SRC
 # 1. Core Library
 add_library(raytracer_core STATIC ${SRC} ${IMGUI_SRC})
 
-# THIS IS THE FIX: We use PUBLIC so anyone linking to raytracer_core 
+# THIS IS THE FIX: We use PUBLIC so anyone linking to raytracer_core
 # (like your features or main) automatically sees these folders.
-target_include_directories(raytracer_core PUBLIC 
+target_include_directories(raytracer_core PUBLIC
     "${CMAKE_SOURCE_DIR}/include"
     "${CMAKE_SOURCE_DIR}/include/utils"
     ${imgui_SOURCE_DIR}
@@ -62,7 +62,6 @@ macro(add_ray_feature FEATURE_NAME SRC_PATH)
     add_library(${FEATURE_NAME} SHARED ${SRC_PATH})
     # Linking to raytracer_core now automatically provides the includes
     target_link_libraries(${FEATURE_NAME} PRIVATE raytracer_core)
-    
     set_target_properties(${FEATURE_NAME} PROPERTIES
         PREFIX "" 
         SUFFIX ".so"
@@ -82,6 +81,17 @@ target_link_libraries(${EXECUTABLE_NAME} PRIVATE
     SpecularHandler_feat 
     AmbientOcclusion_feat
 )
+
+# --- LIBCONFIG++ ---
+find_library(LIBCONFIGPP_LIB config++)
+find_path(LIBCONFIGPP_INC libconfig.h++)
+
+if(LIBCONFIGPP_LIB AND LIBCONFIGPP_INC)
+    target_include_directories(raytracer_core PUBLIC ${LIBCONFIGPP_INC})
+    target_link_libraries(raytracer_core PUBLIC ${LIBCONFIGPP_LIB})
+else()
+    message(FATAL_ERROR "libconfig++ not found")
+endif()
 
 # --- RAYLIB & SYSTEM LIBS ---
 find_library(RAYLIB_LIB raylib)

@@ -1,5 +1,33 @@
-.vscode
+# Build outputs
 raytracer
+raytracer_debug
 build/
-compile_flags.txt
+build_tests/
+*.o
+*.a
 *.so
+*.so.*
+
+# IDE / tools
+.vscode/
+.idea/
+compile_flags.txt
+compile_commands.json
+.cache/
+.clangd/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Generated / junk
+*.png
+*.pdf
+image.png
+scenes/saved.cfg
+scenes/ALLLERRR.cfg
+scenes/zizi.cfg
+scenes/caca.cfg
+scenes/prout.cfg

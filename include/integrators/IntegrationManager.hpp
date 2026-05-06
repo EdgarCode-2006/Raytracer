@@ -18,6 +18,7 @@ namespace RayTracer {
             void stop() {this->_integrator->stop();};
             void instanceTiles(const Camera &cam) {this->_integrator->instanceTiles(cam);};
             void waitForRendering() {this->_integrator->waitForRendering();};
+            Integrator* getIntegrator() noexcept {return this->_integrator.get();};
         private:
             std::unique_ptr<Integrator> _integrator;
             std::queue<std::shared_ptr<const RenderScene>> _snapShotQueue;
