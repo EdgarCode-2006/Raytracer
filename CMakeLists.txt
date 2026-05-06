@@ -53,6 +53,10 @@ target_include_directories(raytracer_core PUBLIC
 
 target_link_libraries(raytracer_core PRIVATE tinyexr)
 
+if(TARGET tinyexr)
+    target_compile_options(tinyexr PRIVATE -w)
+endif()
+
 # 2. Feature Plugin Macro
 macro(add_ray_feature FEATURE_NAME SRC_PATH)
     add_library(${FEATURE_NAME} SHARED ${SRC_PATH})
