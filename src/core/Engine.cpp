@@ -35,6 +35,11 @@ namespace RayTracer{
     }
 
     void Engine::generateSnapShot() {
+        if (_scene.hasPendingHdri()) {
+            _integrationManager->waitForRendering();
+            _scene.applyPendingHdri();
+        }
+        this->_scene.buildTLAS();
         std::shared_ptr<const RenderScene> currentSnapshot = this->_scene.generateSceneSnapShot();
         this->_integrationManager->addSnapShot(currentSnapshot);
     }
@@ -81,7 +86,7 @@ namespace RayTracer{
             changed = true;
         }
 
-        if (IsKeyDown(KEY_M)) { scene.addInstance(0);}
+        if (IsKeyDown(KEY_M)) { scene.addInstance(0); scene.buildTLAS(); _sceneDirty = true; }
         if (IsKeyDown(KEY_W)) { cam.moveForward(speed); changed = true; }
         if (IsKeyDown(KEY_S)) { cam.moveForward(-speed); changed = true; }
         if (IsKeyDown(KEY_D)) { cam.moveRight(speed); changed = true; }

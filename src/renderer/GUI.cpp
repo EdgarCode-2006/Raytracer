@@ -4,6 +4,7 @@
 #include "imgui.h"
 #include "integrators/Integrator.hpp"
 #include <string>
+#include <cstring>
 
 namespace Graphic {
 
@@ -54,7 +55,6 @@ namespace Graphic {
                     if (changed) {
                         this->_sceneIsModified = true;
                         inst.setTRS(pos, rot, scale);
-                        scene.buildTLAS();
                     }
 
                     Graphic::Material& mat = inst.getMaterial();
@@ -67,17 +67,19 @@ namespace Graphic {
                         mat.color._r = (unsigned char)(col[0] * 255);
                         mat.color._g = (unsigned char)(col[1] * 255);
                         mat.color._b = (unsigned char)(col[2] * 255);
+                        this->_sceneIsModified = true;
                     }
-
-                    ImGui::SliderFloat("Reflectivity", &mat.reflectivity, 0.0f, 1.0f);
-                    ImGui::SliderFloat("Refractivity", &mat.refractivity, 0.0f, 1.0f);
-                    ImGui::SliderFloat("IOR", &mat.ior, 1.0f, 3.0f);
+                    
+                    if (ImGui::SliderFloat("Reflectivity", &mat.reflectivity, 0.0f, 1.0f)) this->_sceneIsModified = true;
+                    if (ImGui::SliderFloat("Refractivity", &mat.refractivity, 0.0f, 1.0f)) this->_sceneIsModified = true;
+                    if (ImGui::SliderFloat("IOR", &mat.ior, 1.0f, 3.0f)) this->_sceneIsModified = true;
+                    if (ImGui::SliderFloat("Emission", &mat.emission, 0.0f, 100.0f)) this->_sceneIsModified = true;
                 }
 
                 ImGui::PopID();
             }
         }
-        if (_integrator && ImGui::CollapsingHeader("Features")) {
+        if (this->_integrator && ImGui::CollapsingHeader("Features")) {
             for (auto& feature : _integrator->getPipeline()) {
                 bool active = feature->isActive();
                 if (ImGui::Checkbox(feature->getName().c_str(), &active))
@@ -101,7 +103,24 @@ namespace Graphic {
                     (void)e;
                 }
             }
+            if (_hdriPath[0] == '\0') {
+                const std::string& current = scene.getHDRIPath();
+                if (!current.empty())
+                    std::strncpy(_hdriPath, current.c_str(), sizeof(_hdriPath) - 1);
+            }
+            ImGui::InputText("HDRI Path", _hdriPath, sizeof(_hdriPath));
+            if (ImGui::Button("Load HDRI")) {
+                scene.requestHDRILoad(_hdriPath);
+                this->_sceneIsModified = true;
+            }
+            if (ImGui::BeginPopupModal("HDRIError", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+                ImGui::Text("Failed to load HDRI: %s", _hdriPath);
+                if (ImGui::Button("OK"))
+                    ImGui::CloseCurrentPopup();
+                ImGui::EndPopup();
+            }
         }
+
 
         ImGui::End();
 
