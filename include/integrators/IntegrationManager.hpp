@@ -2,10 +2,6 @@
 #define INTEGRATION_MANAGER_HPP_
 #include <memory>
 #include "core/Scene.hpp"
-<<<<<<< HEAD
-=======
-
->>>>>>> 8a63244 (chore: post-rebase build fixes and cleanup)
 #include "integrators/Integrator.hpp"
 
 namespace RayTracer {
@@ -18,10 +14,6 @@ namespace RayTracer {
                 _snapShotQueue.push(scene);
             };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8a63244 (chore: post-rebase build fixes and cleanup)
             std::shared_ptr<Frame> getAvailableFrame() {return this->_integrator->getAvailableFrame();};
             void stop() {this->_integrator->stop();};
             void instanceTiles(const Camera &cam) {this->_integrator->instanceTiles(cam);};

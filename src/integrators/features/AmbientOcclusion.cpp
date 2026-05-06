@@ -13,11 +13,7 @@ namespace RayTracer {
             Ray AORay(interaction.hitPoint + (interaction.normal * 0.001), rayDir);
 
             const TLASHit tlasHit = scene->tlas->traverse(AORay);
-<<<<<<< HEAD
-            if (!blocked)
-=======
             if (!tlasHit.hasHit())
->>>>>>> 8a63244 (chore: post-rebase build fixes and cleanup)
                 hitNothing += 1.0;
         }
         double intensity = hitNothing / AO_RAY_SAMPLE_COUNT;

@@ -32,10 +32,6 @@ namespace RayTracer {
             std::unique_ptr<Graphic::IRenderer> _renderer;
             std::unique_ptr<RayTracer::IntegrationManager> _integrationManager;
             std::shared_ptr<Frame> _currentFrame;
-<<<<<<< HEAD
-=======
-
->>>>>>> 8a63244 (chore: post-rebase build fixes and cleanup)
 
             bool _sceneDirty = false;
             int _frameCounter = 0;
