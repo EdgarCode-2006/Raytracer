@@ -1,5 +1,0 @@
-if(EXISTS "/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests[1]_tests.cmake")
-  include("/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/test/raytracer_tests[1]_tests.cmake")
-else()
-  add_test(raytracer_tests_NOT_BUILT raytracer_tests_NOT_BUILT)
-endif()

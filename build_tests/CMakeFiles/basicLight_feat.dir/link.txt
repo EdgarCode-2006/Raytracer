@@ -1,1 +1,0 @@
-/nix/store/rdc1jnyw74mwr2gszqc5zwi433zxs089-gcc-wrapper-13.2.0/bin/g++ -fPIC -g -shared -Wl,-soname,basicLight_feat.so -o /home/esair/Delivery/TEK2/OOP/Raytracer/rayFeatures/basicLight_feat.so CMakeFiles/basicLight_feat.dir/src/integrators/features/BasicLighting.cpp.o  libraytracer_core.a _deps/tinyexr-build/libtinyexr.a _deps/tinyexr-build/libminiz.a -ldl
