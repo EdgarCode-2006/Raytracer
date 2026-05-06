@@ -68,7 +68,7 @@ namespace RayTracer
             initializeIntersection(intersection,
                 const_cast<Graphic::Material*>(&instance.getMaterial()),
                 currentRay.origin + currentRay.direction * tlasHit.t(),
-                (tri.b() - tri.a()).cross(tri.c() - tri.a()).normalize(),
+                tri.normal,
                 currentRay.direction);
             intersection.throughput = currentRay.throughput;
 
