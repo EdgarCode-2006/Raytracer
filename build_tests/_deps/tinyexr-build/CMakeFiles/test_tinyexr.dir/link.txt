@@ -1,1 +1,0 @@
-/nix/store/rdc1jnyw74mwr2gszqc5zwi433zxs089-gcc-wrapper-13.2.0/bin/g++ -g CMakeFiles/test_tinyexr.dir/test_tinyexr.cc.o -o test_tinyexr  libminiz.a

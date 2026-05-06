@@ -1,2 +1,0 @@
-/nix/store/rdc1jnyw74mwr2gszqc5zwi433zxs089-gcc-wrapper-13.2.0/bin/ar qc ../../../lib/libgtest_main.a CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
-/nix/store/rdc1jnyw74mwr2gszqc5zwi433zxs089-gcc-wrapper-13.2.0/bin/ranlib ../../../lib/libgtest_main.a

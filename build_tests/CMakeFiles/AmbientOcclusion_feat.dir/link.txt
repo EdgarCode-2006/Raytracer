@@ -1,1 +1,0 @@
-/nix/store/rdc1jnyw74mwr2gszqc5zwi433zxs089-gcc-wrapper-13.2.0/bin/g++ -fPIC -g -shared -Wl,-soname,AmbientOcclusion_feat.so -o /home/esair/Delivery/TEK2/OOP/Raytracer/rayFeatures/AmbientOcclusion_feat.so CMakeFiles/AmbientOcclusion_feat.dir/src/integrators/features/AmbientOcclusion.cpp.o  libraytracer_core.a _deps/tinyexr-build/libtinyexr.a _deps/tinyexr-build/libminiz.a -ldl

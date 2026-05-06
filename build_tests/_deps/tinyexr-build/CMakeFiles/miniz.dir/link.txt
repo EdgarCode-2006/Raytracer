@@ -1,2 +1,0 @@
-/nix/store/rdc1jnyw74mwr2gszqc5zwi433zxs089-gcc-wrapper-13.2.0/bin/ar qc libminiz.a CMakeFiles/miniz.dir/deps/miniz/miniz.c.o
-/nix/store/rdc1jnyw74mwr2gszqc5zwi433zxs089-gcc-wrapper-13.2.0/bin/ranlib libminiz.a

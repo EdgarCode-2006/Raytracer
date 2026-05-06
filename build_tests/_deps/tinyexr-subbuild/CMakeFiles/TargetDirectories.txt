@@ -1,3 +1,0 @@
-/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/tinyexr-subbuild/CMakeFiles/tinyexr-populate.dir
-/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/tinyexr-subbuild/CMakeFiles/edit_cache.dir
-/home/esair/Delivery/TEK2/OOP/Raytracer/build_tests/_deps/tinyexr-subbuild/CMakeFiles/rebuild_cache.dir
