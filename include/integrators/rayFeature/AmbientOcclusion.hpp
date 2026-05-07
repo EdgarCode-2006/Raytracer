@@ -1,7 +1,7 @@
 #ifndef AO_HPP_
 #define AO_HPP_
 #include "integrators/rayFeature/ARayFeature.hpp"
-#define AO_RAY_SAMPLE_COUNT 32
+#define AO_RAY_SAMPLE_COUNT 64
 
 namespace RayTracer {
     struct RenderData;

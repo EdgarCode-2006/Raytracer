@@ -21,7 +21,7 @@
 #define TILE_DIM 16
 #define MIN_THROUGHPUT_LENGTH 0.001
 #define MAX_DEPTH 4
-#define DEFAULT_SAMPLES_PER_PIXEL 8
+#define DEFAULT_SAMPLES_PER_PIXEL 16
 
 namespace RayTracer {
     class IRayFeature;
