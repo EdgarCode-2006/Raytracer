@@ -53,6 +53,12 @@ namespace Math {
                         coords[2] - b.coords[2]};
             }
 
+            constexpr bool operator==(const Vector3D& b) const noexcept {
+                return (coords[0] == b.coords[0] &&
+                        coords[1] == b.coords[1] &&
+                        coords[2] == b.coords[2]);
+            }
+
             constexpr Vector3D operator*(double t) const noexcept {
                 return {coords[0] * t,
                         coords[1] * t,

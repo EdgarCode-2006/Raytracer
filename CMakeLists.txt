@@ -83,6 +83,7 @@ endmacro()
 add_ray_feature(basicLight_feat src/integrators/features/BasicLighting.cpp)
 add_ray_feature(SpecularHandler_feat src/integrators/features/SpecularHandler.cpp)
 add_ray_feature(AmbientOcclusion_feat src/integrators/features/AmbientOcclusion.cpp)
+add_ray_feature(Emission_feat src/integrators/features/Emission.cpp)
 
 # --- EXECUTABLE ---
 add_executable(${EXECUTABLE_NAME} src/main.cpp)

@@ -17,13 +17,8 @@ namespace RayTracer {
         } catch (const IntegratorException &e) {
             throw IntegratorException(e.what());
         }
-
-        int samplesPerSide = std::sqrt(RAYS_PER_PIXEL);
-        if (samplesPerSide < 1) samplesPerSide = 1;
-
-        float step = 1.0f / samplesPerSide;
-        this->_cache.step = step;
-        this->_cache.samplesPerSide = samplesPerSide;
+        _samplesPerPixel = 8;
+        this->_cache.prevCamPos = {0, 0, 0};
     }
 
     Integrator::~Integrator()
@@ -41,11 +36,16 @@ namespace RayTracer {
         auto [x, y] = cords;
         float sumR = 0, sumG = 0, sumB = 0;
 
-        for (int sY = 0; sY < _cache.samplesPerSide; sY++) {
-            for (int sX = 0; sX < _cache.samplesPerSide; sX++) {
+        int samplesPerSide = std::sqrt(_samplesPerPixel);
+        if (samplesPerSide < 1) samplesPerSide = 1;
+
+        float step = 1.0f / samplesPerSide;
+
+        for (int sY = 0; sY < samplesPerSide; sY++) {
+            for (int sX = 0; sX < samplesPerSide; sX++) {
                 
-                float offsetX = (sX + 0.5f) * _cache.step - 0.5f;
-                float offsetY = (sY + 0.5f) * _cache.step - 0.5f;
+                float offsetX = (sX + 0.5f) * step - 0.5f;
+                float offsetY = (sY + 0.5f) * step - 0.5f;
 
                 Ray ray = cam.generateRay(x + offsetX, y + offsetY);
                 Graphic::Pixel sampleColor = this->shootRay(ray, sceneLocked);
@@ -56,7 +56,7 @@ namespace RayTracer {
             }
         }
 
-        int totalSamples = _cache.samplesPerSide * _cache.samplesPerSide;
+        int totalSamples = samplesPerSide * samplesPerSide;
 
         return Graphic::Pixel(
             (unsigned char)(sumR / totalSamples),
@@ -92,6 +92,9 @@ namespace RayTracer {
 
     void Integrator::renderScene(const Camera &cam)
     {
+        this->_samplesPerPixel = this->_cache.prevCamPos == cam.getPosition() ? DEFAULT_SAMPLES_PER_PIXEL : 1;
+        this->_cache.prevCamPos = cam.getPosition();
+
         if (this->_framesInFlight >= 1)
             return;
 
