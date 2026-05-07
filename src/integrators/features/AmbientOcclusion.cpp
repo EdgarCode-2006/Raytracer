@@ -4,23 +4,25 @@
 namespace RayTracer {
     void AmbientOcclusion::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
     {
-        double hitNothing = 0;
-        const double maxDistance = 1.0;
+        double occlusion = 0.0;
+        const double maxDistance = 2.0;
 
-        // Create N rays in the hemisphere of the hit
         for (int i = 0; i < AO_RAY_SAMPLE_COUNT; i++) {
             Math::Vector3D rayDir = interaction.getOmega();
             Ray AORay(interaction.hitPoint + (interaction.normal * 0.001), rayDir);
 
             const TLASHit tlasHit = scene->tlas->traverse(AORay);
-            if (!tlasHit.hasHit())
-                hitNothing += 1.0;
+            
+            if (tlasHit.hasHit() && tlasHit.t() < maxDistance) {
+                occlusion += (1.0 - (tlasHit.t() / maxDistance));
+            }
         }
-        double intensity = hitNothing / AO_RAY_SAMPLE_COUNT;
+        double accessibility = 1.0 - (occlusion / AO_RAY_SAMPLE_COUNT);
+        accessibility = std::clamp(accessibility, 0.0, 1.0);
 
-        interaction.throughput.x() *= intensity;
-        interaction.throughput.y() *= intensity;
-        interaction.throughput.z() *= intensity;
+        interaction.throughput.x() *= accessibility;
+        interaction.throughput.y() *= accessibility;
+        interaction.throughput.z() *= accessibility;
     }
 }
 

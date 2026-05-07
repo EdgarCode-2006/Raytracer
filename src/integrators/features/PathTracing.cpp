@@ -15,8 +15,8 @@ namespace RayTracer {
         Math::Vector3D newThroughput = interaction.throughput * materialColor;
 
         Ray nextRay(interaction.hitPoint + (interaction.normal * 0.001), rayDir);
-        nextRay.throughput = newThroughput; 
-        
+        nextRay.throughput = newThroughput;
+
         interaction.nextRays.push_back(nextRay);
         interaction.localColor = {0, 0, 0, 255}; 
     }
