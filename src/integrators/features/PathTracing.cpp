@@ -18,7 +18,7 @@ namespace RayTracer {
         nextRay.throughput = newThroughput;
 
         interaction.nextRays.push_back(nextRay);
-        interaction.localColor = {0, 0, 0, 255}; 
+        interaction.localColor = {0, 0, 0, 255};
     }
 }
 

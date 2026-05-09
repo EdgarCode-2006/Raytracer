@@ -9,7 +9,7 @@ namespace RayTracer {
 
     class PathTracing : public ARayFeature {
         public:
-            PathTracing() : ARayFeature("PathTracing") {};
+            PathTracing() : ARayFeature("PathTracing", DIFFUSION) {};
             void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override;
             int getPriority() const noexcept override {return 10;};
     };
