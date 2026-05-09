@@ -10,13 +10,16 @@
 namespace RayTracer {
     Integrator::Integrator(std::shared_ptr<const RenderScene> scene) : _scene(std::move(scene))
     {
-        this->_threadPool = std::make_unique<optimization::ThreadPool>(15); // init thread pool with 4 threads.
+        this->_threadPool = std::make_unique<optimization::ThreadPool>(30); // init thread pool with 4 threads.
         this->_cache = {};
-        try {
-            this->loadRayFeatures();
-        } catch (const IntegratorException &e) {
+        try
+        {
+           this->_pipelineManager = std::make_unique<PipelineManager>();
+        } catch(const IntegratorException &e)
+        {
             throw IntegratorException(e.what());
         }
+        
         _samplesPerPixel = 8;
         this->_cache.prevCamPos = {0, 0, 0};
     }

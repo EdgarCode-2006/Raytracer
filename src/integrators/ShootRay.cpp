@@ -43,6 +43,15 @@ namespace RayTracer
         nextRays.clear();
     }
 
+    void Integrator::executePipeline(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection, ShaderType type)
+    {
+        for (auto &shaderIndex : this->_pipelineManager->_shaderMap[type]) {
+            auto &shader = this->_pipelineManager->_pipeline[shaderIndex]; 
+            if (shader->isActive())
+                shader->process(scene, intersection);
+        }
+    }
+
     Graphic::Pixel Integrator::consumeRays(Ray &ray, std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection)
     {
         std::queue<Ray> rayQueue;
@@ -72,10 +81,15 @@ namespace RayTracer
                 currentRay.direction);
             intersection.throughput = currentRay.throughput;
 
-            for (auto &rayFeature : _pipeline) {
-                if (rayFeature->isActive())
-                    rayFeature->process(scene, intersection);
-            }
+
+            // run the UTILITY pipeline first
+            this->executePipeline(scene, intersection, UTILITY);
+            this->executePipeline(scene, intersection, intersection.mat->type);
+            // run pipeline associated to the material type.
+            // for (auto &rayFeature : _pipeline) {
+            //     if (rayFeature->isActive())
+            //         rayFeature->process(scene, intersection);
+            // }
 
             integrateColor(finalColor, currentRay.throughput, intersection.localColor);
             instanceNewRays(intersection.nextRays, currentRay, rayQueue);
