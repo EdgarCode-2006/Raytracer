@@ -87,6 +87,7 @@ add_ray_feature(Emission_feat src/integrators/features/Emission.cpp)
 add_ray_feature(PathTracing_feat src/integrators/features/PathTracing.cpp)
 add_ray_feature(ShadeSmooth_feat src/integrators/features/ShadeSmooth.cpp)
 add_ray_feature(NormalMap_feat src/integrators/features/debug/normalMap.cpp)
+add_ray_feature(OutLine_feat src/integrators/features/debug/OutLine.cpp)
 
 # --- EXECUTABLE ---
 add_executable(${EXECUTABLE_NAME} src/main.cpp)
