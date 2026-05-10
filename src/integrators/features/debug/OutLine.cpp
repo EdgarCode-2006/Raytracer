@@ -6,7 +6,7 @@ namespace RayTracer {
     {
         double cosi = interaction.rayDir.dot(interaction.normal * -1);
 
-        if (cosi <= 0.3 && cosi >= -0.3) {
+        if (cosi <= ORTHOGONALITY_THRESHOLD && cosi >= -ORTHOGONALITY_THRESHOLD) {
             int value = static_cast<int>((1 - cosi) * 255);
             interaction.localColor._r = value;
             interaction.localColor._g = value;

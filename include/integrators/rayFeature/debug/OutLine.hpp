@@ -2,6 +2,8 @@
 #define OUTLINE_HPP_
 #include "integrators/rayFeature/ARayFeature.hpp"
 
+#define ORTHOGONALITY_THRESHOLD 0.3
+
 namespace RayTracer {
     struct RenderData;
     struct SurfaceIntersection;
