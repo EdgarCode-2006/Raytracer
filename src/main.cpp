@@ -7,6 +7,7 @@
 #include "renderer/RaylibRenderer.hpp"
 #include <memory>
 #include <string>
+#include "entities/Texture.hpp"
 
 int main(int argc, char** argv)
 {
@@ -39,6 +40,8 @@ int main(int argc, char** argv)
             scene.reserve(1, tris.size(), 1);
             uint32_t meshId = scene.addMesh(std::move(tris));
             Graphic::Material mat;
+            mat.texture = std::make_shared<RayTracer::Texture>("assets/textures/Toto.JPG");
+
             mat.color = Graphic::Pixel(180, 180, 180, 255);
             scene.addInstance(meshId, Math::Matrix4{}, mat);
             scene.buildTLAS();

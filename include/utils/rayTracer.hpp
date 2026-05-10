@@ -2,6 +2,7 @@
 #define RAYTRACER_HPP_
 
 #include "math.hpp"
+#include "utils/UV.hpp"
 
 namespace RayTracer {
         
@@ -26,7 +27,7 @@ namespace RayTracer {
     class Triangle {
         public:
             constexpr Triangle(const Math::Vector3D& a, const Math::Vector3D& b, const Math::Vector3D& c) noexcept : v{a, b, c} {}
-            constexpr Triangle() noexcept : v{{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}} {}
+            Triangle() = default;
 
             constexpr const Math::Vector3D& a() const noexcept { return v[0]; }
             constexpr const Math::Vector3D& b() const noexcept { return v[1]; }
@@ -40,9 +41,9 @@ namespace RayTracer {
                 return (v[0] + v[1] + v[2]) * (1.0 / 3.0);
             }
 
-            Math::Vector3D v[3];
-            Math::Vector3D vn[3];
-            std::pair<double, double> uv[3];
+            Math::Vector3D v[3] = {};
+            Math::Vector3D vn[3] = {};
+            Graphic::UV uv[3] = {};
             Math::Vector3D normal;
     };
 }

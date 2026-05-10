@@ -11,6 +11,7 @@
 #include "integrators/integratorElements/PixelTile.hpp"
 #include "opti/ThreadPool/threadPool.hpp"
 #include "utils/Pixel.hpp"
+#include "utils/UV.hpp"
 #include "utils/surfaceIntersection.hpp"
 #include "integrators/rayFeature/IRayFeature.hpp"
 #include "integrators/featureLoader/DLLoader.hpp"

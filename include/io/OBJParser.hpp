@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include <functional>
+#include "utils/UV.hpp"
 
 namespace OBJParser {
     struct IndexGroup { int v, n; };
@@ -20,7 +21,7 @@ namespace OBJParser {
         private:
             std::vector<Math::Vector3D> _vertices;
             std::vector<Math::Vector3D> _normals;
-            std::vector<std::pair<double, double>> _uvs;
+            std::vector<Graphic::UV> _uvs;
 
             void parseVertex(std::istringstream &line);
             void parseNormal(std::istringstream &line);
