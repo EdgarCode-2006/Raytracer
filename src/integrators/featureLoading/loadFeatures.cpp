@@ -14,6 +14,7 @@ RayTracer::PipelineManager::PipelineManager()
     }
 
     std::cout << "feature count = " << _pipeline.size() << std::endl;
+    this->setPluginState("ShadeSmooth", false);
 }
 
 static bool checkFileExtension(const std::string& filename, const std::string& extension)

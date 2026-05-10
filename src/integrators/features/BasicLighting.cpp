@@ -10,7 +10,7 @@ namespace RayTracer {
             double diff = interaction.normal.dot(lightDir);
 
             if (diff > 0) {
-                Ray shadowRay(interaction.hitPoint + (interaction.normal * 0.001), lightDir);
+                Ray shadowRay(interaction.hitPoint + (interaction.tri.normal * 0.001), lightDir);
 
                 const TLASHit tlasHit = scene->tlas->traverse(shadowRay);
                 if (!tlasHit.hasHit())

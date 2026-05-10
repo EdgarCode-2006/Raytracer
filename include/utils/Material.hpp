@@ -7,6 +7,7 @@ enum ShaderType {
     DIFFUSION,
     CAUSTIC,
     UTILITY,
+    DEBUG,
 };
 
 namespace Graphic {

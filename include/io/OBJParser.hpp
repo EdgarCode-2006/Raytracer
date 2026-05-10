@@ -6,8 +6,11 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <map>
+#include <functional>
 
 namespace OBJParser {
+    struct IndexGroup { int v, n; };
 
     class OBJParser
     {
@@ -17,12 +20,13 @@ namespace OBJParser {
         private:
             std::vector<Math::Vector3D> _vertices;
             std::vector<Math::Vector3D> _normals;
+            std::vector<std::pair<double, double>> _uvs;
 
             void parseVertex(std::istringstream &line);
             void parseNormal(std::istringstream &line);
+            void parseUVs(std::istringstream &line);
             void parseFace(std::istringstream &line, std::vector<RayTracer::Triangle>& out);
-            int parseIndex(const std::string& token);
+            std::pair<int, int> parseIndices(const std::string& token);
     };
 }
-
 #endif

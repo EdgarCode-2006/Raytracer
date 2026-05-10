@@ -11,7 +11,7 @@ namespace RayTracer {
         public:
             AmbientOcclusion() : ARayFeature("AmbientOcclusion", UTILITY) {};
             void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override;
-            int getPriority() const noexcept override {return 1;};
+            int getPriority() const noexcept override {return 2;};
     };
 }
 #endif

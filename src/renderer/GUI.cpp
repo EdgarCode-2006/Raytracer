@@ -75,7 +75,7 @@ namespace Graphic {
                     if (ImGui::SliderFloat("IOR", &mat.ior, 1.0f, 3.0f)) this->_sceneIsModified = true;
                     if (ImGui::SliderFloat("Emission", &mat.emission, 0.0f, 100.0f)) this->_sceneIsModified = true;
 
-                    const char* shaderTypeNames[] = { "Emission", "Diffusion", "Caustic", "Utility" };
+                    const char* shaderTypeNames[] = { "Emission", "Diffusion", "Caustic", "Utility", "Debug"};
 
                     int currentType = (int)mat.type;
                     if (ImGui::Combo("Shader Type", &currentType, shaderTypeNames, IM_ARRAYSIZE(shaderTypeNames))) {
