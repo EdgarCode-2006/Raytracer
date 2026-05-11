@@ -1,7 +1,6 @@
 #include "io/OBJParser.hpp"
 #include <fstream>
 #include <cstdlib>
-#include <cstring>
 
 namespace OBJParser {
 
@@ -56,6 +55,10 @@ namespace OBJParser {
 
         static constexpr int MAX_FACE_VERTS = 16;
         IndexGroup faceGroups[MAX_FACE_VERTS];
+
+        // Store vertex indices per triangle for smooth normal computation
+        struct TriIndices { int vi[3]; int ti[3]; };
+        std::vector<TriIndices> triIndices;
 
         std::string line;
         line.reserve(256);
@@ -124,12 +127,10 @@ namespace OBJParser {
 
                 const int vsize = (int)_vertices.size();
                 const int tsize = (int)_uvs.size();
-                const int nsize = (int)_normals.size();
 
                 for (int i = 1; i + 1 < groupCount; i++) {
                     const int idxs[3]  = { faceGroups[0].v, faceGroups[i].v, faceGroups[i+1].v };
                     const int tidxs[3] = { faceGroups[0].t, faceGroups[i].t, faceGroups[i+1].t };
-                    const int nidxs[3] = { faceGroups[0].n, faceGroups[i].n, faceGroups[i+1].n };
 
                     if (idxs[0] < 0 || idxs[0] >= vsize ||
                         idxs[1] < 0 || idxs[1] >= vsize ||
@@ -139,13 +140,25 @@ namespace OBJParser {
                     RayTracer::Triangle tri(_vertices[idxs[0]], _vertices[idxs[1]], _vertices[idxs[2]]);
                     tri.normal = (tri.v[1] - tri.v[0]).cross(tri.v[2] - tri.v[0]).normalize();
 
-                    for (int j = 0; j < 3; ++j) {
-                        tri.vn[j] = (nidxs[j] >= 0 && nidxs[j] < nsize) ? _normals[nidxs[j]] : tri.normal;
+                    for (int j = 0; j < 3; ++j)
                         tri.uv[j] = (tidxs[j] >= 0 && tidxs[j] < tsize) ? _uvs[tidxs[j]] : Graphic::UV{};
-                    }
 
                     triangles.push_back(tri);
+                    triIndices.push_back({{idxs[0], idxs[1], idxs[2]}, {tidxs[0], tidxs[1], tidxs[2]}});
                 }
+            }
+        }
+
+        // Compute smooth normals: accumulate face normals per vertex then normalize
+        std::vector<Math::Vector3D> accumulated(_vertices.size(), {0.0, 0.0, 0.0});
+        for (size_t i = 0; i < triangles.size(); i++) {
+            for (int j = 0; j < 3; j++)
+                accumulated[triIndices[i].vi[j]] += triangles[i].normal;
+        }
+        for (size_t i = 0; i < triangles.size(); i++) {
+            for (int j = 0; j < 3; j++) {
+                const Math::Vector3D& acc = accumulated[triIndices[i].vi[j]];
+                triangles[i].vn[j] = acc.length() > 1e-9 ? acc.normalize() : triangles[i].normal;
             }
         }
 
