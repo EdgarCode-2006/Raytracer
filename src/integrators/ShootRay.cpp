@@ -21,7 +21,7 @@ namespace RayTracer
         const Triangle &triangle,
         const Math::Vector3D &normal,
         const Math::Vector3D &rayDir,
-        std::pair<double, double> uvCoord
+        Graphic::UV uvCoord
     )
     {
         intersection.mat = mat;

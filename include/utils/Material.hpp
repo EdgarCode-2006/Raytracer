@@ -1,6 +1,8 @@
 #ifndef MATERIAL_HPP_
 #define MATERIAL_HPP_
 #include "utils/Pixel.hpp"
+#include "entities/Texture.hpp"
+#include <memory>
 
 enum ShaderType {
     EMISSION,
@@ -18,6 +20,8 @@ namespace Graphic {
         float ior; // index of refraction
         float emission;
         ShaderType type;
+        std::shared_ptr<RayTracer::Texture> texture = nullptr;
+        bool useTexture = false;
 
         Material() :
             color(255, 255, 255, 255),

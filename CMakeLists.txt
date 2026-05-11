@@ -18,6 +18,12 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # --- DEPENDENCIES ---
 include(FetchContent)
 
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG        master
+)
+
 FetchContent_Declare(imgui
     GIT_REPOSITORY https://github.com/ocornut/imgui.git
     GIT_TAG v1.91.6
@@ -33,7 +39,7 @@ FetchContent_Declare(tinyexr
     GIT_TAG release
 )
 
-FetchContent_MakeAvailable(imgui rlimgui tinyexr)
+FetchContent_MakeAvailable(imgui rlimgui tinyexr stb)
 
 # --- SOURCE FILES ---
 file(GLOB_RECURSE SRC "src/*.cpp")
@@ -59,6 +65,7 @@ target_include_directories(raytracer_core PUBLIC
     ${imgui_SOURCE_DIR}
     ${rlimgui_SOURCE_DIR}
     ${tinyexr_SOURCE_DIR}
+    ${stb_SOURCE_DIR}
 )
 
 target_link_libraries(raytracer_core PRIVATE tinyexr)
