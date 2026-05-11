@@ -3,11 +3,12 @@
 
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
-#include <iostream>
-#include <sstream>
+#include <string>
 #include <vector>
+#include "utils/UV.hpp"
 
 namespace OBJParser {
+    struct IndexGroup { int v, t, n; };
 
     class OBJParser
     {
@@ -17,12 +18,7 @@ namespace OBJParser {
         private:
             std::vector<Math::Vector3D> _vertices;
             std::vector<Math::Vector3D> _normals;
-
-            void parseVertex(std::istringstream &line);
-            void parseNormal(std::istringstream &line);
-            void parseFace(std::istringstream &line, std::vector<RayTracer::Triangle>& out);
-            int parseIndex(const std::string& token);
+            std::vector<Graphic::UV> _uvs;
     };
 }
-
 #endif

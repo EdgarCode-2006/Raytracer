@@ -18,6 +18,12 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # --- DEPENDENCIES ---
 include(FetchContent)
 
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG        master
+)
+
 FetchContent_Declare(imgui
     GIT_REPOSITORY https://github.com/ocornut/imgui.git
     GIT_TAG v1.91.6
@@ -33,7 +39,7 @@ FetchContent_Declare(tinyexr
     GIT_TAG release
 )
 
-FetchContent_MakeAvailable(imgui rlimgui tinyexr)
+FetchContent_MakeAvailable(imgui rlimgui tinyexr stb)
 
 # --- SOURCE FILES ---
 file(GLOB_RECURSE SRC "src/*.cpp")
@@ -59,6 +65,7 @@ target_include_directories(raytracer_core PUBLIC
     ${imgui_SOURCE_DIR}
     ${rlimgui_SOURCE_DIR}
     ${tinyexr_SOURCE_DIR}
+    ${stb_SOURCE_DIR}
 )
 
 target_link_libraries(raytracer_core PRIVATE tinyexr)
@@ -85,6 +92,9 @@ add_ray_feature(SpecularHandler_feat src/integrators/features/SpecularHandler.cp
 add_ray_feature(AmbientOcclusion_feat src/integrators/features/AmbientOcclusion.cpp)
 add_ray_feature(Emission_feat src/integrators/features/Emission.cpp)
 add_ray_feature(PathTracing_feat src/integrators/features/PathTracing.cpp)
+add_ray_feature(ShadeSmooth_feat src/integrators/features/ShadeSmooth.cpp)
+add_ray_feature(NormalMap_feat src/integrators/features/debug/normalMap.cpp)
+add_ray_feature(OutLine_feat src/integrators/features/debug/OutLine.cpp)
 
 # --- EXECUTABLE ---
 add_executable(${EXECUTABLE_NAME} src/main.cpp)

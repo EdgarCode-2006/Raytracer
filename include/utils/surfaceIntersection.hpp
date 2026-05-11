@@ -1,6 +1,7 @@
 #include "utils/Material.hpp"
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
+#include "utils/UV.hpp"
 #include <random>
 
 namespace RayTracer {
@@ -9,10 +10,12 @@ namespace RayTracer {
         Math::Vector3D normal;
         Math::Vector3D hitPoint;
         Math::Vector3D rayDir;
+        Triangle tri;
         Graphic::Material *mat;
         Graphic::Pixel localColor;
         std::vector<Ray> nextRays;
         Math::Vector3D throughput;
+        Graphic::UV uv;
 
         Math::Vector3D getOmega() {
             static thread_local std::mt19937 gen(std::random_device{}());

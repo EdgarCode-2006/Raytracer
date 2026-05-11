@@ -10,7 +10,7 @@ namespace RayTracer {
         public:
             SpecularHandler() : ARayFeature("SpecularHandler", CAUSTIC) {};
             void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override;
-            int getPriority() const noexcept override {return 0;};
+            int getPriority() const noexcept override {return 30;};
     };
 }
 #endif
