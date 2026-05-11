@@ -35,7 +35,7 @@ namespace RayTracer {
         totalIntensity = std::clamp(totalIntensity, 0.0, 1.0);
         double r = totalIntensity, g = totalIntensity, b = totalIntensity;
         if (interaction.mat) {
-            if (interaction.mat->texture != nullptr) {
+            if (interaction.mat->texture != nullptr && interaction.mat->useTexture) {
                 mapUV(interaction, totalIntensity);
                 return;
             }

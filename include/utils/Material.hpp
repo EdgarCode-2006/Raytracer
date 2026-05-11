@@ -21,6 +21,7 @@ namespace Graphic {
         float emission;
         ShaderType type;
         std::shared_ptr<RayTracer::Texture> texture = nullptr;
+        bool useTexture = false;
 
         Material() :
             color(255, 255, 255, 255),

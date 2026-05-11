@@ -1,97 +1,50 @@
 #include "io/OBJParser.hpp"
 #include <fstream>
+#include <cstdlib>
+#include <cstring>
 
 namespace OBJParser {
 
-    // Returns a pair: {vertex_index, normal_index}
-    std::pair<int, int> OBJParser::parseIndices(const std::string& token)
+    static IndexGroup parseIndices(const char* token)
     {
-        std::vector<std::string> parts;
-        std::stringstream ss(token);
-        std::string item;
-        
-        while (std::getline(ss, item, '/')) {
-            parts.push_back(item);
-        }
+        char* end;
+        int v = (int)std::strtol(token, &end, 10);
+        int t = -1, n = -1;
 
-        int vIdx = std::stoi(parts[0]);
-        int nIdx = -1;
-
-        if (parts.size() == 3 && !parts[2].empty()) {
-            nIdx = std::stoi(parts[2]);
-        }
-
-        return {vIdx, nIdx};
-    }
-
-    void OBJParser::parseVertex(std::istringstream& ss)
-    {
-        double x, y, z;
-        ss >> x >> y >> z;
-        _vertices.push_back({x, y, z});
-    }
-
-    void OBJParser::parseNormal(std::istringstream& ss)
-    {
-        double x, y, z;
-        ss >> x >> y >> z;
-        _normals.push_back({x, y, z});
-    }
-
-    void OBJParser::parseUVs(std::istringstream& ss)
-    {
-        float u, v;
-        ss >> u >> v;
-        _uvs.push_back({u, v});
-    }
-
-    void OBJParser::parseFace(std::istringstream& ss, std::vector<RayTracer::Triangle>& out)
-    {
-        std::vector<IndexGroup> groups;
-        std::string token;
-
-        while (ss >> token) {
-            auto [vIdx, nIdx] = parseIndices(token);
-            
-            if (vIdx < 0) vIdx = static_cast<int>(_vertices.size()) + vIdx;
-            else vIdx -= 1;
-
-            if (nIdx != -1) {
-                if (nIdx < 0) nIdx = static_cast<int>(_normals.size()) + nIdx;
-                else nIdx -= 1;
+        if (*end == '/') {
+            const char* p = end + 1;
+            if (*p != '/') {
+                t = (int)std::strtol(p, &end, 10);
+                p = end;
             }
-
-            groups.push_back({vIdx, nIdx});
-        }
-
-        const int vsize = static_cast<int>(_vertices.size());
-        const int nsize = static_cast<int>(_normals.size());
-
-        for (size_t i = 1; i + 1 < groups.size(); i++) {
-            int idxs[3] = { groups[0].v, groups[i].v, groups[i+1].v };
-            int nidxs[3] = { groups[0].n, groups[i].n, groups[i+1].n };
-
-            if (idxs[0] < 0 || idxs[0] >= vsize || idxs[1] < 0 || idxs[1] >= vsize || idxs[2] < 0 || idxs[2] >= vsize)
-                continue;
-
-            RayTracer::Triangle tri(_vertices[idxs[0]], _vertices[idxs[1]], _vertices[idxs[2]]);
-
-            for (int j = 0; j < 3; ++j) {
-                if (nidxs[j] >= 0 && nidxs[j] < nsize) {
-                    tri.vn[j] = _normals[nidxs[j]];
-                } else {
-                    tri.vn[j] = tri.normal; 
-                }
+            if (*p == '/') {
+                ++p;
+                if (*p)
+                    n = (int)std::strtol(p, nullptr, 10);
             }
-            tri.normal = (tri.v[1] - tri.v[0]).cross(tri.v[2] - tri.v[0]).normalize();
-            
-            out.push_back(tri);
         }
+        return {v, t, n};
+    }
+
+    static const char* skipSpaces(const char* p)
+    {
+        while (*p == ' ' || *p == '\t') ++p;
+        return p;
+    }
+
+    static const char* nextToken(const char* p, char* buf, int bufSize)
+    {
+        p = skipSpaces(p);
+        int i = 0;
+        while (*p && *p != ' ' && *p != '\t' && *p != '\r' && *p != '\n' && i < bufSize - 1)
+            buf[i++] = *p++;
+        buf[i] = '\0';
+        return p;
     }
 
     std::vector<RayTracer::Triangle> OBJParser::load(const std::string& path)
     {
-        std::ifstream file(path);
+        std::ifstream file(path, std::ios::binary);
         std::vector<RayTracer::Triangle> triangles;
 
         if (!file.is_open())
@@ -101,27 +54,101 @@ namespace OBJParser {
         _normals.clear();
         _uvs.clear();
 
-        static const std::map<std::string, std::function<void(std::istringstream&)>> handlers = {
-            {"v",  [this](auto& ss) { this->parseVertex(ss); }},
-            {"vn", [this](auto& ss) { this->parseNormal(ss); }},
-            {"vt", [this](auto& ss) { this->parseUVs(ss); }},
-            {"f",  [this, &triangles](auto& ss) { this->parseFace(ss, triangles); }}
-        };
+        static constexpr int MAX_FACE_VERTS = 16;
+        IndexGroup faceGroups[MAX_FACE_VERTS];
 
         std::string line;
+        line.reserve(256);
+
         while (std::getline(file, line)) {
-            if (line.empty() || line[0] == '#') continue;
+            const char* p = line.c_str();
+            p = skipSpaces(p);
 
-            std::istringstream ss(line);
-            std::string type;
-            if (!(ss >> type)) continue;
+            if (*p == '#' || *p == '\0' || *p == '\r' || *p == '\n')
+                continue;
 
-            auto it = handlers.find(type);
-            if (it != handlers.end()) {
-                it->second(ss);
+            const char type0 = p[0];
+            const char type1 = (type0 && p[1]) ? p[1] : '\0';
+
+            // vertex normal: "vn"
+            if (type0 == 'v' && type1 == 'n') {
+                p += 2;
+                char* end;
+                double x = std::strtod(p, &end); p = end;
+                double y = std::strtod(p, &end); p = end;
+                double z = std::strtod(p, &end);
+                _normals.push_back({x, y, z});
+            }
+            // vertex texture: "vt"
+            else if (type0 == 'v' && type1 == 't') {
+                p += 2;
+                char* end;
+                float u = std::strtof(p, &end); p = end;
+                float v = std::strtof(p, &end);
+                _uvs.push_back({(double)u, (double)v});
+            }
+            // vertex position: "v "
+            else if (type0 == 'v' && (type1 == ' ' || type1 == '\t')) {
+                p += 1;
+                char* end;
+                double x = std::strtod(p, &end); p = end;
+                double y = std::strtod(p, &end); p = end;
+                double z = std::strtod(p, &end);
+                _vertices.push_back({x, y, z});
+            }
+            // face: "f"
+            else if (type0 == 'f' && (type1 == ' ' || type1 == '\t')) {
+                p += 1;
+                int groupCount = 0;
+                char token[64];
+
+                while (groupCount < MAX_FACE_VERTS) {
+                    p = skipSpaces(p);
+                    if (*p == '\0' || *p == '\r' || *p == '\n') break;
+
+                    p = nextToken(p, token, sizeof(token));
+                    if (token[0] == '\0') break;
+
+                    auto [v, t, n] = parseIndices(token);
+
+                    const int vsize = (int)_vertices.size();
+                    const int tsize = (int)_uvs.size();
+                    const int nsize = (int)_normals.size();
+
+                    if (v < 0) v = vsize + v; else v -= 1;
+                    if (t != -1) { if (t < 0) t = tsize + t; else t -= 1; }
+                    if (n != -1) { if (n < 0) n = nsize + n; else n -= 1; }
+
+                    faceGroups[groupCount++] = {v, t, n};
+                }
+
+                const int vsize = (int)_vertices.size();
+                const int tsize = (int)_uvs.size();
+                const int nsize = (int)_normals.size();
+
+                for (int i = 1; i + 1 < groupCount; i++) {
+                    const int idxs[3]  = { faceGroups[0].v, faceGroups[i].v, faceGroups[i+1].v };
+                    const int tidxs[3] = { faceGroups[0].t, faceGroups[i].t, faceGroups[i+1].t };
+                    const int nidxs[3] = { faceGroups[0].n, faceGroups[i].n, faceGroups[i+1].n };
+
+                    if (idxs[0] < 0 || idxs[0] >= vsize ||
+                        idxs[1] < 0 || idxs[1] >= vsize ||
+                        idxs[2] < 0 || idxs[2] >= vsize)
+                        continue;
+
+                    RayTracer::Triangle tri(_vertices[idxs[0]], _vertices[idxs[1]], _vertices[idxs[2]]);
+                    tri.normal = (tri.v[1] - tri.v[0]).cross(tri.v[2] - tri.v[0]).normalize();
+
+                    for (int j = 0; j < 3; ++j) {
+                        tri.vn[j] = (nidxs[j] >= 0 && nidxs[j] < nsize) ? _normals[nidxs[j]] : tri.normal;
+                        tri.uv[j] = (tidxs[j] >= 0 && tidxs[j] < tsize) ? _uvs[tidxs[j]] : Graphic::UV{};
+                    }
+
+                    triangles.push_back(tri);
+                }
             }
         }
-        
+
         return triangles;
     }
 }

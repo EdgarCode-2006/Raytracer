@@ -4,7 +4,7 @@
 #include "stb_image.h"
 namespace RayTracer
 {
-    Texture::Texture(const std::string &fileName) {
+    Texture::Texture(const std::string &fileName) : _textureData(nullptr), _width(0), _height(0) {
         this->loadTextureFromFile(fileName);
     }
     Texture::~Texture() {
