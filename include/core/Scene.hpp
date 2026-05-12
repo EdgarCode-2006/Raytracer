@@ -84,8 +84,13 @@ namespace RayTracer {
             const Lights &getLights() const noexcept {return _lights;}
 
             void addLight(const DirectionalLight &light) {_lights.addLight(light);}
+            void addPointLight(const PointLight &light) {_lights.addPointLight(light);}
             void setAmbientLight(const AmbientLight &light) {_lights.setAmbientLight(light);}
-            const std::vector<DirectionalLight> &getDirectionalLights() const {return _lights.getLights();}
+            const std::vector<DirectionalLight> &getDirectionalLights() const {return _lights.getDirectionalLights();}
+            std::vector<DirectionalLight> &getDirectionalLights() {return _lights.getDirectionalLights();}
+            const std::vector<PointLight> &getPointLights() const {return _lights.getPointLights();}
+            std::vector<PointLight> &getPointLights() {return _lights.getPointLights();}
+            AmbientLight &getAmbientLight() {return _lights.getAmbientLight();}
             const AmbientLight &getAmbientLight() const {return _lights.getAmbientLight();}
             const Graphic::Pixel getHDRIPixel(const Math::Vector3D &v) const {return _lights.getHDRIPixel(v);}
 

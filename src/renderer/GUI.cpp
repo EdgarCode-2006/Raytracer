@@ -3,9 +3,10 @@
 #include "rlImGui.h"
 #include "imgui.h"
 #include "integrators/Integrator.hpp"
+#include "entities/Light.hpp"
+#include "utils/math.hpp"
 #include <string>
 #include <cstring>
-
 namespace Graphic {
 
     void GUI::Render(RayTracer::Scene& scene, RayTracer::Camera& cam)
@@ -95,6 +96,98 @@ namespace Graphic {
             }
         }
 
+        if (ImGui::CollapsingHeader("Lights")) {
+            RayTracer::Lights& lights = scene.getLights();
+
+            float ambient = (float)lights.getAmbientLight().intensity;
+            if (ImGui::SliderFloat("Ambient", &ambient, 0.0f, 1.0f)) {
+                lights.getAmbientLight().setIntensity((double)ambient);
+                this->_sceneIsModified = true;
+            }
+
+            ImGui::Separator();
+
+            const char* lightTypes[] = {"Directional", "Point"};
+            ImGui::Combo("Light Type", &_selectedLightType, lightTypes, IM_ARRAYSIZE(lightTypes));
+
+            if (_selectedLightType == 0) {
+                auto& dirLights = lights.getDirectionalLights();
+                for (int i = 0; i < (int)dirLights.size(); i++) {
+                    ImGui::PushID(i);
+                    std::string label = "Directional " + std::to_string(i);
+                    if (ImGui::TreeNode(label.c_str())) {
+                        float dir[3] = {
+                            (float)dirLights[i].direction.x(),
+                            (float)dirLights[i].direction.y(),
+                            (float)dirLights[i].direction.z()
+                        };
+                        if (ImGui::SliderFloat3("Direction", dir, -1.0f, 1.0f)) {
+                            dirLights[i].direction = Math::Vector3D(dir[0], dir[1], dir[2]).normalize();
+                            this->_sceneIsModified = true;
+                        }
+                        float intensity = (float)dirLights[i].intensity;
+                        if (ImGui::SliderFloat("Intensity", &intensity, 0.0f, 5.0f)) {
+                            dirLights[i].setIntensity((double)intensity);
+                            this->_sceneIsModified = true;
+                        }
+                        if (ImGui::Button("Remove")) {
+                            dirLights.erase(dirLights.begin() + i);
+                            this->_sceneIsModified = true;
+                            ImGui::TreePop();
+                            ImGui::PopID();
+                            break;
+                        }
+                        ImGui::TreePop();
+                    }
+                    ImGui::PopID();
+                }
+                if (ImGui::Button("Add Directional Light")) {
+                    RayTracer::DirectionalLight dl;
+                    dl.direction = Math::Vector3D(0.0, -1.0, 0.0);
+                    dl.intensity = 1.0;
+                    lights.addLight(dl);
+                    this->_sceneIsModified = true;
+                }
+            } else {
+                auto& pointLights = lights.getPointLights();
+                for (int i = 0; i < (int)pointLights.size(); i++) {
+                    ImGui::PushID(i);
+                    std::string label = "Point " + std::to_string(i);
+                    if (ImGui::TreeNode(label.c_str())) {
+                        float pos[3] = {
+                            (float)pointLights[i].position.x(),
+                            (float)pointLights[i].position.y(),
+                            (float)pointLights[i].position.z()
+                        };
+                        if (ImGui::SliderFloat3("Position", pos, -50.0f, 50.0f)) {
+                            pointLights[i].position = Math::Vector3D(pos[0], pos[1], pos[2]);
+                            this->_sceneIsModified = true;
+                        }
+                        float intensity = (float)pointLights[i].intensity;
+                        if (ImGui::SliderFloat("Intensity", &intensity, 0.0f, 10.0f)) {
+                            pointLights[i].setIntensity((double)intensity);
+                            this->_sceneIsModified = true;
+                        }
+                        if (ImGui::Button("Remove")) {
+                            pointLights.erase(pointLights.begin() + i);
+                            this->_sceneIsModified = true;
+                            ImGui::TreePop();
+                            ImGui::PopID();
+                            break;
+                        }
+                        ImGui::TreePop();
+                    }
+                    ImGui::PopID();
+                }
+                if (ImGui::Button("Add Point Light")) {
+                    RayTracer::PointLight pl;
+                    pl.position = Math::Vector3D(0.0, 5.0, 0.0);
+                    pl.intensity = 1.0;
+                    lights.addPointLight(pl);
+                    this->_sceneIsModified = true;
+                }
+            }
+        }
         if (ImGui::CollapsingHeader("Scene")) {
             ImGui::InputText("Path", _savePath, sizeof(_savePath));
             if (ImGui::Button("Save")) {

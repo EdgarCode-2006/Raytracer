@@ -19,6 +19,7 @@ namespace Graphic {
             RayTracer::Integrator* _integrator = nullptr;
             char _savePath[256] = "assets/scenes/saved.cfg";
             char _hdriPath[256] = "assets/HDRIs/";
+            int _selectedLightType = 0;
     };
 
 }

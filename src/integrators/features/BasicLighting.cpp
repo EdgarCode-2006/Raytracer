@@ -32,6 +32,23 @@ namespace RayTracer {
                     totalIntensity += diff * light.intensity;
             }
         }
+
+        for (const auto& light : scene->lights.getPointLights()) {
+            Math::Vector3D toLight = light.position - interaction.hitPoint;
+            double dist = toLight.length();
+            if (dist < 1e-6) continue;
+            Math::Vector3D lightDir = toLight / dist;
+            double diff = interaction.normal.dot(lightDir);
+
+            if (diff > 0) {
+                Ray shadowRay(interaction.hitPoint + (interaction.tri.normal * 0.001), lightDir);
+
+                const TLASHit tlasHit = scene->tlas->traverse(shadowRay);
+                if (!tlasHit.hasHit() || tlasHit.t() > dist)
+                    totalIntensity += diff * light.intensity / (1.0 + dist * dist * 0.1);
+            }
+        }
+
         totalIntensity = std::clamp(totalIntensity, 0.0, 1.0);
         double r = totalIntensity, g = totalIntensity, b = totalIntensity;
         if (interaction.mat) {
