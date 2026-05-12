@@ -15,7 +15,7 @@ namespace RayTracer {
         Graphic::Pixel localColor;
         std::vector<Ray> nextRays;
         Math::Vector3D throughput;
-        Graphic::UV uv;
+        TLASHit tlasHit; // stores u, v, w, t, depth.
 
         Math::Vector3D getOmega() {
             static thread_local std::mt19937 gen(std::random_device{}());

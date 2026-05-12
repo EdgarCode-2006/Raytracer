@@ -207,7 +207,7 @@ namespace RayTracer {
                     const uint32_t instanceIndex = _indices[node.leftOrFirst + i];
                     const RayHit instanceHit = _instances[instanceIndex].intersect(ray);
                     if (instanceHit.hasHit() && instanceHit.t() < hit.t())
-                        hit = TLASHit(instanceHit.t(), instanceHit.primitiveIndex(), instanceIndex, instanceHit._u, instanceHit._v);
+                        hit = TLASHit(instanceHit.t(), instanceHit.primitiveIndex(), instanceIndex, instanceHit._u, instanceHit._v, i + top);
                 }
             } else {
                 const uint32_t leftIndex = node.leftOrFirst;

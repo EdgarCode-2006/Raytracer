@@ -21,7 +21,7 @@ namespace RayTracer
         const Triangle &triangle,
         const Math::Vector3D &normal,
         const Math::Vector3D &rayDir,
-        Graphic::UV uvCoord
+        const TLASHit &tlasHit
     )
     {
         intersection.mat = mat;
@@ -30,7 +30,7 @@ namespace RayTracer
         intersection.normal = normal;
         intersection.rayDir = rayDir;
         intersection.localColor = {0, 0, 0, 255};
-        intersection.uv = uvCoord;
+        intersection.tlasHit = tlasHit;
     }
 
     static void instanceNewRays(std::vector<Ray> &nextRays, Ray &currentRayData, std::queue<Ray> &rayQueue)
@@ -84,7 +84,7 @@ namespace RayTracer
                 tri,
                 tri.normal,
                 currentRay.direction,
-                {tlasHit.u(), tlasHit.v()});
+                tlasHit);
             intersection.throughput = currentRay.throughput;
 
             // run the UTILITY pipeline first

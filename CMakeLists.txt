@@ -96,6 +96,7 @@ add_ray_feature(ShadeSmooth_feat src/integrators/features/ShadeSmooth.cpp)
 add_ray_feature(NormalMap_feat src/integrators/features/debug/normalMap.cpp)
 add_ray_feature(OutLine_feat src/integrators/features/debug/OutLine.cpp)
 add_ray_feature(WireFrame_feat src/integrators/features/debug/WireFrame.cpp)
+add_ray_feature(RayTraverseDepth_feat src/integrators/features/debug/RayTraverseDepth.cpp)
 
 # --- EXECUTABLE ---
 add_executable(${EXECUTABLE_NAME} src/main.cpp)

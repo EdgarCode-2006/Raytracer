@@ -4,7 +4,7 @@ namespace RayTracer {
     static void mapUV(SurfaceIntersection &interaction, double totalIntensity)
     {
         if (!interaction.mat || !interaction.mat->texture) return;
-        auto [u, v] = interaction.uv;
+        auto [u, v] = interaction.tlasHit.uv;
         double w = 1 - u - v;
 
         auto [texU, texV] = (w * interaction.tri.uv[0]) +
