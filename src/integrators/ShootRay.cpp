@@ -87,9 +87,7 @@ namespace RayTracer
                 {tlasHit.u(), tlasHit.v()});
             intersection.throughput = currentRay.throughput;
 
-            // run the UTILITY pipeline first
             this->executePipeline(scene, intersection, UTILITY);
-            // run the material associated pipeline second.
             this->executePipeline(scene, intersection, intersection.mat->type);
 
             integrateColor(finalColor, currentRay.throughput, intersection.localColor);

@@ -56,9 +56,9 @@ namespace RayTracer
 
     Graphic::Pixel HDRI::_applyExposure(float r, float g, float b) const
     {
-        r = r * ENV_EXPOSURE;
-        g = g * ENV_EXPOSURE;
-        b = b * ENV_EXPOSURE;
+        r = r * this->_envExposure;
+        g = g * this->_envExposure;
+        b = b * this->_envExposure;
 
         r = r / (r + 1.0f);
         g = g / (g + 1.0f);

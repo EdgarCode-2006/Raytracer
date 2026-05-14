@@ -28,6 +28,7 @@ namespace RayTracer {
             Scene& _scene;
             void handleWindowResize(RayTracer::Camera &cam);
             bool moveCam(Camera &cam, Scene &scene);
+            void handleFileDrop(Scene &scene);
             
             std::unique_ptr<Graphic::IRenderer> _renderer;
             std::unique_ptr<RayTracer::IntegrationManager> _integrationManager;
