@@ -29,6 +29,7 @@ namespace RayTracer {
     struct CachedData {
         std::vector<PixelTile> tiles;
         Math::Vector3D prevCamPos;
+        Math::Vector3D prevCamForward;
     };
 
     class Integrator {
@@ -37,7 +38,7 @@ namespace RayTracer {
             ~Integrator();
             void renderScene(const Camera &cam);
             void instanceTiles(const Camera &cam);
-            Graphic::Pixel shootRay(Ray &ray, std::shared_ptr<const RenderScene> sceneLocked);
+            Graphic::Pixel shootRay(SurfaceIntersection &intersection, std::shared_ptr<const RenderScene> sceneLocked);
             void waitForRendering() {_threadPool->wait();};
             void stop() { _stopRendering = true; };
             std::shared_ptr<Frame> getAvailableFrame();
@@ -45,7 +46,6 @@ namespace RayTracer {
             std::vector<std::unique_ptr<IRayFeature>>& getPipeline() noexcept { return _pipelineManager->_pipeline; };
 
         private:
-            Graphic::Pixel consumeRays(Ray &ray, std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection);
             void computeTile(const PixelTile &tile, std::shared_ptr<Frame> currentFrame, std::shared_ptr<const RenderScene> sceneLocked, const Camera &cam);
             Graphic::Pixel getPixelColor(std::tuple<int, int> cords, std::shared_ptr<const RenderScene> sceneLocked, const Camera &cam);
             void executePipeline(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection, ShaderType type);

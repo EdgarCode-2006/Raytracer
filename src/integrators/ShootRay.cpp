@@ -33,7 +33,7 @@ namespace RayTracer
         intersection.tlasHit = tlasHit;
     }
 
-    static void instanceNewRays(std::vector<Ray> &nextRays, Ray &currentRayData, std::queue<Ray> &rayQueue)
+    static void instanceNewRays(std::vector<Ray> &nextRays, std::queue<Ray> &rayQueue, const Ray &currentRayData = {})
     {
         for (auto &rayData : nextRays) {
             Ray newRay = {
@@ -56,11 +56,11 @@ namespace RayTracer
         }
     }
 
-    Graphic::Pixel Integrator::consumeRays(Ray &ray, std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection)
+    Graphic::Pixel Integrator::shootRay(SurfaceIntersection &intersection, std::shared_ptr<const RenderScene> scene)
     {
         std::queue<Ray> rayQueue;
         Math::Vector3D finalColor = {0.0, 0.0, 0.0};
-        rayQueue.push(ray); // initial ray
+        instanceNewRays(intersection.nextRays, rayQueue);
 
         while (!rayQueue.empty()) {
             Ray currentRay = rayQueue.front();
@@ -93,7 +93,7 @@ namespace RayTracer
             this->executePipeline(scene, intersection, intersection.mat->type);
 
             integrateColor(finalColor, currentRay.throughput, intersection.localColor);
-            instanceNewRays(intersection.nextRays, currentRay, rayQueue);
+            instanceNewRays(intersection.nextRays, rayQueue, currentRay);
         }
         return {
             (unsigned char)std::min(255.0, finalColor.x()),
@@ -101,17 +101,5 @@ namespace RayTracer
             (unsigned char)std::min(255.0, finalColor.z()),
             255
         };
-    }
-
-    Graphic::Pixel Integrator::shootRay(Ray &ray, std::shared_ptr<const RenderScene> sceneLocked)
-    {
-        SurfaceIntersection intersection{
-            .hitPoint = {0, 0, 0},
-            .rayDir = ray.direction,
-            .tri = Triangle(),
-            .localColor = {0, 0, 0, 255},
-            .throughput = {1.0, 1.0, 1.0},
-        };
-        return consumeRays(ray, sceneLocked, intersection);
     }
 } // namespace RayTracer

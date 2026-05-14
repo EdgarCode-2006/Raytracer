@@ -34,10 +34,9 @@ namespace RayTracer {
             void moveForward(double dist);
             void moveRight(double dist);
             void moveUp(double dist);
+            Math::Vector3D getForward() const;
 
         private:
-            Math::Vector3D _getForward() const;
-
             Math::Vector3D _position;
             double _yaw   = 0.0;
             double _pitch = 0.0;

@@ -8,7 +8,7 @@ namespace RayTracer {
         : _position(0, 0, 0), _yaw(0.0), _pitch(0.0), _fov(60.0), _width(width), _height(height)
     {}
 
-    Math::Vector3D Camera::_getForward() const
+    Math::Vector3D Camera::getForward() const
     {
         double p = _pitch * std::numbers::pi / 180.0;
         double y = _yaw   * std::numbers::pi / 180.0;
@@ -33,12 +33,12 @@ namespace RayTracer {
 
     void Camera::moveForward(double dist)
     {
-        _position += _getForward() * dist;
+        _position += getForward() * dist;
     }
 
     void Camera::moveRight(double dist)
     {
-        Math::Vector3D forward = _getForward();
+        Math::Vector3D forward = getForward();
         Math::Vector3D right = Math::Vector3D(0, 1, 0).cross(forward).normalize();
         _position += right * dist;
     }
@@ -74,7 +74,7 @@ namespace RayTracer {
 
     Ray Camera::generateRay(int x, int y) const
     {
-        Math::Vector3D forward = _getForward();
+        Math::Vector3D forward = getForward();
         Math::Vector3D right   = Math::Vector3D(0, 1, 0).cross(forward).normalize();
         Math::Vector3D up      = forward.cross(right).normalize();
 
