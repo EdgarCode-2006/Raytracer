@@ -37,39 +37,29 @@ namespace RayTracer {
         const Camera &cam)
     {
         auto [x, y] = cords;
-        
-        // Initial "Probe" Ray to determine complexity
         Ray probeRay = cam.generateRay(x, y);
         const TLASHit tlasHit = sceneLocked->tlas->traverse(probeRay);
 
+        // Default for no-hit = 1 sample for HDRI
         int numSamples = 1;
 
-        // determine complexity of pixel and adjusts super sampling.
-        if (tlasHit.hasHit()) {
-            int baseSamples = 4; 
-            int complexityBonus = tlasHit.depthHit * 2;
-            
-            numSamples = baseSamples + complexityBonus;
-
-            if (numSamples > _samplesPerPixel) {
-                numSamples = _samplesPerPixel;
-            }
+        if (tlasHit.hasHit() && _samplesPerPixel > 1) {
+            numSamples = DEFAULT_SAMPLES_PER_PIXEL;
         }
 
+        numSamples = std::clamp(numSamples, 1, _samplesPerPixel);
+
         float sumR = 0, sumG = 0, sumB = 0;
-        
         int samplesPerSide = std::max(1, (int)std::sqrt(numSamples));
         int totalSamples = samplesPerSide * samplesPerSide;
         float step = 1.0f / samplesPerSide;
 
         for (int sY = 0; sY < samplesPerSide; sY++) {
             for (int sX = 0; sX < samplesPerSide; sX++) {
-                
                 float offsetX = (sX + 0.5f) * step - 0.5f;
                 float offsetY = (sY + 0.5f) * step - 0.5f;
 
                 Ray ray = cam.generateRay(x + offsetX, y + offsetY);
-                
                 SurfaceIntersection intersection{
                     .hitPoint = {0, 0, 0},
                     .rayDir = ray.direction,
@@ -77,11 +67,9 @@ namespace RayTracer {
                     .localColor = {0, 0, 0, 255},
                     .throughput = {1.0, 1.0, 1.0},
                 };
-                
                 intersection.nextRays.push_back(ray);
                 
                 Graphic::Pixel sampleColor = this->shootRay(intersection, sceneLocked);
-                
                 sumR += sampleColor._r;
                 sumG += sampleColor._g;
                 sumB += sampleColor._b;
