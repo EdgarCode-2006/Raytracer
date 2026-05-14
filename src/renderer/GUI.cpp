@@ -271,6 +271,7 @@ void GUI::renderScene(RayTracer::Scene& scene)
         scene.requestHDRILoad(_hdriPath);
         _sceneIsModified = true;
     }
+    if (ImGui::SliderFloat("Ambient Intensity", &scene.getEnvIntensity(), 0.0f, 100.0f)) {_sceneIsModified = true;}
 }
 
 void GUI::Render(RayTracer::Scene& scene, RayTracer::Camera& cam)

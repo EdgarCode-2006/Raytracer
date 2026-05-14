@@ -61,6 +61,7 @@ namespace RayTracer {
             }
             
             void loadHDRI(const std::string& path) { _lights.loadHDRI(path); }
+            float &getEnvIntensity() {return _lights.getEnvIntensity();};
             void requestHDRILoad(const std::string& path) { _pendingHdriPath = path; }
             bool hasPendingHdri() const noexcept { return !_pendingHdriPath.empty(); }
             void applyPendingHdri() { _lights.loadHDRI(_pendingHdriPath); _pendingHdriPath.clear(); }

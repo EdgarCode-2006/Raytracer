@@ -34,6 +34,7 @@ namespace RayTracer {
             const AmbientLight &getAmbientLight() const noexcept { return _ambientLight; }
 
             const Graphic::Pixel getHDRIPixel(const Math::Vector3D& v) const { return _hdri.getPixelColorFromVec(v); }
+            float &getEnvIntensity() {return this->_hdri._envExposure;};
 
         private:
             std::vector<DirectionalLight> _directionalLights;
