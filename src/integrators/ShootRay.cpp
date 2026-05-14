@@ -87,10 +87,15 @@ namespace RayTracer
                 {tlasHit.u(), tlasHit.v()});
             intersection.throughput = currentRay.throughput;
 
-            // run the UTILITY pipeline first
             this->executePipeline(scene, intersection, UTILITY);
-            // run the material associated pipeline second.
             this->executePipeline(scene, intersection, intersection.mat->type);
+
+            if (scene->selectedInstance >= 0 && tlasHit.instanceIndex() == (uint32_t)scene->selectedInstance) {
+                double rim = 1.0 - std::abs(intersection.rayDir.dot(intersection.normal));
+                double glow = 0.18 + rim * rim * 0.65;
+                intersection.localColor._g = (unsigned char)std::min(255, (int)intersection.localColor._g + (int)(160 * glow));
+                intersection.localColor._b = (unsigned char)std::min(255, (int)intersection.localColor._b + (int)(255 * glow));
+            }
 
             integrateColor(finalColor, currentRay.throughput, intersection.localColor);
             instanceNewRays(intersection.nextRays, currentRay, rayQueue);

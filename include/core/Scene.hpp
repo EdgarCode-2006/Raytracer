@@ -27,6 +27,7 @@ namespace RayTracer {
         const World &world;
         std::shared_ptr<const TLAS> tlas;
         const Lights &lights;
+        int32_t selectedInstance = -1;
     };
 
     class Scene {
@@ -102,7 +103,7 @@ namespace RayTracer {
 
 
             inline std::shared_ptr<const RenderScene> generateSceneSnapShot() const {
-                return std::make_shared<const RayTracer::RenderScene>(_geometry, _world, _world.getTLASSnapshot(), _lights);
+                return std::make_shared<const RayTracer::RenderScene>(_geometry, _world, _world.getTLASSnapshot(), _lights, _selectedInstance);
             }
         private:
             std::vector<std::string> _meshPaths;
