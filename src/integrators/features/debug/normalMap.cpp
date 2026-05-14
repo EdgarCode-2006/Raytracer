@@ -4,7 +4,7 @@
 namespace RayTracer {
     void NormalMap::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
     {
-        auto [u, v] = interaction.uv;
+        auto [u, v] = interaction.tlasHit.uv;
         double w = 1.0 - u - v;
 
         Math::Vector3D n = ((w * interaction.tri.vn[0]) +

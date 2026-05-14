@@ -37,29 +37,44 @@ namespace RayTracer {
         const Camera &cam)
     {
         auto [x, y] = cords;
+        Ray probeRay = cam.generateRay(x, y);
+        const TLASHit tlasHit = sceneLocked->tlas->traverse(probeRay);
+
+        // Default for no-hit = 1 sample for HDRI
+        int numSamples = 1;
+
+        if (tlasHit.hasHit() && _samplesPerPixel > 1) {
+            numSamples = DEFAULT_SAMPLES_PER_PIXEL;
+        }
+
+        numSamples = std::clamp(numSamples, 1, _samplesPerPixel);
+
         float sumR = 0, sumG = 0, sumB = 0;
-
-        int samplesPerSide = std::sqrt(_samplesPerPixel);
-        if (samplesPerSide < 1) samplesPerSide = 1;
-
+        int samplesPerSide = std::max(1, (int)std::sqrt(numSamples));
+        int totalSamples = samplesPerSide * samplesPerSide;
         float step = 1.0f / samplesPerSide;
 
         for (int sY = 0; sY < samplesPerSide; sY++) {
             for (int sX = 0; sX < samplesPerSide; sX++) {
-                
                 float offsetX = (sX + 0.5f) * step - 0.5f;
                 float offsetY = (sY + 0.5f) * step - 0.5f;
 
                 Ray ray = cam.generateRay(x + offsetX, y + offsetY);
-                Graphic::Pixel sampleColor = this->shootRay(ray, sceneLocked);
+                SurfaceIntersection intersection{
+                    .hitPoint = {0, 0, 0},
+                    .rayDir = ray.direction,
+                    .tri = Triangle(),
+                    .localColor = {0, 0, 0, 255},
+                    .throughput = {1.0, 1.0, 1.0},
+                };
+                intersection.nextRays.push_back(ray);
                 
+                Graphic::Pixel sampleColor = this->shootRay(intersection, sceneLocked);
                 sumR += sampleColor._r;
                 sumG += sampleColor._g;
                 sumB += sampleColor._b;
             }
         }
-
-        int totalSamples = samplesPerSide * samplesPerSide;
 
         return Graphic::Pixel(
             (unsigned char)(sumR / totalSamples),
@@ -95,8 +110,9 @@ namespace RayTracer {
 
     void Integrator::renderScene(const Camera &cam)
     {
-        this->_samplesPerPixel = this->_cache.prevCamPos == cam.getPosition() ? DEFAULT_SAMPLES_PER_PIXEL : 1;
+        this->_samplesPerPixel = this->_cache.prevCamPos == cam.getPosition() && this->_cache.prevCamForward == cam.getForward() ? DEFAULT_SAMPLES_PER_PIXEL : 1;
         this->_cache.prevCamPos = cam.getPosition();
+        this->_cache.prevCamForward = cam.getForward();
 
         if (this->_framesInFlight >= 1)
             return;

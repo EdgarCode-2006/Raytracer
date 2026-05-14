@@ -4,7 +4,7 @@
 namespace RayTracer {
     void ShadeSmooth::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
     {
-        auto [u, v] = interaction.uv;
+        auto [u, v] = interaction.tlasHit.uv;
         double w = 1 - u - v;
 
         interaction.normal = ((w * interaction.tri.vn[0]) +

@@ -8,6 +8,7 @@ namespace RayTracer {
         
     struct Ray {
         public:
+            Ray() = default;
             Ray(Math::Vector3D ro,
                 Math::Vector3D rd,
                 Math::Vector3D throughput = {1.0, 1.0, 1.0},
@@ -18,10 +19,10 @@ namespace RayTracer {
                 this->throughput = throughput;
                 this->depth = depth;
             }
-            Math::Vector3D origin;
-            Math::Vector3D direction;
-            Math::Vector3D throughput;
-            int depth;
+            Math::Vector3D origin = {};
+            Math::Vector3D direction = {};
+            Math::Vector3D throughput = {1.0, 1.0, 1.0};
+            int depth = 0;
     };
     
     class Triangle {
