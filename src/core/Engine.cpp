@@ -98,6 +98,8 @@ namespace RayTracer{
         if (IsKeyDown(KEY_E)) { cam.moveUp(speed); changed = true; }
         if (IsKeyDown(KEY_Q)) { cam.moveUp(-speed); changed = true; }
 
+        if (IsKeyReleased(KEY_P)) { this->_renderer->saveImage();};
+
         return changed;
     }
 

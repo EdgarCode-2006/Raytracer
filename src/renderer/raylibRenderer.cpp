@@ -30,6 +30,27 @@ namespace Graphic {
         rlImGuiSetup(true);
     }
 
+    void RaylibRenderer::saveImage() const {
+        std::string filename = "render_output.ppm";
+        
+        std::ofstream outFile(filename, std::ios::out | std::ios::binary);
+        if (!outFile) {
+            std::cerr << "Error: Could not open file to save PPM image!" << std::endl;
+            return;
+        }
+        outFile << "P6\n" << _canvas.width << " " << _canvas.height << "\n255\n";
+        int totalPixels = _canvas.width * _canvas.height;
+        for (int i = 0; i < totalPixels; ++i) {
+            Color pixelColor = _screenBuffer[i];
+            outFile.put(pixelColor.r);
+            outFile.put(pixelColor.g);
+            outFile.put(pixelColor.b);
+        }
+
+        outFile.close();
+        std::cout << "Image successfully saved to " << filename << std::endl;
+    }
+    
     void RaylibRenderer::applyBlur(Pixel *pixels, int h, int w)
     {
         std::vector<Pixel> source = _pixels;
