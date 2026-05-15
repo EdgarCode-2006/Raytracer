@@ -3,6 +3,8 @@
 
 #include "core/Scene.hpp"
 #include "entities/Camera.hpp"
+#include <array>
+#include <vector>
 
 namespace RayTracer { class Integrator; }
 
@@ -26,6 +28,7 @@ namespace Graphic {
             char _savePath[256] = "assets/scenes/saved.cfg";
             char _hdriPath[256] = "assets/HDRIs/";
             int _selectedLightType = 0;
+            std::vector<std::array<char, 256>> _texturePaths;
     };
 
 }

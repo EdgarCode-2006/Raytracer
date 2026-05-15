@@ -14,7 +14,7 @@ namespace RayTracer {
 
             Lights(const Lights &) = delete;
             Lights &operator=(const Lights &) = delete;
-            Lights(Lights &&) = default;
+            Lights(Lights &&) = delete;
             Lights &operator=(Lights &&) = default;
 
             void addLight(const DirectionalLight &light) { _directionalLights.push_back(light); }

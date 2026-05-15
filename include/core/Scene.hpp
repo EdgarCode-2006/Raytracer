@@ -36,7 +36,7 @@ namespace RayTracer {
 
             Scene(const Scene&) = delete;
             Scene &operator=(const Scene &) = delete;
-            Scene(Scene &&) = default;
+            Scene(Scene &&) = delete;
             Scene &operator=(Scene &&) = default;
 
             void reserve(uint32_t meshCount, uint32_t totalTriangles, uint32_t totalInstances) {

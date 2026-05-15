@@ -38,6 +38,12 @@ void GUI::renderObjects(RayTracer::Scene& scene)
         ImGui::TextDisabled("No objects in scene.");
         return;
     }
+    if ((int)_texturePaths.size() < count) {
+        int old = (int)_texturePaths.size();
+        _texturePaths.resize(count);
+        for (int k = old; k < count; k++)
+            _texturePaths[k][0] = '\0';
+    }
 
     for (int i = 0; i < count; i++) {
         ImGui::PushID(i);
@@ -95,6 +101,35 @@ void GUI::renderObjects(RayTracer::Scene& scene)
             if (ImGui::Combo("Shader", &currentType, shaderNames, IM_ARRAYSIZE(shaderNames))) {
                 mat.type = (ShaderType)currentType;
                 _sceneIsModified = true;
+            }
+
+            ImGui::Spacing();
+            ImGui::Separator();
+            ImGui::TextDisabled("Texture");
+            ImGui::Spacing();
+
+            if (mat.useTexture && mat.texture)
+                ImGui::TextDisabled("Loaded");
+            else
+                ImGui::TextDisabled("None");
+
+            if (mat.useTexture) {
+                if (ImGui::SmallButton("Remove##tex")) {
+                    mat.texture = nullptr;
+                    mat.useTexture = false;
+                    _texturePaths[i][0] = '\0';
+                    _sceneIsModified = true;
+                }
+            }
+
+            ImGui::InputText("##texpath", _texturePaths[i].data(), 256);
+            ImGui::SameLine();
+            if (ImGui::Button("Load##tex")) {
+                try {
+                    mat.texture = std::make_shared<RayTracer::Texture>(_texturePaths[i].data());
+                    mat.useTexture = true;
+                    _sceneIsModified = true;
+                } catch (...) {}
             }
         }
 
