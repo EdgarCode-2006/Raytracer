@@ -1,7 +1,11 @@
 #include "core/Engine.hpp"
 #include "core/Scene.hpp"
 #include "opti/BVH/TLASHit.hpp"
+#include "SceneParser.hpp"
+#include "io/OBJParser.hpp"
 #include <raylib.h>
+#include <cstring>
+#include <iostream>
 
 namespace RayTracer{
     Engine::Engine(RayTracer::Scene &scene, std::unique_ptr<Graphic::IRenderer> renderer) : _scene(scene), _renderer(std::move(renderer))
@@ -94,7 +98,52 @@ namespace RayTracer{
         if (IsKeyDown(KEY_E)) { cam.moveUp(speed); changed = true; }
         if (IsKeyDown(KEY_Q)) { cam.moveUp(-speed); changed = true; }
 
+        if (IsKeyReleased(KEY_P)) { this->_renderer->saveImage();};
+
         return changed;
+    }
+
+    void Engine::handleFileDrop(Scene &scene)
+    {
+        if (!IsFileDropped()) return;
+
+        FilePathList dropped = LoadDroppedFiles();
+        std::cerr << "[drop] " << dropped.count << " file(s)\n";
+        for (unsigned int i = 0; i < dropped.count; i++) {
+            const char* path = dropped.paths[i];
+            const char* ext  = GetFileExtension(path);
+            std::cerr << "[drop] path=" << path << " ext=" << (ext ? ext : "null") << "\n";
+
+            if (ext && strcmp(ext, ".cfg") == 0) {
+                try {
+                    SceneParser parser;
+                    parser.load(path, scene);
+                    _sceneDirty = true;
+                    std::cerr << "[drop] scene loaded ok\n";
+                } catch (const std::exception& e) {
+                    std::cerr << "[drop] scene error: " << e.what() << "\n";
+                }
+            } else if (ext && strcmp(ext, ".obj") == 0) {
+                try {
+                    OBJParser::OBJParser parser;
+                    auto tris = parser.load(path);
+                    if (!tris.empty()) {
+                        uint32_t meshId = scene.addMesh(std::move(tris), path);
+                        scene.addInstance(meshId);
+                        scene.buildTLAS();
+                        _sceneDirty = true;
+                        std::cerr << "[drop] obj loaded ok\n";
+                    } else {
+                        std::cerr << "[drop] obj empty\n";
+                    }
+                } catch (const std::exception& e) {
+                    std::cerr << "[drop] obj error: " << e.what() << "\n";
+                }
+            } else {
+                std::cerr << "[drop] unsupported extension\n";
+            }
+        }
+        UnloadDroppedFiles(dropped);
     }
 
     void Engine::run()
@@ -108,6 +157,7 @@ namespace RayTracer{
             // GUI
             this->handleWindowResize(cam);
             this->moveCam(cam, this->_scene);
+            this->handleFileDrop(this->_scene);
 
             if (_sceneDirty) {
                 this->generateSnapShot();

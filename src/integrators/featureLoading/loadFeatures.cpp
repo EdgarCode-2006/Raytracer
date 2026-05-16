@@ -3,6 +3,21 @@
 #include <filesystem>
 #include <unordered_set>
 #include "integrators/Integrator.hpp"
+#include "integrators/featureLoader/PipelineManager.hpp"
+
+RayTracer::PipelineManager::PipelineManager()
+{
+    try {
+        this->loadRayFeatures();
+    } catch (const IntegratorException &e) {
+        throw IntegratorException(e.what());
+    }
+
+    std::cout << "feature count = " << _pipeline.size() << std::endl;
+    this->setPluginState("ShadeSmooth", false);
+    this->setPluginState("AmbientOcclusion", false);
+    this->setPluginState("PathTracing", false);
+}
 
 static bool checkFileExtension(const std::string& filename, const std::string& extension)
 {
@@ -13,7 +28,7 @@ static bool checkFileExtension(const std::string& filename, const std::string& e
     return false;
 }
 
-void RayTracer::Integrator::loadRayFeatures()
+void RayTracer::PipelineManager::loadRayFeatures()
 {
     const std::string entryPointSymbol = "getInstance";
     std::filesystem::path target_path{"./rayFeatures/"};
@@ -46,22 +61,20 @@ void RayTracer::Integrator::loadRayFeatures()
             }
         }
 
-        std::sort(_pipeline.begin(), _pipeline.end(), 
-            [](const std::unique_ptr<IRayFeature>& a, const std::unique_ptr<IRayFeature>& b) {
-                return a->getPriority() < b->getPriority();
-            }
-        );
-
-        std::cout << "feature count = " << _pipeline.size() << std::endl;
-        this->setPluginState("SpecularHandler", false);
-        this->setPluginState("AmbientOcclusion", false);
-        // this->setPluginState("BasicLighting", false);
+        // std::sort(_pipeline.begin(), _pipeline.end(), 
+        //     [](const std::unique_ptr<IRayFeature>& a, const std::unique_ptr<IRayFeature>& b) {
+        //         return a->getType() < b->getType();
+        //     }
+        // );
+        for (int i = 0; i < this->_pipeline.size(); i++) {
+            this->_shaderMap[this->_pipeline[i]->getType()].push_back(i);
+        }
     } catch (const std::filesystem::filesystem_error& ex) {
         throw IntegratorException("Failed to load ray features.");
     }
 }
 
-void RayTracer::Integrator::setPluginState(const std::string &pluginName, const bool &state)
+void RayTracer::PipelineManager::setPluginState(const std::string &pluginName, const bool &state)
 {
     for (auto& plugin : _pipeline) {
         if (plugin->getName() == pluginName) {

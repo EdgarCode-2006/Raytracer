@@ -36,7 +36,7 @@ namespace RayTracer {
 
             Scene(const Scene&) = delete;
             Scene &operator=(const Scene &) = delete;
-            Scene(Scene &&) = default;
+            Scene(Scene &&) = delete;
             Scene &operator=(Scene &&) = default;
 
             void reserve(uint32_t meshCount, uint32_t totalTriangles, uint32_t totalInstances) {
@@ -61,6 +61,7 @@ namespace RayTracer {
             }
             
             void loadHDRI(const std::string& path) { _lights.loadHDRI(path); }
+            float &getEnvIntensity() {return _lights.getEnvIntensity();};
             void requestHDRILoad(const std::string& path) { _pendingHdriPath = path; }
             bool hasPendingHdri() const noexcept { return !_pendingHdriPath.empty(); }
             void applyPendingHdri() { _lights.loadHDRI(_pendingHdriPath); _pendingHdriPath.clear(); }
@@ -84,8 +85,13 @@ namespace RayTracer {
             const Lights &getLights() const noexcept {return _lights;}
 
             void addLight(const DirectionalLight &light) {_lights.addLight(light);}
+            void addPointLight(const PointLight &light) {_lights.addPointLight(light);}
             void setAmbientLight(const AmbientLight &light) {_lights.setAmbientLight(light);}
-            const std::vector<DirectionalLight> &getDirectionalLights() const {return _lights.getLights();}
+            const std::vector<DirectionalLight> &getDirectionalLights() const {return _lights.getDirectionalLights();}
+            std::vector<DirectionalLight> &getDirectionalLights() {return _lights.getDirectionalLights();}
+            const std::vector<PointLight> &getPointLights() const {return _lights.getPointLights();}
+            std::vector<PointLight> &getPointLights() {return _lights.getPointLights();}
+            AmbientLight &getAmbientLight() {return _lights.getAmbientLight();}
             const AmbientLight &getAmbientLight() const {return _lights.getAmbientLight();}
             const Graphic::Pixel getHDRIPixel(const Math::Vector3D &v) const {return _lights.getHDRIPixel(v);}
 

@@ -10,8 +10,6 @@
 #include "utils/Pixel.hpp"
 #include "utils/math.hpp"
 
-#define ENV_EXPOSURE 10.0f
-
 namespace RayTracer {
     class HDRI {
         public:
@@ -22,6 +20,8 @@ namespace RayTracer {
             ~HDRI();
             void initHDRIFromFilePath(const std::string &filePath);
             Graphic::Pixel getPixelColorFromVec(const Math::Vector3D &vec) const;
+
+            float _envExposure = 10.0f;
         private:
             int _getIndexFromUV(float u, float v) const;
             std::tuple<float, float> _getUVFromVec(const Math::Vector3D &vec) const;

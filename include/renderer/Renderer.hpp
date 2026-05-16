@@ -18,6 +18,7 @@ namespace Graphic {
             virtual void pixelsToScreenBuffer(Pixel *pixels) = 0;
             virtual void renderPixelBuffer(Pixel *pixels, RayTracer::Scene& scene, RayTracer::Camera& cam) = 0;
             virtual bool windowOpen() = 0;
+            virtual void saveImage() const = 0;
             std::function<void()> onSnapshotRequested;
             virtual void setIntegrator(RayTracer::Integrator*) noexcept {}
     };
@@ -28,6 +29,7 @@ namespace Graphic {
             virtual void resizeWindow(int newWidth, int newHeight) = 0;
             virtual void pixelsToScreenBuffer(Pixel *pixels) = 0;
             virtual void renderPixelBuffer(Pixel *pixels, RayTracer::Scene& scene, RayTracer::Camera& cam) = 0;
+            virtual void saveImage() const = 0;
             virtual bool windowOpen() = 0;
         protected:
             std::vector<Pixel> _pixels;

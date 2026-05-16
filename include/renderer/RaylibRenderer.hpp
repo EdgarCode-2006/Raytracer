@@ -5,6 +5,8 @@
 #include <exception>
 #include <raylib.h>
 #include <vector>
+#include <fstream>
+#include <iostream>
 #include "utils/Pixel.hpp"
 
 #include "entities/Camera.hpp"
@@ -21,6 +23,7 @@ namespace Graphic {
             void renderPixelBuffer(Pixel *pixels, RayTracer::Scene& scene, RayTracer::Camera& cam) override;
             bool windowOpen() override {return !WindowShouldClose();};
             void applyBlur(Pixel *pixels, int h, int w);
+            void saveImage() const override;
             void setIntegrator(RayTracer::Integrator* integrator) noexcept override { _gui.setIntegrator(integrator); }
         private:
             Color *_screenBuffer;

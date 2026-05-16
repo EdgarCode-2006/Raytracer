@@ -17,19 +17,23 @@ namespace RayTracer
     static void initializeIntersection(
         SurfaceIntersection &intersection,
         Graphic::Material *mat,
-        Math::Vector3D hitPoint,
-        Math::Vector3D normal,
-        Math::Vector3D rayDir
+        const Math::Vector3D &hitPoint,
+        const Triangle &triangle,
+        const Math::Vector3D &normal,
+        const Math::Vector3D &rayDir,
+        const TLASHit &tlasHit
     )
     {
         intersection.mat = mat;
         intersection.hitPoint = hitPoint;
+        intersection.tri = triangle;
         intersection.normal = normal;
         intersection.rayDir = rayDir;
         intersection.localColor = {0, 0, 0, 255};
+        intersection.tlasHit = tlasHit;
     }
 
-    static void instanceNewRays(std::vector<Ray> &nextRays, Ray &currentRayData, std::queue<Ray> &rayQueue)
+    static void instanceNewRays(std::vector<Ray> &nextRays, std::queue<Ray> &rayQueue, const Ray &currentRayData = {})
     {
         for (auto &rayData : nextRays) {
             Ray newRay = {
@@ -43,11 +47,20 @@ namespace RayTracer
         nextRays.clear();
     }
 
-    Graphic::Pixel Integrator::consumeRays(Ray &ray, std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection)
+    void Integrator::executePipeline(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection, ShaderType type)
+    {
+        for (auto &shaderIndex : this->_pipelineManager->_shaderMap[type]) {
+            auto &shader = this->_pipelineManager->_pipeline[shaderIndex]; 
+            if (shader->isActive())
+                shader->process(scene, intersection);
+        }
+    }
+
+    Graphic::Pixel Integrator::shootRay(SurfaceIntersection &intersection, std::shared_ptr<const RenderScene> scene)
     {
         std::queue<Ray> rayQueue;
         Math::Vector3D finalColor = {0.0, 0.0, 0.0};
-        rayQueue.push(ray); // initial ray
+        instanceNewRays(intersection.nextRays, rayQueue);
 
         while (!rayQueue.empty()) {
             Ray currentRay = rayQueue.front();
@@ -68,17 +81,17 @@ namespace RayTracer
             initializeIntersection(intersection,
                 const_cast<Graphic::Material*>(&instance.getMaterial()),
                 currentRay.origin + currentRay.direction * tlasHit.t(),
+                tri,
                 tri.normal,
-                currentRay.direction);
+                currentRay.direction,
+                tlasHit);
             intersection.throughput = currentRay.throughput;
 
-            for (auto &rayFeature : _pipeline) {
-                if (rayFeature->isActive())
-                    rayFeature->process(scene, intersection);
-            }
+            this->executePipeline(scene, intersection, UTILITY);
+            this->executePipeline(scene, intersection, intersection.mat->type);
 
             integrateColor(finalColor, currentRay.throughput, intersection.localColor);
-            instanceNewRays(intersection.nextRays, currentRay, rayQueue);
+            instanceNewRays(intersection.nextRays, rayQueue, currentRay);
         }
         return {
             (unsigned char)std::min(255.0, finalColor.x()),
@@ -87,37 +100,4 @@ namespace RayTracer
             255
         };
     }
-
-    Graphic::Pixel Integrator::shootRay(Ray &ray, std::shared_ptr<const RenderScene> sceneLocked)
-    {
-        SurfaceIntersection intersection{
-            .normal = {0, 0, 0},
-            .hitPoint = {0, 0, 0},
-            .rayDir = ray.direction,
-            .localColor = {0, 0, 0, 255},
-            .throughput = {1.0, 1.0, 1.0}
-        };
-        return consumeRays(ray, sceneLocked, intersection);
-    }
-
-    // --- Old implementation (kept for reference) ---
-    // Graphic::Pixel Integrator::shootRay(Ray &ray)
-    // {
-    //     Math::Vector3D finalColor = {0, 0, 0};
-    //     Math::Vector3D throughput = {1.0, 1.0, 1.0};
-    //
-    //     SurfaceIntersection intersection{ ... };
-    //
-    //     for (size_t i = 0; i < MAX_DEPTH; i++) {
-    //         const TLASHit tlasHit = _scene.getTLAS().traverse(ray);
-    //         ...
-    //         for (auto &rayFeature : _pipeline) {
-    //             if (rayFeature->isActive())
-    //                 rayFeature->process(data, intersection);
-    //         }
-    //         integrateColor(finalColor, throughput, intersection.localColor);
-    //         if (!intersection.shouldBounce) break;
-    //         ...
-    //     }
-    // }
 } // namespace RayTracer

@@ -214,7 +214,7 @@ namespace RayTracer {
         if (v < 0.0 || u + v > 1.0)
             return {};
         double t = f * edge2.dot(q);
-        return (t > EPSILON) ? RayHit(t, primitiveIndex) : RayHit{};
+        return (t > EPSILON) ? RayHit(t, primitiveIndex, u, v) : RayHit{};
     }
 
     RayHit BVH::traverse(const Ray &ray) const noexcept {

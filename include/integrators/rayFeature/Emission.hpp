@@ -8,9 +8,9 @@ namespace RayTracer {
 
     class Emission : public ARayFeature {
         public:
-            Emission() : ARayFeature("Emission") {};
+            Emission() : ARayFeature("Emission", EMISSION) {};
             void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override;
-            int getPriority() const noexcept override {return 9;};
+            int getPriority() const noexcept override {return 20;};
     };
 }
 #endif

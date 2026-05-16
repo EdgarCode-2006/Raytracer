@@ -65,6 +65,12 @@ namespace Math {
                         coords[2] * t};
             }
 
+            constexpr Vector3D operator*(const Vector3D& other) const noexcept {
+                return {coords[0] * other.x(),
+                        coords[1] * other.y(),
+                        coords[2] * other.z()};
+            }
+
             constexpr Vector3D operator/(double t) const noexcept {
                 double inv = 1.0 / t;
                 return {coords[0] * inv,

@@ -131,6 +131,20 @@ void SceneParser::load(const std::string& path, Scene& scene)
                 scene.addLight(dl);
             }
         }
+        if (lights.exists("point")) {
+            const libconfig::Setting& pts = lights["point"];
+            for (int i = 0; i < pts.getLength(); i++) {
+                const libconfig::Setting& p = pts[i];
+                PointLight pl;
+                pl.position = Math::Vector3D(
+                    (double)p["position"]["x"],
+                    (double)p["position"]["y"],
+                    (double)p["position"]["z"]
+                );
+                pl.intensity = p.exists("intensity") ? (double)p["intensity"] : 1.0;
+                scene.addPointLight(pl);
+            }
+        }
     }
 
     if (cfg.exists("objects"))
@@ -172,6 +186,15 @@ void SceneParser::save(const std::string& path, const Scene& scene,
         dir.add("y", libconfig::Setting::TypeFloat) = dl.direction.y();
         dir.add("z", libconfig::Setting::TypeFloat) = dl.direction.z();
         d.add("intensity", libconfig::Setting::TypeFloat) = dl.intensity;
+    }
+    auto& pts = lights.add("point", libconfig::Setting::TypeList);
+    for (const auto& pl : scene.getPointLights()) {
+        auto& p = pts.add(libconfig::Setting::TypeGroup);
+        auto& pos = p.add("position", libconfig::Setting::TypeGroup);
+        pos.add("x", libconfig::Setting::TypeFloat) = pl.position.x();
+        pos.add("y", libconfig::Setting::TypeFloat) = pl.position.y();
+        pos.add("z", libconfig::Setting::TypeFloat) = pl.position.z();
+        p.add("intensity", libconfig::Setting::TypeFloat) = pl.intensity;
     }
 
     auto& objects = root.add("objects", libconfig::Setting::TypeList);

@@ -1,7 +1,7 @@
 #ifndef AO_HPP_
 #define AO_HPP_
 #include "integrators/rayFeature/ARayFeature.hpp"
-#define AO_RAY_SAMPLE_COUNT 32
+#define AO_RAY_SAMPLE_COUNT 16
 
 namespace RayTracer {
     struct RenderData;
@@ -9,9 +9,9 @@ namespace RayTracer {
 
     class AmbientOcclusion : public ARayFeature {
         public:
-            AmbientOcclusion() : ARayFeature("AmbientOcclusion") {};
+            AmbientOcclusion() : ARayFeature("AmbientOcclusion", UTILITY) {};
             void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override;
-            int getPriority() const noexcept override {return 20;};
+            int getPriority() const noexcept override {return 2;};
     };
 }
 #endif
