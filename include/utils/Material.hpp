@@ -5,11 +5,11 @@
 #include <memory>
 
 enum ShaderType {
-    EMISSION,
-    DIFFUSION,
-    CAUSTIC,
-    UTILITY,
-    DEBUG,
+    EMISSION  = 1 << 0,
+    DIFFUSION = 1 << 1,
+    CAUSTIC   = 1 << 2,
+    UTILITY   = 1 << 3,
+    DEBUG     = 1 << 4
 };
 
 namespace Graphic {

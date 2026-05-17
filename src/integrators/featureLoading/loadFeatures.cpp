@@ -61,14 +61,49 @@ void RayTracer::PipelineManager::loadRayFeatures()
             }
         }
 
-        // std::sort(_pipeline.begin(), _pipeline.end(), 
-        //     [](const std::unique_ptr<IRayFeature>& a, const std::unique_ptr<IRayFeature>& b) {
-        //         return a->getType() < b->getType();
-        //     }
-        // );
-        for (int i = 0; i < this->_pipeline.size(); i++) {
-            this->_shaderMap[this->_pipeline[i]->getType()].push_back(i);
+        std::sort(_pipeline.begin(), _pipeline.end(), 
+            [](const std::unique_ptr<IRayFeature>& a, const std::unique_ptr<IRayFeature>& b) {
+                return a->getPriority() < b->getPriority();
+            }
+        );
+        const ShaderType allShaderTypes[] = { EMISSION, DIFFUSION, CAUSTIC, UTILITY, DEBUG };
+
+        for (size_t i = 0; i < this->_pipeline.size(); i++) {
+            int featureMask = this->_pipeline[i]->getType();
+
+            for (ShaderType type : allShaderTypes) {
+                if ((featureMask & type) != 0) {
+                    this->_shaderMap[type].push_back(i);
+                }
+            }
         }
+
+        std::cout << "\n--- Shader Type Map Layout ---" << std::endl;
+        for (const auto& [shaderTypeKey, featureIndices] : this->_shaderMap) {
+            
+            std::string typeName;
+            switch (shaderTypeKey) {
+                case EMISSION:  typeName = "EMISSION";  break;
+                case DIFFUSION: typeName = "DIFFUSION"; break;
+                case CAUSTIC:   typeName = "CAUSTIC";   break;
+                case UTILITY:   typeName = "UTILITY";   break;
+                case DEBUG:     typeName = "DEBUG";     break;
+                default:        typeName = "UNKNOWN (" + std::to_string(shaderTypeKey) + ")"; break;
+            }
+
+            std::cout << "Stage [" << typeName << "] holds " << featureIndices.size() << " feature(s):" << std::endl;
+            
+            if (featureIndices.empty()) {
+                std::cout << "  -> (empty)" << std::endl;
+            } else {
+                for (int idx : featureIndices) {
+                    std::string featureName = this->_pipeline[idx]->getName();
+                    std::cout << "  -> Index " << idx << ": " << featureName << std::endl;
+                }
+            }
+            std::cout << "----------------------------------" << std::endl;
+        }
+        std::cout << std::endl;
     } catch (const std::filesystem::filesystem_error& ex) {
         throw IntegratorException("Failed to load ray features.");
     }

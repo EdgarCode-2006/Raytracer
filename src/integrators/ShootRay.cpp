@@ -1,4 +1,5 @@
 #include "integrators/Integrator.hpp"
+#include <iostream>
 
 namespace RayTracer
 {
