@@ -97,9 +97,18 @@ void GUI::renderObjects(RayTracer::Scene& scene)
             if (ImGui::SliderFloat("Emission", &mat.emission, 0.0f, 100.0f)) _sceneIsModified = true;
 
             const char* shaderNames[] = { "Emission", "Diffusion", "Caustic", "Utility", "Debug" };
-            int currentType = (int)mat.type;
-            if (ImGui::Combo("Shader", &currentType, shaderNames, IM_ARRAYSIZE(shaderNames))) {
-                mat.type = (ShaderType)currentType;
+            const ShaderType shaderValues[] = { EMISSION, DIFFUSION, CAUSTIC, UTILITY, DEBUG };
+
+            int currentIdx = 0;
+            for (int i = 0; i < IM_ARRAYSIZE(shaderValues); i++) {
+                if (mat.type == shaderValues[i]) {
+                    currentIdx = i;
+                    break;
+                }
+            }
+
+            if (ImGui::Combo("Shader", &currentIdx, shaderNames, IM_ARRAYSIZE(shaderNames))) {
+                mat.type = shaderValues[currentIdx];
                 _sceneIsModified = true;
             }
 

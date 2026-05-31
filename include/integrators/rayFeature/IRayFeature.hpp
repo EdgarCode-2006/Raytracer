@@ -15,7 +15,7 @@ namespace RayTracer {
             virtual bool isActive() const noexcept = 0;
             virtual void setActivity(const bool &activity) noexcept = 0;
             virtual const std::string getName() const noexcept = 0;
-            virtual ShaderType getType() const noexcept = 0;
+            virtual int getType() const noexcept = 0;
     };
 }
 
