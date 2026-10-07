@@ -15,7 +15,10 @@ namespace RayTracer {
             TLAS() = default;
             
             void build(std::span<const Instance> instances);
-            TLASHit traverse(const Ray &ray) const noexcept;
+            // Closest hit closer than tMax.
+            TLASHit traverse(const Ray &ray, double tMax = RAY_NO_HIT) const noexcept;
+            // Whether anything is hit closer than tMax: stops at the first hit (shadow rays).
+            bool occluded(const Ray &ray, double tMax = RAY_NO_HIT) const noexcept;
 
         private:
 

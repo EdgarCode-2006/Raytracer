@@ -11,9 +11,10 @@ namespace RayTracer {
             Math::Vector3D rayDir = interaction.getOmega();
             Ray AORay(interaction.hitPoint + (interaction.normal * 0.001), rayDir);
 
-            const TLASHit tlasHit = scene->tlas->traverse(AORay);
-            
-            if (tlasHit.hasHit() && tlasHit.t() < maxDistance) {
+            // only hits closer than maxDistance count
+            const TLASHit tlasHit = scene->tlas->traverse(AORay, maxDistance);
+
+            if (tlasHit.hasHit()) {
                 occlusion += (1.0 - (tlasHit.t() / maxDistance));
             }
         }

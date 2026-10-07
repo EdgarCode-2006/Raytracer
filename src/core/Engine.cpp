@@ -90,7 +90,13 @@ namespace RayTracer{
             changed = true;
         }
 
-        if (IsKeyDown(KEY_M)) { scene.addInstance(0); scene.buildTLAS(); _sceneDirty = true; }
+        if (IsKeyDown(KEY_M)) {
+            // the frame being rendered reads the instances that are about to change
+            _integrationManager->waitForRendering();
+            scene.addInstance(0);
+            scene.buildTLAS();
+            _sceneDirty = true;
+        }
         if (IsKeyDown(KEY_W)) { cam.moveForward(speed); changed = true; }
         if (IsKeyDown(KEY_S)) { cam.moveForward(-speed); changed = true; }
         if (IsKeyDown(KEY_D)) { cam.moveRight(speed); changed = true; }
@@ -106,6 +112,9 @@ namespace RayTracer{
     void Engine::handleFileDrop(Scene &scene)
     {
         if (!IsFileDropped()) return;
+
+        // the frame being rendered reads the geometry that is about to grow (and reallocate)
+        _integrationManager->waitForRendering();
 
         FilePathList dropped = LoadDroppedFiles();
         std::cerr << "[drop] " << dropped.count << " file(s)\n";

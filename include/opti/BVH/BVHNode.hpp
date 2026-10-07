@@ -11,11 +11,12 @@ namespace RayTracer {
         public:
             BVHNode() = default;
 
-            bool isLeaf() const noexcept;
-            uint32_t leftOrFirst() const noexcept;
-            uint32_t primCount() const noexcept;
-            const Math::AABB &bounds() const noexcept;
-            
+            // Defined here so they inline into the traversal loops.
+            bool isLeaf() const noexcept { return _primCount > 0; }
+            uint32_t leftOrFirst() const noexcept { return _leftorFirst; }
+            uint32_t primCount() const noexcept { return _primCount; }
+            const Math::AABB &bounds() const noexcept { return _bounds; }
+
         private:
             Math::AABB _bounds;
             uint32_t _leftorFirst = 0;

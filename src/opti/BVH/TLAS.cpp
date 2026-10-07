@@ -176,7 +176,7 @@ namespace RayTracer {
         return (tmin <= tmax) ? tmin : 1e30;
     }
 
-    TLASHit TLAS::traverse(const Ray &ray) const noexcept{
+    TLASHit TLAS::traverse(const Ray &ray, double tMax) const noexcept{
         if (_nodes.empty())
             return {};
 
@@ -193,43 +193,104 @@ namespace RayTracer {
         };
 
         TLASHit hit;
-        uint32_t stack[STACK_SIZE]; 
+        double closest = tMax;
+
+        // Each node keeps the entry distance computed when it was pushed: when it is popped,
+        // comparing it to the closest hit gives the same answer as testing its box again.
+        struct Entry {
+            uint32_t node;
+            double tEntry;
+        };
+        Entry stack[STACK_SIZE];
         int top = 0;
-        stack[top++] = 0; // root
+
+        const double tRoot = _slabTest(_nodes[0], ro, invd, closest);
+        if (tRoot >= closest)
+            return hit;
+        stack[top++] = {0, tRoot};
 
         while (top > 0) {
-            const TLASNode &node = _nodes[stack[--top]];
+            const Entry entry = stack[--top];
 
-            if (_slabTest(node, ro, invd, hit.t()) >= hit.t())
+            if (entry.tEntry >= closest)
                 continue;
-            
+
+            const TLASNode &node = _nodes[entry.node];
+
             if (node.isLeaf()) {
                 for (uint32_t i = 0; i < node.count; i++) {
                     const uint32_t instanceIndex = _indices[node.leftOrFirst + i];
-                    const RayHit instanceHit = _instances[instanceIndex].intersect(ray);
-                    if (instanceHit.hasHit() && instanceHit.t() < hit.t())
+                    // only hits closer than the closest one so far are returned
+                    const RayHit instanceHit = _instances[instanceIndex].intersect(ray, closest);
+                    if (instanceHit.hasHit()) {
                         hit = TLASHit(instanceHit.t(), instanceHit.primitiveIndex(), instanceIndex, instanceHit._u, instanceHit._v, i + top);
+                        closest = instanceHit.t();
+                    }
                 }
             } else {
                 const uint32_t leftIndex = node.leftOrFirst;
                 const uint32_t rightIndex = leftIndex + 1;
 
-                const double tLeft = _slabTest(_nodes[leftIndex], ro, invd, hit.t());
-                const double tRight = _slabTest(_nodes[rightIndex], ro, invd, hit.t());
+                const double tLeft = _slabTest(_nodes[leftIndex], ro, invd, closest);
+                const double tRight = _slabTest(_nodes[rightIndex], ro, invd, closest);
 
                 if (tLeft < tRight) {
-                    if (tRight < hit.t())
-                        stack[top++] = rightIndex;
-                    if (tLeft < hit.t())
-                        stack[top++] = leftIndex;
+                    if (tRight < closest)
+                        stack[top++] = {rightIndex, tRight};
+                    if (tLeft < closest)
+                        stack[top++] = {leftIndex, tLeft};
                 } else {
-                    if (tLeft < hit.t())
-                        stack[top++] = leftIndex;
-                    if (tRight < hit.t())
-                        stack[top++] = rightIndex;
+                    if (tLeft < closest)
+                        stack[top++] = {leftIndex, tLeft};
+                    if (tRight < closest)
+                        stack[top++] = {rightIndex, tRight};
                 }
             }
         }
         return hit;
+    }
+
+    bool TLAS::occluded(const Ray &ray, double tMax) const noexcept {
+        if (_nodes.empty())
+            return false;
+
+        const double ro[3] = {
+            ray.origin.x(),
+            ray.origin.y(),
+            ray.origin.z()
+        };
+
+        const double invd[3] = {
+            1.0 / ray.direction.x(),
+            1.0 / ray.direction.y(),
+            1.0 / ray.direction.z(),
+        };
+
+        uint32_t stack[STACK_SIZE];
+        int top = 0;
+
+        if (_slabTest(_nodes[0], ro, invd, tMax) >= tMax)
+            return false;
+        stack[top++] = 0;
+
+        while (top > 0) {
+            const TLASNode &node = _nodes[stack[--top]];
+
+            if (node.isLeaf()) {
+                for (uint32_t i = 0; i < node.count; i++) {
+                    if (_instances[_indices[node.leftOrFirst + i]].occluded(ray, tMax))
+                        return true;
+                }
+            } else {
+                const uint32_t leftIndex = node.leftOrFirst;
+                const uint32_t rightIndex = leftIndex + 1;
+
+                if (_slabTest(_nodes[rightIndex], ro, invd, tMax) < tMax)
+                    stack[top++] = rightIndex;
+                if (_slabTest(_nodes[leftIndex], ro, invd, tMax) < tMax)
+                    stack[top++] = leftIndex;
+            }
+        }
+        return false;
     }
 }

@@ -27,8 +27,7 @@ namespace RayTracer {
             if (diff > 0) {
                 Ray shadowRay(interaction.hitPoint + (interaction.tri.normal * 0.001), lightDir);
 
-                const TLASHit tlasHit = scene->tlas->traverse(shadowRay);
-                if (!tlasHit.hasHit())
+                if (!scene->tlas->occluded(shadowRay))
                     totalIntensity += diff * light.intensity;
             }
         }
@@ -43,8 +42,8 @@ namespace RayTracer {
             if (diff > 0) {
                 Ray shadowRay(interaction.hitPoint + (interaction.tri.normal * 0.001), lightDir);
 
-                const TLASHit tlasHit = scene->tlas->traverse(shadowRay);
-                if (!tlasHit.hasHit() || tlasHit.t() > dist)
+                // only what is between the point and the light casts a shadow
+                if (!scene->tlas->occluded(shadowRay, dist))
                     totalIntensity += diff * light.intensity / (1.0 + dist * dist * 0.1);
             }
         }

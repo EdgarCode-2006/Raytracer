@@ -19,7 +19,6 @@ set(PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 add_library(raytracer_lib STATIC
     ${PROJECT_ROOT}/src/opti/BVH/AABB.cpp
-    ${PROJECT_ROOT}/src/opti/BVH/BVHNode.cpp
     ${PROJECT_ROOT}/src/utils/Matrix4.cpp
 )
 

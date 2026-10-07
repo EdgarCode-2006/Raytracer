@@ -40,8 +40,16 @@ namespace RayTracer {
                 setTransform(T * Ry * Rx * Rz * S);
             }
 
-            RayHit intersect(const Ray &worldRay) const noexcept {
-                return _geometricData->getBLAS(_meshId).traverse(_invTransform.transformRay(worldRay));
+            // The ray direction is not normalized by the transform, so distances (t) are the
+            // same in world and object space and tMax can be passed through as is.
+            RayHit intersect(const Ray &worldRay, double tMax = RAY_NO_HIT) const noexcept {
+                return _geometricData->getBLAS(_meshId).traverse(_invTransform.transformRay(worldRay),
+                    _geometricData->getTriangles(_meshId), tMax);
+            }
+
+            bool occluded(const Ray &worldRay, double tMax = RAY_NO_HIT) const noexcept {
+                return _geometricData->getBLAS(_meshId).occluded(_invTransform.transformRay(worldRay),
+                    _geometricData->getTriangles(_meshId), tMax);
             }
 
             const Triangle &getPrimitive(uint32_t idx) const noexcept {
