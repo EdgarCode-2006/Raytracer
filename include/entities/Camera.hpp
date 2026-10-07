@@ -11,7 +11,8 @@ namespace RayTracer {
         public:
             Camera(const int width, const int height);
             ~Camera() = default;
-            Ray generateRay(int x, int y) const;
+            // x and y are pixel coordinates: fractional parts give rays inside the pixel
+            Ray generateRay(double x, double y) const;
 
             int getHeight() const { return _height; }
             int getWidth()  const { return _width;  }

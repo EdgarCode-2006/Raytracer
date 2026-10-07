@@ -82,7 +82,7 @@ namespace RayTracer {
         updateBasis();
     }
 
-    Ray Camera::generateRay(int x, int y) const
+    Ray Camera::generateRay(double x, double y) const
     {
         double u = (2.0 * (x + 0.5) / _width  - 1.0) * _aspect * _scale;
         double v = (2.0 * (y + 0.5) / _height - 1.0) * _scale;
