@@ -64,7 +64,7 @@ To maximize CPU throughput, we implemented two critical technologies:
 *   **Threaded Tile Batching:** The screen is divided into 2D tiles. These tiles are dispatched to a **ThreadPool**, ensuring all CPU cores are saturated and rendering occurs concurrently.
 
 ### C. Scalability & Plugin System
-The system is built around the `IRayFeature` (or `ARayFeature`) interface. This allows developers to write `.so` (Shared Object) files that can be loaded at runtime.
+The system is built around the `IRayFeature` (or `ARayFeature`) interface. This allows developers to write `.so` (Shared Object) files, or `.dll` files on Windows, that can be loaded at runtime.
 
 #### Example Implementation: Specular Reflection
 ```cpp

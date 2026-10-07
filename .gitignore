@@ -2,11 +2,14 @@
 raytracer
 raytracer_debug
 build/
+build-*/
 build_tests/
 *.o
 *.a
 *.so
 *.so.*
+*.dll
+*.exe
 rayFeatures/
 
 # IDE / tools

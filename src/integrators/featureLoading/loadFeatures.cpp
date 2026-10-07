@@ -38,7 +38,7 @@ void RayTracer::PipelineManager::loadRayFeatures()
         for (const auto& entry : std::filesystem::directory_iterator(target_path)) {
             if (std::filesystem::is_regular_file(entry.path())) {
                 std::string filePath = entry.path().string();
-                if (checkFileExtension(filePath, "so") == false)
+                if (checkFileExtension(filePath, DynamicLibrary::EXTENSION) == false)
                     continue;
                 std::string libName = entry.path().stem().string();
                 
@@ -55,7 +55,8 @@ void RayTracer::PipelineManager::loadRayFeatures()
                     this->_pipeline.push_back(std::unique_ptr<IRayFeature>(feature));
                     std::cout << "feature-> " << feature->getName() << std::endl;
 
-                } catch (std::runtime_error) {
+                } catch (const std::runtime_error &e) {
+                    std::cerr << "couldn't load feature " << filePath << ": " << e.what() << std::endl;
                     continue;
                 }
             }

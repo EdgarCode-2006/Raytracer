@@ -5,6 +5,7 @@
 #include "opti/BVH/TLASNode.hpp"
 #include "utils/math.hpp"
 #include <algorithm>
+#include <bit>
 #include <cstdint>
 #include <numeric>
 #include <span>
@@ -81,7 +82,7 @@ namespace RayTracer {
         if (firstCode == lastCode)
             return (first + last) >> 1;
 
-        const int commonPrefix = __builtin_clz(firstCode ^ lastCode);
+        const int commonPrefix = std::countl_zero(firstCode ^ lastCode);
 
         uint32_t split = first;
         uint32_t step  = last - first;
@@ -91,7 +92,7 @@ namespace RayTracer {
             const uint32_t candidate = split + step;
             if (candidate < last) {
                 const uint32_t candidateCode = _mortonCodes[_indices[candidate]];
-                const int candidatePrefix = __builtin_clz(firstCode ^ candidateCode);
+                const int candidatePrefix = std::countl_zero(firstCode ^ candidateCode);
                 if (candidatePrefix > commonPrefix)
                     split = candidate;
             }

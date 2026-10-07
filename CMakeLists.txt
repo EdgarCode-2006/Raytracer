@@ -15,8 +15,36 @@ set(FEATURES_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/rayFeatures")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+# --- PLATFORM ---
+if(WIN32)
+    set(FEATURE_SUFFIX ".dll")
+    set(PLATFORM_LIBS opengl32 gdi32 winmm)
+    add_compile_definitions(_USE_MATH_DEFINES) # M_PI with MSVC
+else()
+    set(FEATURE_SUFFIX ".so")
+    set(PLATFORM_LIBS GL m pthread dl X11 rt)
+endif()
+
+# MinGW: make raytracer.exe and the features only depend on Windows itself, so they can be
+# copied to any Windows machine. The GCC runtime is linked statically, and raylib and
+# libconfig++ are built from source instead of using the installed ones.
+set(SELF_CONTAINED_BUILD OFF)
+if(MINGW)
+    option(RAYTRACER_STATIC_RUNTIME "Build self-contained Windows binaries" ON)
+    set(SELF_CONTAINED_BUILD ${RAYTRACER_STATIC_RUNTIME})
+endif()
+
 # --- DEPENDENCIES ---
 include(FetchContent)
+
+# Builds a declared dependency from source as a static library, without its examples and tests.
+function(fetch_static_dependency NAME)
+    set(CMAKE_POLICY_DEFAULT_CMP0077 NEW) # let option() in the dependency take the values below
+    set(BUILD_SHARED_LIBS OFF)
+    set(BUILD_EXAMPLES OFF)
+    set(BUILD_TESTS OFF)
+    FetchContent_MakeAvailable(${NAME})
+endfunction()
 
 FetchContent_Declare(
     stb
@@ -74,17 +102,30 @@ if(TARGET tinyexr)
     target_compile_options(tinyexr PRIVATE -w)
 endif()
 
+if(SELF_CONTAINED_BUILD)
+    # Propagated to everything linking the core: the executable and every feature.
+    target_link_options(raytracer_core INTERFACE -static)
+endif()
+
 # --- FEATURE MACRO ---
+set(RAY_FEATURES "")
+
 macro(add_ray_feature FEATURE_NAME SRC_PATH)
     add_library(${FEATURE_NAME} SHARED ${SRC_PATH})
 
     target_link_libraries(${FEATURE_NAME} PRIVATE raytracer_core)
 
+    # On Windows a .dll is a RUNTIME output (LIBRARY_OUTPUT_DIRECTORY is ignored), and the
+    # $<1:> stops Visual Studio from adding a Release/ or Debug/ subfolder.
+    # WINDOWS_EXPORT_ALL_SYMBOLS makes MSVC export getInstance, MinGW already does it.
     set_target_properties(${FEATURE_NAME} PROPERTIES
         PREFIX ""
-        SUFFIX ".so"
+        SUFFIX "${FEATURE_SUFFIX}"
         LIBRARY_OUTPUT_DIRECTORY "${FEATURES_OUTPUT_DIR}"
+        RUNTIME_OUTPUT_DIRECTORY "$<1:${FEATURES_OUTPUT_DIR}>"
+        WINDOWS_EXPORT_ALL_SYMBOLS ON
     )
+    list(APPEND RAY_FEATURES ${FEATURE_NAME})
 endmacro()
 
 add_ray_feature(basicLight_feat src/integrators/features/BasicLighting.cpp)
@@ -101,50 +142,75 @@ add_ray_feature(RayTraverseDepth_feat src/integrators/features/debug/RayTraverse
 # --- EXECUTABLE ---
 add_executable(${EXECUTABLE_NAME} src/main.cpp)
 
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE
-    raytracer_core
-    basicLight_feat
-    SpecularHandler_feat
-    AmbientOcclusion_feat
-)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE raytracer_core)
+
+# The features are loaded at runtime from rayFeatures/, build them along with the executable.
+add_dependencies(${EXECUTABLE_NAME} ${RAY_FEATURES})
 
 # --- LIBCONFIG++ ---
-find_library(LIBCONFIGPP_LIB config++)
-find_path(LIBCONFIGPP_INC libconfig.h++)
+if(NOT SELF_CONTAINED_BUILD)
+    find_library(LIBCONFIGPP_LIB NAMES config++ libconfig++)
+    find_path(LIBCONFIGPP_INC libconfig.h++)
+endif()
 
-if(LIBCONFIGPP_LIB AND LIBCONFIGPP_INC)
+if(NOT SELF_CONTAINED_BUILD AND LIBCONFIGPP_LIB AND LIBCONFIGPP_INC)
     target_include_directories(raytracer_core PUBLIC ${LIBCONFIGPP_INC})
     target_link_libraries(raytracer_core PUBLIC ${LIBCONFIGPP_LIB})
 else()
-    message(FATAL_ERROR "libconfig++ not found")
+    message(STATUS "Building libconfig++ from source")
+    FetchContent_Declare(libconfig
+        GIT_REPOSITORY https://github.com/hyperrealm/libconfig.git
+        GIT_TAG        v1.8.2
+        GIT_SHALLOW    TRUE
+    )
+    fetch_static_dependency(libconfig)
+
+    if(MSVC)
+        target_link_libraries(raytracer_core PUBLIC libconfig++)
+    else()
+        target_link_libraries(raytracer_core PUBLIC config++)
+    endif()
 endif()
 
 # --- RAYLIB ---
-find_library(RAYLIB_LIB raylib)
-find_path(RAYLIB_INC raylib.h)
-
-if(RAYLIB_LIB AND RAYLIB_INC)
-    target_include_directories(raytracer_core PUBLIC ${RAYLIB_INC})
-    target_compile_definitions(raytracer_core PUBLIC "IsTextureReady=IsTextureValid")
-
-    target_link_libraries(${EXECUTABLE_NAME} PRIVATE
-        ${RAYLIB_LIB}
-        GL m pthread dl X11 rt
-    )
-else()
-    message(FATAL_ERROR "raylib not found")
+if(NOT SELF_CONTAINED_BUILD)
+    find_library(RAYLIB_LIB raylib)
+    find_path(RAYLIB_INC raylib.h)
 endif()
+
+if(NOT SELF_CONTAINED_BUILD AND RAYLIB_LIB AND RAYLIB_INC)
+    target_include_directories(raytracer_core PUBLIC ${RAYLIB_INC})
+    target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${RAYLIB_LIB} ${PLATFORM_LIBS})
+else()
+    message(STATUS "Building raylib from source")
+    FetchContent_Declare(raylib
+        GIT_REPOSITORY https://github.com/raysan5/raylib.git
+        GIT_TAG        6.0
+        GIT_SHALLOW    TRUE
+    )
+    fetch_static_dependency(raylib)
+
+    # Only the executable links raylib, the core just needs its headers.
+    target_include_directories(raytracer_core PUBLIC $<TARGET_PROPERTY:raylib,INTERFACE_INCLUDE_DIRECTORIES>)
+    target_link_libraries(${EXECUTABLE_NAME} PRIVATE raylib ${PLATFORM_LIBS})
+endif()
+
+target_compile_definitions(raytracer_core PUBLIC "IsTextureReady=IsTextureValid")
 
 # --- COMPILATION FLAGS ---
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_compile_options(-g -O0 -fsanitize=address -fno-omit-frame-pointer)
-    add_link_options(-fsanitize=address)
+    if(NOT MSVC AND NOT MINGW) # no AddressSanitizer with MinGW
+        add_compile_options(-g -O0 -fsanitize=address -fno-omit-frame-pointer)
+        add_link_options(-fsanitize=address)
+    endif()
 else()
-    add_compile_options(
-        -O3
-        -march=native
-        -DNDEBUG
-    )
+    if(NOT MSVC)
+        add_compile_options(
+            -O3
+            -march=native
+            -DNDEBUG
+        )
+    endif()
 
     option(ENABLE_OPENMP "Enable OpenMP" ON)
     if(ENABLE_OPENMP)

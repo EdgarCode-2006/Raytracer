@@ -61,10 +61,10 @@ By setting a `getPriority()`, you ensure that a plugin calculating "Shadows" run
 ## 4. Creating and Compiling a Plugin
 
 ### Step 1: Implementation
-Create your class inheriting from `ARayFeature` (or `IRayFeature`). Ensure you implement an entry point (usually `getInstance`) so the dynamic loader can instantiate your class from a `.so` file.
+Create your class inheriting from `ARayFeature` (or `IRayFeature`). Ensure you implement an entry point (usually `getInstance`) so the dynamic loader can instantiate your class from a `.so` file (`.dll` on Windows).
 
 ### Step 2: Build System (CMake)
-Use the `add_ray_feature` macro provided in the project's CMake configuration. This macro handles the complexity of creating a Shared Object (`.so`) and linking it against the core library.
+Use the `add_ray_feature` macro provided in the project's CMake configuration. This macro handles the complexity of creating a Shared Object (`.so`, or `.dll` on Windows) and linking it against the core library.
 
 ```cmake
 # Example: Adding a new Bloom effect plugin
@@ -74,7 +74,7 @@ add_ray_feature(BloomEffect_feat src/integrators/features/BloomEffect.cpp)
 This will automatically:
 1.  Compile your source into a shared library.
 2.  Link `raytracer_core`.
-3.  Output the `.so` file into the `./rayFeatures/` directory.
+3.  Output the `.so` / `.dll` file into the `./rayFeatures/` directory.
 
 ---
 

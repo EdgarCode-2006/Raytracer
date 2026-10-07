@@ -36,7 +36,7 @@ To combat the performance bottleneck of single-threaded rendering, we implemente
 
 ###  Modular Shader System
 
-Shaders are implemented as dynamic library plugins (`.so` files). By implementing a standard interface, new material properties and effects can be added without recompiling the core engine.
+Shaders are implemented as dynamic library plugins (`.so` files on Linux, `.dll` on Windows). By implementing a standard interface, new material properties and effects can be added without recompiling the core engine.
 
 * **Automatic Pipeline:** Plugins are assigned names, types, and priorities, allowing the engine to automatically organize them into an efficient execution pipeline.
 * **Frontend Integration:** Uses **Raylib** for window management and display, with **ImGui** providing a robust real-time GUI for parameter tweaking.
@@ -47,15 +47,38 @@ Shaders are implemented as dynamic library plugins (`.so` files). By implementin
 
 ### Build
 
+#### Linux
+
 ```bash
 mkdir build && cd build
 cmake ..
 make
 ```
 
+#### Windows
+
+The Windows build uses MinGW-w64 (GCC). raylib and libconfig++ are downloaded and built automatically, and everything is linked statically: `raytracer.exe` and the plugins (`rayFeatures/*.dll`) don't need any extra DLL to run.
+
+Cross-compiling from Linux or WSL (Ubuntu: `sudo apt install mingw-w64`):
+
+```bash
+cmake -B build-windows -DCMAKE_TOOLCHAIN_FILE=cmake/toolchains/mingw-w64-x86_64.cmake
+cmake --build build-windows -j 4
+```
+
+Or natively on Windows with [MSYS2](https://www.msys2.org/), from the **UCRT64** shell:
+
+```bash
+pacman -S git mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja
+cmake -B build -G Ninja
+cmake --build build -j 4
+```
+
+Each compile job needs a fair amount of RAM, so keep `-j` low on machines with little memory.
+
 ### Run
 
-The ray tracer supports both raw geometry and pre-defined scene configurations.
+The ray tracer supports both raw geometry and pre-defined scene configurations. Run it from the repository root: the plugins are loaded from `rayFeatures/` and the assets from `assets/`.
 
 ```bash
 # Load an OBJ Model
@@ -64,8 +87,16 @@ The ray tracer supports both raw geometry and pre-defined scene configurations.
 ./build/raytracer assets/scenes/multi.cfg
 ```
 
+On Windows (PowerShell):
+
+```powershell
+.\build-windows\raytracer.exe assets\scenes\multi.cfg
+```
+
+To run it on another Windows machine, copy `raytracer.exe` together with the `rayFeatures/` folder (only the `.dll` files are needed) and the `assets/` folder.
+
 ---
 
 ##  Creative Extensibility
 
-The true strength of this project lies in its **Plugin Interface**. To add a new feature, you simply create a new shader implementing the interface and compile it as a `.so` file. The system handles the rest, integrating it into the pipeline based on its metadata.
+The true strength of this project lies in its **Plugin Interface**. To add a new feature, you simply create a new shader implementing the interface and compile it as a shared library (`.so` on Linux, `.dll` on Windows). The system handles the rest, integrating it into the pipeline based on its metadata.

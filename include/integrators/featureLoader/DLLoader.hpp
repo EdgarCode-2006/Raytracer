@@ -2,7 +2,20 @@
     #define _DLLOADER_HPP_
     #include <stdexcept>
     #include <string>
-    #include <dlfcn.h>
+
+// Platform specific part of the loader (dlopen on Linux, LoadLibrary on Windows).
+// It lives in DLLoader.cpp so that <windows.h> is never included next to raylib.h.
+namespace DynamicLibrary {
+    #ifdef _WIN32
+        inline constexpr const char *EXTENSION = "dll";
+    #else
+        inline constexpr const char *EXTENSION = "so";
+    #endif
+
+    void *open(const std::string &path);
+    void *getSymbol(void *handle, const std::string &symbol);
+    void close(void *handle) noexcept;
+}
 
 template <typename T>
 class DLLoader {
@@ -31,15 +44,12 @@ class DLLoader {
 
         void loadNewLib(const std::string &path)
         {
-            _handle = dlopen(path.c_str(), RTLD_LAZY | RTLD_GLOBAL | RTLD_NODELETE);
-            if (!_handle) {
-                throw std::runtime_error(dlerror());
-            }
+            _handle = DynamicLibrary::open(path);
         }
 
         void closeLib() {
             if (_handle) {
-                dlclose(_handle);
+                DynamicLibrary::close(_handle);
                 _handle = nullptr;
             }
         }
@@ -52,11 +62,7 @@ class DLLoader {
 
             using FactoryFunc = T* (*)();
 
-            void* sym = dlsym(_handle, entryPointSymbol.c_str());
-
-            char* error = dlerror();
-            if (error != nullptr)
-                throw std::runtime_error(error);
+            void* sym = DynamicLibrary::getSymbol(_handle, entryPointSymbol);
 
             FactoryFunc func = reinterpret_cast<FactoryFunc>(sym);
 
