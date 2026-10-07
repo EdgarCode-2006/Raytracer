@@ -6,17 +6,24 @@ namespace RayTracer {
 
     Camera::Camera(const int width, const int height)
         : _position(0, 0, 0), _yaw(0.0), _pitch(0.0), _fov(60.0), _width(width), _height(height)
-    {}
+    {
+        updateBasis();
+    }
 
-    Math::Vector3D Camera::getForward() const
+    void Camera::updateBasis()
     {
         double p = _pitch * std::numbers::pi / 180.0;
         double y = _yaw   * std::numbers::pi / 180.0;
-        return Math::Vector3D(
+        _forward = Math::Vector3D(
             std::sin(y) * std::cos(p),
             -std::sin(p),
             std::cos(y) * std::cos(p)
         ).normalize();
+        _right = Math::Vector3D(0, 1, 0).cross(_forward).normalize();
+        _up    = _forward.cross(_right).normalize();
+
+        _aspect = (double)_width  / (double)_height;
+        _scale  = std::tan(_fov / 2.0 * std::numbers::pi / 180.0);
     }
 
     void Camera::addRotationX(double degrees)
@@ -24,11 +31,13 @@ namespace RayTracer {
         _pitch += degrees;
         if (_pitch >  89.0) _pitch =  89.0;
         if (_pitch < -89.0) _pitch = -89.0;
+        updateBasis();
     }
 
     void Camera::addRotationY(double degrees)
     {
         _yaw += degrees;
+        updateBasis();
     }
 
     void Camera::moveForward(double dist)
@@ -70,21 +79,15 @@ namespace RayTracer {
         _yaw   = 0.0;
         _pitch = 0.0;
         _position = Math::Vector3D(center.x(), center.y(), center.z() - size * 1.5);
+        updateBasis();
     }
 
     Ray Camera::generateRay(int x, int y) const
     {
-        Math::Vector3D forward = getForward();
-        Math::Vector3D right   = Math::Vector3D(0, 1, 0).cross(forward).normalize();
-        Math::Vector3D up      = forward.cross(right).normalize();
+        double u = (2.0 * (x + 0.5) / _width  - 1.0) * _aspect * _scale;
+        double v = (2.0 * (y + 0.5) / _height - 1.0) * _scale;
 
-        double aspect = (double)_width  / (double)_height;
-        double scale  = std::tan(_fov / 2.0 * std::numbers::pi / 180.0);
-
-        double u = (2.0 * (x + 0.5) / _width  - 1.0) * aspect * scale;
-        double v = (2.0 * (y + 0.5) / _height - 1.0) * scale;
-
-        Math::Vector3D dir = (forward + right * u - up * v).normalize();
+        Math::Vector3D dir = (_forward + _right * u - _up * v).normalize();
         return Ray(_position, dir);
     }
 }

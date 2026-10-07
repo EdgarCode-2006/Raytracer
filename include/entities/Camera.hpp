@@ -16,9 +16,9 @@ namespace RayTracer {
             int getHeight() const { return _height; }
             int getWidth()  const { return _width;  }
 
-            void setHeight(int height) { _height = height; }
-            void setWidth(int width)   { _width  = width;  }
-            void setFov(double fov)    { _fov    = fov;    }
+            void setHeight(int height) { _height = height; updateBasis(); }
+            void setWidth(int width)   { _width  = width;  updateBasis(); }
+            void setFov(double fov)    { _fov    = fov;    updateBasis(); }
 
             const Math::Vector3D& getPosition() const { return _position; }
             double getFov() const { return _fov; }
@@ -34,15 +34,24 @@ namespace RayTracer {
             void moveForward(double dist);
             void moveRight(double dist);
             void moveUp(double dist);
-            Math::Vector3D getForward() const;
+            const Math::Vector3D &getForward() const { return _forward; }
 
         private:
+            // Recomputes what generateRay needs, every time the orientation, fov or size change.
+            void updateBasis();
+
             Math::Vector3D _position;
             double _yaw   = 0.0;
             double _pitch = 0.0;
             double _fov   = 60.0;
             int _width;
             int _height;
+
+            Math::Vector3D _forward;
+            Math::Vector3D _right;
+            Math::Vector3D _up;
+            double _aspect = 1.0;
+            double _scale = 1.0;
     };
 }
 
