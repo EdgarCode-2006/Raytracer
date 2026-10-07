@@ -1,5 +1,6 @@
 #ifndef INTEGRATOR_HPP_
 #define INTEGRATOR_HPP_
+#include <array>
 #include <memory>
 #include <string>
 #include <vector>
@@ -61,6 +62,22 @@ namespace RayTracer {
             std::atomic<int> _framesInFlight;
 
             int _samplesPerPixel;
+
+            // What the last frame was rendered from: while none of it changes, a still frame
+            // is not rendered again since it would give the same image.
+            struct FrameInputs {
+                std::shared_ptr<const RenderScene> scene; // kept alive so a new snapshot can't reuse its address
+                Math::Vector3D cameraPosition;
+                Math::Vector3D cameraForward;
+                double fov = 0.0;
+                int width = 0;
+                int height = 0;
+                std::array<std::vector<IRayFeature *>, SHADER_TYPE_COUNT> features;
+
+                bool operator==(const FrameInputs &) const = default;
+            };
+            FrameInputs _lastFrame;
+            bool _lastFrameIsStill = false; // rendered from start to end with the still camera samples
 
             // cached data.
             CachedData _cache;

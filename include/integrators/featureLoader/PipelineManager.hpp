@@ -23,6 +23,9 @@ namespace RayTracer {
             const std::vector<IRayFeature *> &getActiveFeatures(ShaderType type) const noexcept {
                 return _activeFeatures[type];
             }
+            const std::array<std::vector<IRayFeature *>, SHADER_TYPE_COUNT> &getActiveFeatures() const noexcept {
+                return _activeFeatures;
+            }
 
             std::vector<std::unique_ptr<IRayFeature>> _pipeline;
             std::unordered_map<ShaderType, std::vector<int>> _shaderMap;

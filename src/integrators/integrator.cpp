@@ -111,15 +111,27 @@ namespace RayTracer {
 
     void Integrator::renderScene(const Camera &cam)
     {
-        this->_samplesPerPixel = this->_cache.prevCamPos == cam.getPosition() && this->_cache.prevCamForward == cam.getForward() ? DEFAULT_SAMPLES_PER_PIXEL : 1;
+        const bool still = this->_cache.prevCamPos == cam.getPosition() && this->_cache.prevCamForward == cam.getForward();
+        this->_samplesPerPixel = still ? DEFAULT_SAMPLES_PER_PIXEL : 1;
         this->_cache.prevCamPos = cam.getPosition();
         this->_cache.prevCamForward = cam.getForward();
 
-        if (this->_framesInFlight >= 1)
+        if (this->_framesInFlight >= 1) {
+            // the tiles left in the frame being rendered now take a single sample
+            if (!still)
+                _lastFrameIsStill = false;
             return;
+        }
 
         std::shared_ptr<const RenderScene> sceneLocked = this->_scene;
         this->_pipelineManager->refreshActiveFeatures();
+
+        FrameInputs inputs{sceneLocked, cam.getPosition(), cam.getForward(), cam.getFov(),
+            cam.getWidth(), cam.getHeight(), this->_pipelineManager->getActiveFeatures()};
+        if (still && _lastFrameIsStill && inputs == _lastFrame)
+            return; // the frame on screen already shows exactly this
+        _lastFrame = std::move(inputs);
+        _lastFrameIsStill = still;
 
         _framesInFlight += 1;
 
