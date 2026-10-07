@@ -10,7 +10,9 @@
 namespace RayTracer {
     Integrator::Integrator(std::shared_ptr<const RenderScene> scene) : _scene(std::move(scene))
     {
-        this->_threadPool = std::make_unique<optimization::ThreadPool>(10); // init thread pool with 4 threads.
+        // one render thread per core (hardware_concurrency() returns 0 when it can't tell)
+        const unsigned int cores = std::thread::hardware_concurrency();
+        this->_threadPool = std::make_unique<optimization::ThreadPool>(cores > 0 ? cores : 4);
         this->_cache = {};
         try
         {
