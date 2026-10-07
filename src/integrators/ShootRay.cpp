@@ -26,14 +26,14 @@ namespace RayTracer
     {
         intersection.mat = mat;
         intersection.hitPoint = hitPoint;
-        intersection.tri = triangle;
+        intersection.tri = &triangle;
         intersection.normal = normal;
         intersection.rayDir = rayDir;
         intersection.localColor = {0, 0, 0, 255};
         intersection.tlasHit = tlasHit;
     }
 
-    static void instanceNewRays(std::vector<Ray> &nextRays, std::queue<Ray> &rayQueue, const Ray &currentRayData = {})
+    static void instanceNewRays(std::vector<Ray> &nextRays, std::vector<Ray> &rayQueue, const Ray &currentRayData = {})
     {
         for (auto &rayData : nextRays) {
             Ray newRay = {
@@ -42,40 +42,39 @@ namespace RayTracer
                 rayData.throughput,
                 currentRayData.depth + 1,
             };
-            rayQueue.push(newRay);
+            rayQueue.push_back(newRay);
         }
         nextRays.clear();
     }
 
-    void Integrator::executePipeline(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection, ShaderType type)
+    void Integrator::executePipeline(const RenderScene &scene, SurfaceIntersection &intersection, ShaderType type)
     {
-        for (auto &shaderIndex : this->_pipelineManager->_shaderMap[type]) {
-            auto &shader = this->_pipelineManager->_pipeline[shaderIndex]; 
-            if (shader->isActive())
-                shader->process(scene, intersection);
-        }
+        for (IRayFeature *shader : this->_pipelineManager->getActiveFeatures(type))
+            shader->process(scene, intersection);
     }
 
-    Graphic::Pixel Integrator::shootRay(SurfaceIntersection &intersection, std::shared_ptr<const RenderScene> scene)
+    Graphic::Pixel Integrator::shootRay(SurfaceIntersection &intersection, const RenderScene &scene, std::vector<Ray> &rayQueue)
     {
-        std::queue<Ray> rayQueue;
+        // rayQueue is the FIFO of the rays left to trace, reused between calls
+        size_t next = 0;
+
+        rayQueue.clear();
         Math::Vector3D finalColor = {0.0, 0.0, 0.0};
         instanceNewRays(intersection.nextRays, rayQueue);
 
-        while (!rayQueue.empty()) {
-            Ray currentRay = rayQueue.front();
-            rayQueue.pop();
+        while (next < rayQueue.size()) {
+            Ray currentRay = rayQueue[next++];
 
             if (currentRay.depth >= MAX_DEPTH || currentRay.throughput.length() < MIN_THROUGHPUT_LENGTH)
                 continue;
 
-            const TLASHit tlasHit = scene->tlas->traverse(currentRay);
+            const TLASHit tlasHit = scene.tlas->traverse(currentRay);
             if (!tlasHit.hasHit()) {
-                const Graphic::Pixel envPixel = scene->lights.getHDRIPixel(currentRay.direction * -1);
+                const Graphic::Pixel envPixel = scene.lights.getHDRIPixel(currentRay.direction * -1);
                 integrateColor(finalColor, currentRay.throughput, envPixel);
                 break;
             }
-            const Instance &instance = scene->world.getInstance(tlasHit.instanceIndex());
+            const Instance &instance = scene.world.getInstance(tlasHit.instanceIndex());
             const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
 
             initializeIntersection(intersection,

@@ -11,7 +11,7 @@ namespace RayTracer {
     class OutLine : public ARayFeature {
         public:
             OutLine() : ARayFeature("Outline", DEBUG) {};
-            void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override;
+            void process(const RenderScene &scene, SurfaceIntersection &interaction) override;
             int getPriority() const noexcept override {return 101;};
     };
 }

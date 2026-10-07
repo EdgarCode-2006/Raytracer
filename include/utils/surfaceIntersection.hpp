@@ -10,7 +10,7 @@ namespace RayTracer {
         Math::Vector3D normal;
         Math::Vector3D hitPoint;
         Math::Vector3D rayDir;
-        Triangle tri;
+        const Triangle *tri = nullptr; // the hit triangle, in the scene's triangle array
         Graphic::Material *mat;
         Graphic::Pixel localColor;
         std::vector<Ray> nextRays;

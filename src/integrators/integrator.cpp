@@ -32,22 +32,20 @@ namespace RayTracer {
         }
     }
 
-    Graphic::Pixel Integrator::getPixelColor(std::tuple<int, int> cords,
-        std::shared_ptr<const RenderScene> sceneLocked,
-        const Camera &cam)
+    Graphic::Pixel Integrator::getPixelColor(int x, int y, const RenderScene &scene,
+        const Camera &cam, SurfaceIntersection &intersection, std::vector<Ray> &rayQueue)
     {
-        auto [x, y] = cords;
-        Ray probeRay = cam.generateRay(x, y);
-        const TLASHit tlasHit = sceneLocked->tlas->traverse(probeRay);
+        const int samplesPerPixel = _samplesPerPixel;
 
         // Default for no-hit = 1 sample for HDRI
         int numSamples = 1;
 
-        if (tlasHit.hasHit() && _samplesPerPixel > 1) {
+        // the probe ray only decides between 1 and several samples
+        if (samplesPerPixel > 1 && scene.tlas->traverse(cam.generateRay(x, y)).hasHit()) {
             numSamples = DEFAULT_SAMPLES_PER_PIXEL;
         }
 
-        numSamples = std::clamp(numSamples, 1, _samplesPerPixel);
+        numSamples = std::clamp(numSamples, 1, samplesPerPixel);
 
         float sumR = 0, sumG = 0, sumB = 0;
         int samplesPerSide = std::max(1, (int)std::sqrt(numSamples));
@@ -60,16 +58,14 @@ namespace RayTracer {
                 float offsetY = (sY + 0.5f) * step - 0.5f;
 
                 Ray ray = cam.generateRay(x + offsetX, y + offsetY);
-                SurfaceIntersection intersection{
-                    .hitPoint = {0, 0, 0},
-                    .rayDir = ray.direction,
-                    .tri = Triangle(),
-                    .localColor = {0, 0, 0, 255},
-                    .throughput = {1.0, 1.0, 1.0},
-                };
+                // the hit specific fields are set by shootRay before any feature reads them
+                intersection.rayDir = ray.direction;
+                intersection.localColor = {0, 0, 0, 255};
+                intersection.throughput = {1.0, 1.0, 1.0};
+                intersection.nextRays.clear();
                 intersection.nextRays.push_back(ray);
-                
-                Graphic::Pixel sampleColor = this->shootRay(intersection, sceneLocked);
+
+                Graphic::Pixel sampleColor = this->shootRay(intersection, scene, rayQueue);
                 sumR += sampleColor._r;
                 sumG += sampleColor._g;
                 sumB += sampleColor._b;
@@ -83,19 +79,22 @@ namespace RayTracer {
     }
 
     void Integrator::computeTile(const PixelTile &tile,
-        std::shared_ptr<Frame> currentFrame,
-        std::shared_ptr<const RenderScene> sceneLocked,
+        const std::shared_ptr<Frame> &currentFrame,
+        const RenderScene &scene,
         const Camera &cam)
     {
         int startX = tile.getX();
         int startY = tile.getY();
         int width = tile.getXDim();
         int height = tile.getYDim();
+        // reused by every sample of the tile, so that their ray lists are allocated once
+        SurfaceIntersection intersection{};
+        std::vector<Ray> rayQueue;
 
         for (int y = startY; y < startY + height; y++) {
             if (_stopRendering) return;
             for (int x = startX; x < startX + width; x++) {
-                Graphic::Pixel pColor = getPixelColor(std::tuple<int, int>(x, y), sceneLocked, cam);
+                Graphic::Pixel pColor = getPixelColor(x, y, scene, cam, intersection, rayQueue);
                 currentFrame->_pixelBuffer[y * cam.getWidth() + x] = pColor;
             }
         }
@@ -117,7 +116,8 @@ namespace RayTracer {
         if (this->_framesInFlight >= 1)
             return;
 
-        std::shared_ptr<const RenderScene> sceneLocked = this->_scene;\
+        std::shared_ptr<const RenderScene> sceneLocked = this->_scene;
+        this->_pipelineManager->refreshActiveFeatures();
 
         _framesInFlight += 1;
 
@@ -127,7 +127,7 @@ namespace RayTracer {
 
         for (const auto& tile : _cache.tiles) {
             this->_threadPool->enqueue([this, tile, currentFrame, sceneLocked, cam]() {
-                this->computeTile(tile, currentFrame, sceneLocked, cam); 
+                this->computeTile(tile, currentFrame, *sceneLocked, cam);
             });
         }
     }

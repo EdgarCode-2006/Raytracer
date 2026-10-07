@@ -10,7 +10,7 @@ namespace RayTracer {
     class RayTraverseDepth : public ARayFeature {
         public:
             RayTraverseDepth() : ARayFeature("TraverseDepth", DEBUG) {};
-            void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override;
+            void process(const RenderScene &scene, SurfaceIntersection &interaction) override;
             int getPriority() const noexcept override {return 104;};
     };
 }

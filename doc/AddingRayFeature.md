@@ -16,7 +16,7 @@ class IRayFeature {
         virtual ~IRayFeature() = default;
 
         // The core logic of your plugin
-        virtual void process(RenderData &data, SurfaceIntersection &interaction) = 0;
+        virtual void process(const RenderScene &scene, SurfaceIntersection &interaction) = 0;
 
         // Determines the execution order (lower values run first)
         virtual int getPriority() const noexcept = 0;
@@ -32,8 +32,8 @@ class IRayFeature {
 
 ### Key Method: `process()`
 This is where the "magic" happens. The engine provides you with:
-*   `RenderData`: Global scene information (lights, textures, HDRI).
-*   `SurfaceIntersection`: Local data about the hit (normal, material, position). 
+*   `RenderScene`: Global scene information (`tlas` to trace rays, `lights`, HDRI). For shadow rays, use `scene.tlas->occluded(ray, maxDistance)`: it stops at the first hit, which is much cheaper than finding the closest one with `traverse()`.
+*   `SurfaceIntersection`: Local data about the hit (normal, material, position, `tri` pointing to the hit triangle). 
 
 **Your plugin can:**
 1.  Modify `interaction.localColor` to add light to the pixel.
@@ -47,11 +47,10 @@ The engine utilizes an iterative queue system. When a ray hits an object, the en
 
 
 ```cpp
-// Inside Integrator::consumeRays
-for (auto &rayFeature : _pipeline) {
-    if (rayFeature->isActive())
-        rayFeature->process(data, intersection);
-}
+// Inside Integrator::executePipeline: the active features of a shader type,
+// listed again before each frame (switching a feature on or off applies to the next frame)
+for (IRayFeature *shader : _pipelineManager->getActiveFeatures(type))
+    shader->process(scene, intersection);
 ```
 
 By setting a `getPriority()`, you ensure that a plugin calculating "Shadows" runs before a plugin calculating "Reflection," ensuring the final color is mathematically sound.

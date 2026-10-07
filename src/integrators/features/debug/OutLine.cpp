@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace RayTracer {
-    void OutLine::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
+    void OutLine::process(const RenderScene &scene, SurfaceIntersection &interaction)
     {
         double cosi = interaction.rayDir.dot(interaction.normal * -1);
 

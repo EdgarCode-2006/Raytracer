@@ -7,32 +7,32 @@ namespace RayTracer {
         auto [u, v] = interaction.tlasHit.uv;
         double w = 1 - u - v;
 
-        auto [texU, texV] = (w * interaction.tri.uv[0]) +
-                            (v * interaction.tri.uv[1]) +
-                            (u * interaction.tri.uv[2]);
+        auto [texU, texV] = (w * interaction.tri->uv[0]) +
+                            (v * interaction.tri->uv[1]) +
+                            (u * interaction.tri->uv[2]);
         interaction.localColor = interaction.mat->texture->sampleUVColor(texU, texV);
         interaction.localColor._r *= totalIntensity;
         interaction.localColor._g *= totalIntensity;
         interaction.localColor._b *= totalIntensity;
     }
 
-    void BasicLighting::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
+    void BasicLighting::process(const RenderScene &scene, SurfaceIntersection &interaction)
     {
-        double totalIntensity = scene->lights.getAmbientLight().intensity;
+        double totalIntensity = scene.lights.getAmbientLight().intensity;
 
-        for (const auto& light : scene->lights.getLights()) {
+        for (const auto& light : scene.lights.getLights()) {
             Math::Vector3D lightDir = light.direction * -1;
             double diff = interaction.normal.dot(lightDir);
 
             if (diff > 0) {
-                Ray shadowRay(interaction.hitPoint + (interaction.tri.normal * 0.001), lightDir);
+                Ray shadowRay(interaction.hitPoint + (interaction.tri->normal * 0.001), lightDir);
 
-                if (!scene->tlas->occluded(shadowRay))
+                if (!scene.tlas->occluded(shadowRay))
                     totalIntensity += diff * light.intensity;
             }
         }
 
-        for (const auto& light : scene->lights.getPointLights()) {
+        for (const auto& light : scene.lights.getPointLights()) {
             Math::Vector3D toLight = light.position - interaction.hitPoint;
             double dist = toLight.length();
             if (dist < 1e-6) continue;
@@ -40,10 +40,10 @@ namespace RayTracer {
             double diff = interaction.normal.dot(lightDir);
 
             if (diff > 0) {
-                Ray shadowRay(interaction.hitPoint + (interaction.tri.normal * 0.001), lightDir);
+                Ray shadowRay(interaction.hitPoint + (interaction.tri->normal * 0.001), lightDir);
 
                 // only what is between the point and the light casts a shadow
-                if (!scene->tlas->occluded(shadowRay, dist))
+                if (!scene.tlas->occluded(shadowRay, dist))
                     totalIntensity += diff * light.intensity / (1.0 + dist * dist * 0.1);
             }
         }

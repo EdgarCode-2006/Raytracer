@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace RayTracer {
-    void PathTracing::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
+    void PathTracing::process(const RenderScene &scene, SurfaceIntersection &interaction)
     {
         Math::Vector3D rayDir = interaction.getOmega(); 
 

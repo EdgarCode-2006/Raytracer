@@ -9,7 +9,7 @@ namespace RayTracer {
     class BasicLighting : public ARayFeature {
         public:
             BasicLighting() : ARayFeature("BasicLighting", DIFFUSION) {};
-            void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override;
+            void process(const RenderScene &scene, SurfaceIntersection &interaction) override;
             int getPriority() const noexcept override {return 11;};
     };
 }

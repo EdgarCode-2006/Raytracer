@@ -1,7 +1,7 @@
 #include "integrators/rayFeature/debug/WireFrame.hpp"
 
 namespace RayTracer {
-    void WireFrame::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
+    void WireFrame::process(const RenderScene &scene, SurfaceIntersection &interaction)
     {
         auto [u, v] = interaction.tlasHit.uv;
         double w = 1.0 - u - v;

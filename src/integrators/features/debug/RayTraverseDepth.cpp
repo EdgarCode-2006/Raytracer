@@ -1,7 +1,7 @@
 #include "integrators/rayFeature/debug/RayTraverseDepth.hpp"
 
 namespace RayTracer {
-    void RayTraverseDepth::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
+    void RayTraverseDepth::process(const RenderScene &scene, SurfaceIntersection &interaction)
     {
         float normalized = std::clamp((float)interaction.tlasHit.depthHit / MAX_EXPECTED_DEPTH, 0.0f, 1.0f);
 

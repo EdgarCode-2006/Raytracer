@@ -17,6 +17,21 @@ RayTracer::PipelineManager::PipelineManager()
     this->setPluginState("ShadeSmooth", false);
     this->setPluginState("AmbientOcclusion", false);
     this->setPluginState("PathTracing", false);
+    this->refreshActiveFeatures();
+}
+
+void RayTracer::PipelineManager::refreshActiveFeatures()
+{
+    for (auto &features : _activeFeatures)
+        features.clear();
+
+    for (const auto &[type, indices] : _shaderMap) {
+        if (type < 0 || type >= SHADER_TYPE_COUNT)
+            continue;
+        for (int i : indices)
+            if (_pipeline[i]->isActive())
+                _activeFeatures[type].push_back(_pipeline[i].get());
+    }
 }
 
 static bool checkFileExtension(const std::string& filename, const std::string& extension)

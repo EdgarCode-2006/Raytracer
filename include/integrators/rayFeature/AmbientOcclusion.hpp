@@ -10,7 +10,7 @@ namespace RayTracer {
     class AmbientOcclusion : public ARayFeature {
         public:
             AmbientOcclusion() : ARayFeature("AmbientOcclusion", UTILITY) {};
-            void process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction) override;
+            void process(const RenderScene &scene, SurfaceIntersection &interaction) override;
             int getPriority() const noexcept override {return 2;};
     };
 }

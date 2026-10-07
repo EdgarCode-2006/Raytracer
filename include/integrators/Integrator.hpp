@@ -37,7 +37,7 @@ namespace RayTracer {
             ~Integrator();
             void renderScene(const Camera &cam);
             void instanceTiles(const Camera &cam);
-            Graphic::Pixel shootRay(SurfaceIntersection &intersection, std::shared_ptr<const RenderScene> sceneLocked);
+            Graphic::Pixel shootRay(SurfaceIntersection &intersection, const RenderScene &scene, std::vector<Ray> &rayQueue);
             void waitForRendering() {_threadPool->wait();};
             void stop() { _stopRendering = true; };
             std::shared_ptr<Frame> getAvailableFrame();
@@ -45,9 +45,9 @@ namespace RayTracer {
             std::vector<std::unique_ptr<IRayFeature>>& getPipeline() noexcept { return _pipelineManager->_pipeline; };
 
         private:
-            void computeTile(const PixelTile &tile, std::shared_ptr<Frame> currentFrame, std::shared_ptr<const RenderScene> sceneLocked, const Camera &cam);
-            Graphic::Pixel getPixelColor(std::tuple<int, int> cords, std::shared_ptr<const RenderScene> sceneLocked, const Camera &cam);
-            void executePipeline(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &intersection, ShaderType type);
+            void computeTile(const PixelTile &tile, const std::shared_ptr<Frame> &currentFrame, const RenderScene &scene, const Camera &cam);
+            Graphic::Pixel getPixelColor(int x, int y, const RenderScene &scene, const Camera &cam, SurfaceIntersection &intersection, std::vector<Ray> &rayQueue);
+            void executePipeline(const RenderScene &scene, SurfaceIntersection &intersection, ShaderType type);
 
             std::shared_ptr<const RenderScene> _scene; // current Scene snapshot.
 

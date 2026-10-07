@@ -1,7 +1,7 @@
 #include "integrators/rayFeature/Emission.hpp"
 
 namespace RayTracer {
-    void Emission::process(std::shared_ptr<const RenderScene> scene, SurfaceIntersection &interaction)
+    void Emission::process(const RenderScene &scene, SurfaceIntersection &interaction)
     {
         if (!interaction.mat || interaction.mat->emission <= 0.0f)
             return;
