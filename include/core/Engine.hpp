@@ -1,15 +1,13 @@
 #ifndef ENGINE_HPP_
 #define ENGINE_HPP_
 
-#include "utils/math.hpp"
-#include "utils/rayTracer.hpp"
 #include "Scene.hpp"
-#include "integrators/Integrator.hpp"
 #include "integrators/IntegrationManager.hpp"
-#include "utils/Pixel.hpp"
 #include "renderer/Renderer.hpp"
+#include "input/InputManager.hpp"
+#include "game/IGameState.hpp"
 
-#include <vector>
+#include <map>
 #include <memory>
 
 namespace RayTracer {
@@ -18,27 +16,26 @@ namespace RayTracer {
         public:
             Engine(RayTracer::Scene& scene, std::unique_ptr<Graphic::IRenderer> renderer);
             ~Engine();
-            
+
             void run();
             void generateSnapShot();
         private:
-            int _lastWidth;
-            int _lastHeight;
+            void changeState(Game::StateId id);
 
             Scene& _scene;
-            void handleWindowResize(RayTracer::Camera &cam);
-            bool moveCam(Camera &cam, Scene &scene);
-            void handleFileDrop(Scene &scene);
-            
+
             std::unique_ptr<Graphic::IRenderer> _renderer;
             std::unique_ptr<RayTracer::IntegrationManager> _integrationManager;
             std::shared_ptr<Frame> _currentFrame;
 
+            Input::InputManager _input;
+            std::map<Game::StateId, std::unique_ptr<Game::IGameState>> _states;
+            Game::StateId _currentStateId = Game::StateId::Menu;
+            Game::IGameState *_currentState = nullptr;
+
             bool _sceneDirty = false;
-            int _frameCounter = 0;
-            const int _snapshotInterval = 10;
     };
-    
+
     class EngineException : public std::exception {
         public:
             EngineException(const std::string& message) : _message(message) {}

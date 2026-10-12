@@ -78,20 +78,25 @@ Each compile job needs a fair amount of RAM, so keep `-j` low on machines with l
 
 ### Run
 
-The ray tracer supports both raw geometry and pre-defined scene configurations. Run it from the repository root: the plugins are loaded from `rayFeatures/` and the assets from `assets/`.
+Run it from the repository root: the plugins are loaded from `rayFeatures/` and the assets from `assets/`. The game opens on its main menu, rendered from `assets/scenes/menu.cfg` (an HDRI seen by a fixed camera).
 
 ```bash
-# Load an OBJ Model
-./build/raytracer test/dragon.obj
-# Load a Scene Configuration
-./build/raytracer assets/scenes/multi.cfg
+./build/raytracer
 ```
 
 On Windows (PowerShell):
 
 ```powershell
-.\build-windows\raytracer.exe assets\scenes\multi.cfg
+.\build-windows\raytracer.exe
 ```
+
+| Key | Action |
+|---|---|
+| Arrows / WASD | Move (menu: navigate the buttons) |
+| Enter | Confirm |
+| Space | Fire |
+| P | Pause |
+| Esc | Back (quits from the main menu) |
 
 To run it on another Windows machine, copy `raytracer.exe` together with the `rayFeatures/` folder (only the `.dll` files are needed) and the `assets/` folder.
 

@@ -1,11 +1,7 @@
 #include "core/Engine.hpp"
 #include "core/Scene.hpp"
-#include "opti/BVH/TLASHit.hpp"
-#include "SceneParser.hpp"
-#include "io/OBJParser.hpp"
-#include <raylib.h>
-#include <cstring>
-#include <iostream>
+#include "game/MenuState.hpp"
+#include "game/PlayingState.hpp"
 
 namespace RayTracer{
     Engine::Engine(RayTracer::Scene &scene, std::unique_ptr<Graphic::IRenderer> renderer) : _scene(scene), _renderer(std::move(renderer))
@@ -13,22 +9,23 @@ namespace RayTracer{
         if (!_renderer)
             throw EngineException("Invalid rendering object");
         Camera& cam = _scene.getCamera();
-        _lastWidth = cam.getWidth();
-        _lastHeight = cam.getHeight();
+        // the window has a fixed size, the camera renders exactly that many pixels
+        cam.setWidth(_renderer->getWidth());
+        cam.setHeight(_renderer->getHeight());
         std::shared_ptr<const RenderScene> currentSnapshot = this->_scene.generateSceneSnapShot();
         _integrationManager = std::make_unique<IntegrationManager>(currentSnapshot);
         this->_integrationManager->instanceTiles(cam);
         auto* integrator = _integrationManager->getIntegrator();
-        this->_renderer->setIntegrator(integrator);
         for (auto& feature : integrator->getPipeline()) {
             const auto& saved = _scene.getSavedFeatures();
             auto it = saved.find(feature->getName());
             if (it != saved.end())
                 feature->setActivity(it->second);
         }
-        this->_renderer->onSnapshotRequested = [this]() {
-            this->_sceneDirty = true;
-        };
+
+        _states[Game::StateId::Menu] = std::make_unique<Game::MenuState>();
+        _states[Game::StateId::Playing] = std::make_unique<Game::PlayingState>();
+        changeState(Game::StateId::Menu);
     }
 
     Engine::~Engine()
@@ -48,111 +45,11 @@ namespace RayTracer{
         this->_integrationManager->addSnapShot(currentSnapshot);
     }
 
-    void Engine::handleWindowResize(RayTracer::Camera &cam)
+    void Engine::changeState(Game::StateId id)
     {
-        int currentWidth = GetScreenWidth();
-        int currentHeight = GetScreenHeight();
-
-        if (currentWidth != _lastWidth || currentHeight != _lastHeight) {
-            this->_integrationManager->waitForRendering();
-
-            cam.setWidth(currentWidth);
-            cam.setHeight(currentHeight);
-            this->_currentFrame = std::make_shared<Frame>(currentWidth * currentHeight, 0);
-
-            this->_renderer->resizeWindow(currentWidth, currentHeight);
-            this->_integrationManager->instanceTiles(cam);
-
-            _lastWidth = currentWidth;
-            _lastHeight = currentHeight;
-        }
-    }
-
-    bool Engine::moveCam(Camera &cam, Scene &scene)
-    {
-        const float sensitivity = 2.0f;
-        const double speed = 0.05;
-        bool changed = false;
-
-        if (IsKeyDown(KEY_LEFT)) { cam.addRotationY(-sensitivity); changed = true; }
-        if (IsKeyDown(KEY_RIGHT)) { cam.addRotationY(sensitivity); changed = true; }
-        if (IsKeyDown(KEY_UP)) { cam.addRotationX(-sensitivity); changed = true; }
-        if (IsKeyDown(KEY_DOWN)) { cam.addRotationX(sensitivity); changed = true; }
-
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            Vector2 mouse = GetMousePosition();
-            Ray ray = cam.generateRay((int)mouse.x, (int)mouse.y);
-            TLASHit hit = scene.getTLAS().traverse(ray);
-            if (hit.hasHit())
-                scene.setSelectedInstance((int32_t)hit.instanceIndex());
-            else
-                scene.setSelectedInstance(-1);
-            changed = true;
-        }
-
-        if (IsKeyDown(KEY_M)) {
-            // the frame being rendered reads the instances that are about to change
-            _integrationManager->waitForRendering();
-            scene.addInstance(0);
-            scene.buildTLAS();
-            _sceneDirty = true;
-        }
-        if (IsKeyDown(KEY_W)) { cam.moveForward(speed); changed = true; }
-        if (IsKeyDown(KEY_S)) { cam.moveForward(-speed); changed = true; }
-        if (IsKeyDown(KEY_D)) { cam.moveRight(speed); changed = true; }
-        if (IsKeyDown(KEY_A)) { cam.moveRight(-speed); changed = true; }
-        if (IsKeyDown(KEY_E)) { cam.moveUp(speed); changed = true; }
-        if (IsKeyDown(KEY_Q)) { cam.moveUp(-speed); changed = true; }
-
-        if (IsKeyReleased(KEY_P)) { this->_renderer->saveImage();};
-
-        return changed;
-    }
-
-    void Engine::handleFileDrop(Scene &scene)
-    {
-        if (!IsFileDropped()) return;
-
-        // the frame being rendered reads the geometry that is about to grow (and reallocate)
-        _integrationManager->waitForRendering();
-
-        FilePathList dropped = LoadDroppedFiles();
-        std::cerr << "[drop] " << dropped.count << " file(s)\n";
-        for (unsigned int i = 0; i < dropped.count; i++) {
-            const char* path = dropped.paths[i];
-            const char* ext  = GetFileExtension(path);
-            std::cerr << "[drop] path=" << path << " ext=" << (ext ? ext : "null") << "\n";
-
-            if (ext && strcmp(ext, ".cfg") == 0) {
-                try {
-                    SceneParser parser;
-                    parser.load(path, scene);
-                    _sceneDirty = true;
-                    std::cerr << "[drop] scene loaded ok\n";
-                } catch (const std::exception& e) {
-                    std::cerr << "[drop] scene error: " << e.what() << "\n";
-                }
-            } else if (ext && strcmp(ext, ".obj") == 0) {
-                try {
-                    OBJParser::OBJParser parser;
-                    auto tris = parser.load(path);
-                    if (!tris.empty()) {
-                        uint32_t meshId = scene.addMesh(std::move(tris), path);
-                        scene.addInstance(meshId);
-                        scene.buildTLAS();
-                        _sceneDirty = true;
-                        std::cerr << "[drop] obj loaded ok\n";
-                    } else {
-                        std::cerr << "[drop] obj empty\n";
-                    }
-                } catch (const std::exception& e) {
-                    std::cerr << "[drop] obj error: " << e.what() << "\n";
-                }
-            } else {
-                std::cerr << "[drop] unsupported extension\n";
-            }
-        }
-        UnloadDroppedFiles(dropped);
+        _currentStateId = id;
+        _currentState = _states.at(id).get();
+        _currentState->onEnter();
     }
 
     void Engine::run()
@@ -161,12 +58,8 @@ namespace RayTracer{
         _currentFrame = std::make_shared<Frame>(cam.getWidth() * cam.getHeight(), 0);
 
         while (this->_renderer->windowOpen()) {
-            _frameCounter++;
-
-            // GUI
-            this->handleWindowResize(cam);
-            this->moveCam(cam, this->_scene);
-            this->handleFileDrop(this->_scene);
+            _input.update();
+            _currentState->update(_input);
 
             if (_sceneDirty) {
                 this->generateSnapShot();
@@ -177,7 +70,15 @@ namespace RayTracer{
             std::shared_ptr<Frame> tempFrame = _integrationManager->getAvailableFrame();
             if (tempFrame)
                 _currentFrame = tempFrame;
-            _renderer->renderPixelBuffer(_currentFrame->_pixelBuffer.data(), _scene, cam);
+            _renderer->renderPixelBuffer(_currentFrame->_pixelBuffer.data(), [this]() {
+                _currentState->drawOverlay();
+            });
+
+            Game::StateId next = _currentState->next();
+            if (next == Game::StateId::Quit)
+                break;
+            if (next != _currentStateId)
+                changeState(next);
         }
         _integrationManager->stop();
         _integrationManager->waitForRendering();

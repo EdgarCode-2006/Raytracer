@@ -108,6 +108,11 @@ void SceneParser::load(const std::string& path, Scene& scene)
         }
         if (cam.exists("fieldOfView"))
             scene.getCamera().setFov((double)cam["fieldOfView"]);
+        if (cam.exists("yaw") || cam.exists("pitch"))
+            scene.getCamera().setOrientation(
+                cam.exists("yaw") ? (double)cam["yaw"] : 0.0,
+                cam.exists("pitch") ? (double)cam["pitch"] : 0.0
+            );
     }
 
     if (cfg.exists("lights")) {
@@ -175,6 +180,8 @@ void SceneParser::save(const std::string& path, const Scene& scene,
     camPos.add("y", libconfig::Setting::TypeFloat) = camP.y();
     camPos.add("z", libconfig::Setting::TypeFloat) = camP.z();
     cam.add("fieldOfView", libconfig::Setting::TypeFloat) = scene.getCamera().getFov();
+    cam.add("yaw", libconfig::Setting::TypeFloat) = scene.getCamera().getYaw();
+    cam.add("pitch", libconfig::Setting::TypeFloat) = scene.getCamera().getPitch();
 
     auto& lights = root.add("lights", libconfig::Setting::TypeGroup);
     lights.add("ambient", libconfig::Setting::TypeFloat) = scene.getAmbientLight().intensity;

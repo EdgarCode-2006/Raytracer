@@ -3,7 +3,6 @@
 
 #include "utils/math.hpp"
 #include "utils/rayTracer.hpp"
-#include <vector>
 
 namespace RayTracer {
 
@@ -27,14 +26,9 @@ namespace RayTracer {
             double getPitch() const { return _pitch; }
 
             void setPosition(const Math::Vector3D& position) { _position = position; }
-            void fitToScene(const std::vector<Triangle>& triangles);
+            // yaw turns around the vertical axis, pitch looks up (negative) or down (positive), in degrees
+            void setOrientation(double yaw, double pitch);
 
-            void addRotationX(double degrees);
-            void addRotationY(double degrees);
-
-            void moveForward(double dist);
-            void moveRight(double dist);
-            void moveUp(double dist);
             const Math::Vector3D &getForward() const { return _forward; }
 
         private:

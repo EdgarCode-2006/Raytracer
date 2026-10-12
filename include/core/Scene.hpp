@@ -95,9 +95,6 @@ namespace RayTracer {
             const AmbientLight &getAmbientLight() const {return _lights.getAmbientLight();}
             const Graphic::Pixel getHDRIPixel(const Math::Vector3D &v) const {return _lights.getHDRIPixel(v);}
 
-            void setSelectedInstance(int32_t i) noexcept  {_selectedInstance = i;}
-            int32_t getSelectedInstance() const noexcept  {return _selectedInstance;}
-
             void setSavedFeature(const std::string& name, bool active) { _savedFeatures[name] = active; }
             const std::map<std::string, bool>& getSavedFeatures() const noexcept { return _savedFeatures; }
 
@@ -111,7 +108,6 @@ namespace RayTracer {
             World _world;
             Camera _camera;
             Lights _lights;
-            int32_t _selectedInstance = -1;
             std::map<std::string, bool> _savedFeatures;
             std::string _pendingHdriPath;
     };

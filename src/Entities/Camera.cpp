@@ -1,4 +1,5 @@
 #include "entities/Camera.hpp"
+#include <algorithm>
 #include <cmath>
 #include <numbers>
 
@@ -26,59 +27,10 @@ namespace RayTracer {
         _scale  = std::tan(_fov / 2.0 * std::numbers::pi / 180.0);
     }
 
-    void Camera::addRotationX(double degrees)
+    void Camera::setOrientation(double yaw, double pitch)
     {
-        _pitch += degrees;
-        if (_pitch >  89.0) _pitch =  89.0;
-        if (_pitch < -89.0) _pitch = -89.0;
-        updateBasis();
-    }
-
-    void Camera::addRotationY(double degrees)
-    {
-        _yaw += degrees;
-        updateBasis();
-    }
-
-    void Camera::moveForward(double dist)
-    {
-        _position += getForward() * dist;
-    }
-
-    void Camera::moveRight(double dist)
-    {
-        Math::Vector3D forward = getForward();
-        Math::Vector3D right = Math::Vector3D(0, 1, 0).cross(forward).normalize();
-        _position += right * dist;
-    }
-
-    void Camera::moveUp(double dist)
-    {
-        _position += Math::Vector3D(0, 1, 0) * dist;
-    }
-
-    void Camera::fitToScene(const std::vector<Triangle>& triangles)
-    {
-        double minx=1e9, maxx=-1e9, miny=1e9, maxy=-1e9, minz=1e9, maxz=-1e9;
-
-        for (const auto& tri : triangles) {
-            for (const auto* v : {&tri.a(), &tri.b(), &tri.c()}) {
-                minx = std::min(minx, v->x()); maxx = std::max(maxx, v->x());
-                miny = std::min(miny, v->y()); maxy = std::max(maxy, v->y());
-                minz = std::min(minz, v->z()); maxz = std::max(maxz, v->z());
-            }
-        }
-
-        Math::Vector3D center(
-            (minx + maxx) / 2.0,
-            (miny + maxy) / 2.0,
-            (minz + maxz) / 2.0
-        );
-        double size = std::max(maxx - minx, std::max(maxy - miny, maxz - minz));
-
-        _yaw   = 0.0;
-        _pitch = 0.0;
-        _position = Math::Vector3D(center.x(), center.y(), center.z() - size * 1.5);
+        _yaw   = yaw;
+        _pitch = std::clamp(pitch, -89.0, 89.0);
         updateBasis();
     }
 

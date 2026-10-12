@@ -1,38 +1,32 @@
 #ifndef IRENDERER_HPP_
 #define IRENDERER_HPP_
 #include "utils/Pixel.hpp"
-#include "core/Scene.hpp"
-#include "entities/Camera.hpp"
-#include <iostream>
-#include <vector>
 #include <functional>
-#include <memory>
-
-namespace RayTracer { class Integrator; }
+#include <exception>
+#include <string>
+#include <vector>
 
 namespace Graphic {
     class IRenderer {
         public:
             virtual ~IRenderer() = default;
-            virtual void resizeWindow(int newWidth, int newHeight) = 0;
+            virtual int getWidth() const noexcept = 0;
+            virtual int getHeight() const noexcept = 0;
             virtual void pixelsToScreenBuffer(Pixel *pixels) = 0;
-            virtual void renderPixelBuffer(Pixel *pixels, RayTracer::Scene& scene, RayTracer::Camera& cam) = 0;
+            // drawOverlay makes the ImGui calls drawn over the frame
+            virtual void renderPixelBuffer(Pixel *pixels, const std::function<void()> &drawOverlay) = 0;
             virtual bool windowOpen() = 0;
-            virtual void saveImage() const = 0;
-            std::function<void()> onSnapshotRequested;
-            virtual void setIntegrator(RayTracer::Integrator*) noexcept {}
     };
 
     class ARenderer : public IRenderer {
         public:
+            ARenderer(int width, int height) : _width(width), _height(height) {}
             virtual ~ARenderer() = default;
-            virtual void resizeWindow(int newWidth, int newHeight) = 0;
-            virtual void pixelsToScreenBuffer(Pixel *pixels) = 0;
-            virtual void renderPixelBuffer(Pixel *pixels, RayTracer::Scene& scene, RayTracer::Camera& cam) = 0;
-            virtual void saveImage() const = 0;
-            virtual bool windowOpen() = 0;
+            int getWidth() const noexcept override { return _width; }
+            int getHeight() const noexcept override { return _height; }
         protected:
-            std::vector<Pixel> _pixels;
+            int _width;
+            int _height;
     };
 
     class RendererException : public std::exception {
