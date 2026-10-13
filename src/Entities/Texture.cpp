@@ -2,6 +2,8 @@
 #define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include <algorithm>
+#include <cmath>
 namespace RayTracer
 {
     Texture::Texture(const std::string &fileName) : _textureData(nullptr), _width(0), _height(0) {
@@ -43,6 +45,25 @@ namespace RayTracer
 
         x = std::max(0, std::min(x, _width - 1));
         y = std::max(0, std::min(y, _height - 1));
+
+        int index = (y * _width + x) * 3;
+
+        return {
+            _textureData[index],
+            _textureData[index + 1],
+            _textureData[index + 2]
+        };
+    }
+
+    Graphic::Pixel Texture::sampleWrapped(double u, double v) const
+    {
+        if (!this->_textureData)
+            return {255, 0, 255};
+
+        u -= std::floor(u);
+        v -= std::floor(v);
+        int x = std::min(static_cast<int>(u * _width), _width - 1);
+        int y = std::min(static_cast<int>(v * _height), _height - 1);
 
         int index = (y * _width + x) * 3;
 

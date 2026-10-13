@@ -17,6 +17,11 @@ namespace RayTracer {
             void loadTextureFromFile(const std::string &fileName);
             void clearTextureData();
             Graphic::Pixel sampleUVColor(double u, double v);
+            // u and v repeat every 1: the texture tiles in both directions
+            Graphic::Pixel sampleWrapped(double u, double v) const;
+            bool isLoaded() const noexcept { return _textureData != nullptr; }
+            int getWidth() const noexcept { return _width; }
+            int getHeight() const noexcept { return _height; }
         private:
             unsigned char* _textureData;
             int _width;

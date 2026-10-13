@@ -75,6 +75,7 @@ static void loadObjects(const libconfig::Setting& objects, Scene& scene)
 void SceneParser::load(const std::string& path, Scene& scene)
 {
     libconfig::Config cfg;
+    cfg.setAutoConvert(true); // "fieldOfView = 60;" is as good as "fieldOfView = 60.0;"
 
     try {
         cfg.readFile(path.c_str());
@@ -96,6 +97,22 @@ void SceneParser::load(const std::string& path, Scene& scene)
     if (cfg.exists("hdri")) {
         std::string hdriPath = (const char*)cfg.lookup("hdri");
         scene.loadHDRI(hdriPath);
+    }
+
+    if (cfg.exists("background")) {
+        const libconfig::Setting& bg = cfg.lookup("background");
+        Background& background = scene.getBackground();
+        background.clearLayers();
+        if (bg.exists("viewHeight"))
+            background.setViewHeight((double)bg["viewHeight"]);
+        if (bg.exists("layers")) {
+            const libconfig::Setting& layers = bg["layers"];
+            for (int i = 0; i < layers.getLength(); i++) {
+                std::string texture = (const char*)layers[i]["texture"];
+                double speed = layers[i].exists("speed") ? (double)layers[i]["speed"] : 0.0;
+                background.addLayer(texture, speed);
+            }
+        }
     }
 
     if (cfg.exists("camera")) {

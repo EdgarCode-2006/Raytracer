@@ -16,7 +16,9 @@ namespace Game {
             virtual ~IGameState() = default;
 
             virtual void onEnter() {}
-            virtual void update(const Input::InputManager& input) = 0;
+            virtual void onExit() {}
+            // dt: seconds since the last frame
+            virtual void update(const Input::InputManager& input, double dt) = 0;
             // ImGui calls, made between rlImGuiBegin and rlImGuiEnd by the renderer
             virtual void drawOverlay() = 0;
             // the state to run on the next frame, itself to keep running

@@ -18,15 +18,19 @@
 #include "utils/Material.hpp"
 #include "entities/Light.hpp"
 #include "entities/HDRI.hpp"
+#include "entities/Background.hpp"
 #include <chrono>
 #include <iostream>
 
 namespace RayTracer {
+    // What a frame is rendered from. The render threads only read the instances through the TLAS
+    // (its own copy of them), so the game can move, add and remove instances while a frame renders.
     struct RenderScene {
         const GeometricData &geometry;
-        const World &world;
         std::shared_ptr<const TLAS> tlas;
         const Lights &lights;
+        const Background &background;
+        double backgroundTime;
     };
 
     class Scene {
@@ -72,6 +76,8 @@ namespace RayTracer {
             World &getWorld() noexcept {return _world;}
             const World &getWorld() const noexcept {return _world;}
 
+            void removeInstancesFrom(uint32_t first) {_world.removeInstancesFrom(first);}
+
             Instance &getInstance(uint32_t index) noexcept {return _world.getInstance(index);}
             const Instance &getInstance(uint32_t index) const noexcept {return _world.getInstance(index);}
             uint32_t getInstanceCount() const noexcept {return _world.getInstanceCount();}
@@ -95,12 +101,17 @@ namespace RayTracer {
             const AmbientLight &getAmbientLight() const {return _lights.getAmbientLight();}
             const Graphic::Pixel getHDRIPixel(const Math::Vector3D &v) const {return _lights.getHDRIPixel(v);}
 
+            Background &getBackground() noexcept {return _background;}
+            const Background &getBackground() const noexcept {return _background;}
+            void scrollBackground(double seconds) noexcept {_backgroundTime += seconds;}
+
             void setSavedFeature(const std::string& name, bool active) { _savedFeatures[name] = active; }
             const std::map<std::string, bool>& getSavedFeatures() const noexcept { return _savedFeatures; }
 
 
             inline std::shared_ptr<const RenderScene> generateSceneSnapShot() const {
-                return std::make_shared<const RayTracer::RenderScene>(_geometry, _world, _world.getTLASSnapshot(), _lights);
+                return std::make_shared<const RayTracer::RenderScene>(_geometry, _world.getTLASSnapshot(), _lights,
+                    _background, _backgroundTime);
             }
         private:
             std::vector<std::string> _meshPaths;
@@ -108,6 +119,8 @@ namespace RayTracer {
             World _world;
             Camera _camera;
             Lights _lights;
+            Background _background;
+            double _backgroundTime = 0.0;
             std::map<std::string, bool> _savedFeatures;
             std::string _pendingHdriPath;
     };

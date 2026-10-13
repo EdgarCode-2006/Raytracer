@@ -28,6 +28,7 @@ Makefile
 
 # Generated / junk
 *.png
+!assets/**/*.png
 *.pdf
 image.png
 scenes/saved.cfg

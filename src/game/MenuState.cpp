@@ -3,8 +3,9 @@
 
 namespace Game {
 
-    void MenuState::update(const Input::InputManager& input)
+    void MenuState::update(const Input::InputManager& input, double dt)
     {
+        _scene.scrollBackground(dt);
         // Enter and the arrow keys already drive the buttons through ImGui keyboard navigation
         if (input.isPressed(Input::Action::Back))
             _next = StateId::Quit;

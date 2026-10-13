@@ -111,10 +111,14 @@ namespace RayTracer {
 
     void Integrator::renderScene(const Camera &cam)
     {
-        const bool still = this->_cache.prevCamPos == cam.getPosition() && this->_cache.prevCamForward == cam.getForward();
+        // still: neither the camera nor the scene moved since the last call. With a fixed camera
+        // the game still changes the scene every frame, which must not take many samples either.
+        const bool still = this->_cache.prevCamPos == cam.getPosition() && this->_cache.prevCamForward == cam.getForward()
+            && this->_cache.prevScene == this->_scene;
         this->_samplesPerPixel = still ? DEFAULT_SAMPLES_PER_PIXEL : 1;
         this->_cache.prevCamPos = cam.getPosition();
         this->_cache.prevCamForward = cam.getForward();
+        this->_cache.prevScene = this->_scene;
 
         if (this->_framesInFlight >= 1) {
             // the tiles left in the frame being rendered now take a single sample

@@ -30,6 +30,7 @@ namespace RayTracer {
         std::vector<PixelTile> tiles;
         Math::Vector3D prevCamPos;
         Math::Vector3D prevCamForward;
+        std::shared_ptr<const RenderScene> prevScene;
     };
 
     class Integrator {

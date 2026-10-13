@@ -19,6 +19,8 @@ namespace RayTracer {
             TLASHit traverse(const Ray &ray, double tMax = RAY_NO_HIT) const noexcept;
             // Whether anything is hit closer than tMax: stops at the first hit (shadow rays).
             bool occluded(const Ray &ray, double tMax = RAY_NO_HIT) const noexcept;
+            // The copy made by build(): the scene can change its instances while this is rendered.
+            const Instance &getInstance(uint32_t index) const noexcept { return _instances[index]; }
 
         private:
 

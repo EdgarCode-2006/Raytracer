@@ -19,6 +19,10 @@ namespace RayTracer {
             World &operator=(World &&) = default;
 
             void reserve(uint32_t instanceCount) {_instances.reserve(instanceCount);}
+            void removeInstancesFrom(uint32_t first) {
+                if (first < _instances.size())
+                    _instances.erase(_instances.begin() + first, _instances.end());
+            }
 
             Instance &addInstance(const GeometricData &geo, uint32_t meshId, const Math::Matrix4 &transform = Math::Matrix4{}, const Graphic::Material &mat = Graphic::Material{});
 

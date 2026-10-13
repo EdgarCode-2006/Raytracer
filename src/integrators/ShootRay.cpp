@@ -14,6 +14,14 @@ namespace RayTracer
         finalColor.z() += (localColor._b) * throughput.z();
     }
 
+    // the scrolling background in front of the camera, the HDRI everywhere else (reflections)
+    static Graphic::Pixel environmentColor(const RenderScene &scene, const Math::Vector3D &direction)
+    {
+        if (scene.background.covers(direction))
+            return scene.background.sample(direction, scene.backgroundTime);
+        return scene.lights.getHDRIPixel(direction * -1);
+    }
+
     static void initializeIntersection(
         SurfaceIntersection &intersection,
         Graphic::Material *mat,
@@ -70,11 +78,11 @@ namespace RayTracer
 
             const TLASHit tlasHit = scene.tlas->traverse(currentRay);
             if (!tlasHit.hasHit()) {
-                const Graphic::Pixel envPixel = scene.lights.getHDRIPixel(currentRay.direction * -1);
+                const Graphic::Pixel envPixel = environmentColor(scene, currentRay.direction);
                 integrateColor(finalColor, currentRay.throughput, envPixel);
                 break;
             }
-            const Instance &instance = scene.world.getInstance(tlasHit.instanceIndex());
+            const Instance &instance = scene.tlas->getInstance(tlasHit.instanceIndex());
             const Triangle &tri = instance.getPrimitive(tlasHit.primitiveIndex());
 
             initializeIntersection(intersection,
