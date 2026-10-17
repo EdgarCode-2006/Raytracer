@@ -1,0 +1,51 @@
+#include "client/GameClient.hpp"
+#include "imgui.h"
+
+namespace Client {
+
+    GameClient::GameClient(RayTracer::Scene &scene, const ModelLibrary &models, ServerLinkFactory connect)
+        : _scene(scene), _builder(scene, models), _connect(std::move(connect))
+    {
+    }
+
+    void GameClient::onEnter()
+    {
+        _next = ModeId::Game;
+        _world = {};
+        _inputSequence = 0;
+        _link = _connect();
+    }
+
+    void GameClient::onExit()
+    {
+        _link.reset();
+        _builder.clear();
+    }
+
+    void GameClient::update(const InputManager &input, double dt)
+    {
+        if (input.isPressed(Action::Back)) {
+            _next = ModeId::Title;
+            return;
+        }
+
+        _scene.scrollBackground(dt);
+        _link->sendInput(input.toInputState(++_inputSequence));
+        if (auto world = _link->takeLatestState())
+            _world = std::move(*world);
+        _builder.apply(_world, dt);
+    }
+
+    void GameClient::drawOverlay()
+    {
+        ImGui::SetNextWindowPos(ImVec2(10, 40), ImGuiCond_Always);
+        ImGui::Begin("Playing", nullptr,
+            ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+            | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize
+            | ImGuiWindowFlags_NoInputs);
+        ImGui::Text("%s - tick %u", _link->describe().c_str(), _world.tick);
+        ImGui::Text("Entities: %zu", _world.entities.size());
+        ImGui::TextUnformatted("Arrows / WASD to move - Esc for the menu");
+        ImGui::End();
+    }
+}
