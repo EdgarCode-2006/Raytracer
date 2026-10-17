@@ -2,6 +2,7 @@
 #define SESSION_HPP_
 
 #include "client/ArgumentParser.hpp"
+#include "client/ClientSettings.hpp"
 #include "client/GameClient.hpp"
 #include "client/IClientMode.hpp"
 #include "client/InputManager.hpp"
@@ -36,6 +37,7 @@ namespace Client {
             RayTracer::Scene &_scene;
             RayTracer::Engine &_engine;
             InputManager _input;
+            ClientSettings _clientSettings;
             SettingsPanel _settings; // shared by the title screen and the menu
 
             std::map<ModeId, std::unique_ptr<IClientMode>> _modes;

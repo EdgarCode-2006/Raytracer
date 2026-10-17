@@ -23,12 +23,12 @@ namespace Client {
 
     Session::Session(const ClientConfig &config, RayTracer::Scene &scene, RayTracer::Engine &engine,
         const ModelLibrary &models, ServerLinkFactory connect)
-        : _config(config), _scene(scene), _engine(engine), _settings(_input, engine)
+        : _config(config), _scene(scene), _engine(engine), _settings(_input, engine, _clientSettings)
     {
         fitCameraToWorld(_scene.getCamera());
 
         _modes[ModeId::Title] = std::make_unique<TitleClient>(_scene, _settings);
-        _modes[ModeId::Game] = std::make_unique<GameClient>(_scene, models, std::move(connect));
+        _modes[ModeId::Game] = std::make_unique<GameClient>(_scene, models, _clientSettings, std::move(connect));
         _modes[ModeId::Menu] = std::make_unique<MenuClient>(_settings);
         push(ModeId::Title);
     }
@@ -87,6 +87,7 @@ namespace Client {
             lastTime = now;
 
             _input.update();
+            _scene.setBackgroundBrightness(_clientSettings.highContrast ? HIGH_CONTRAST_BACKGROUND : 1.0);
             for (size_t i = 0; i + 1 < _stack.size(); i++)
                 _stack[i]->updateCovered(dt);
             _stack.back()->update(_input, dt);

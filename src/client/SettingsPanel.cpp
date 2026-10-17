@@ -34,6 +34,10 @@ namespace Client {
                 drawGraphics();
                 ImGui::EndTabItem();
             }
+            if (ImGui::BeginTabItem("Accessibility")) {
+                drawAccessibility();
+                ImGui::EndTabItem();
+            }
             ImGui::EndTabBar();
         }
     }
@@ -121,6 +125,23 @@ namespace Client {
                 bool active = feature->isActive();
                 if (ImGui::Checkbox(feature->getName().c_str(), &active))
                     feature->setActivity(active);
+            }
+        }
+    }
+
+    void SettingsPanel::drawAccessibility()
+    {
+        ImGui::Checkbox("High contrast", &_settings.highContrast);
+        ImGui::TextDisabled("Ships as flat bright shapes, a color per type, over a dimmed background.");
+        ImGui::TextDisabled("Player in cyan, enemies in warm colors (models.cfg, contrastColor).");
+
+        // the flat shapes are drawn by the Emission feature
+        if (_settings.highContrast) {
+            for (const auto &feature : _engine.getFeatures()) {
+                if (feature->getName() == "Emission" && !feature->isActive()) {
+                    ImGui::Spacing();
+                    ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.2f, 1.0f), "Turn Emission on (Graphics) to see the ships.");
+                }
             }
         }
     }

@@ -12,7 +12,7 @@ namespace RayTracer {
         _layers.push_back({std::move(texture), speed});
     }
 
-    Graphic::Pixel Background::sample(const Math::Vector3D &direction, double time) const
+    Graphic::Pixel Background::sample(const Math::Vector3D &direction, double time, double brightness) const
     {
         const double x = direction.x() / direction.z();
         const double y = direction.y() / direction.z();
@@ -28,9 +28,9 @@ namespace RayTracer {
             b += texel._b;
         }
         return Graphic::Pixel(
-            (unsigned char)std::min(r, 255),
-            (unsigned char)std::min(g, 255),
-            (unsigned char)std::min(b, 255),
+            (unsigned char)std::min(r * brightness, 255.0),
+            (unsigned char)std::min(g * brightness, 255.0),
+            (unsigned char)std::min(b * brightness, 255.0),
             255);
     }
 }

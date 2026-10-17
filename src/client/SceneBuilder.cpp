@@ -7,8 +7,8 @@ namespace Client {
     // how fast a ship rolls towards the angle it should have, per second
     static constexpr double BANK_RESPONSE = 10.0;
 
-    SceneBuilder::SceneBuilder(RayTracer::Scene &scene, const ModelLibrary &models)
-        : _scene(scene), _models(models), _firstInstance(scene.getInstanceCount())
+    SceneBuilder::SceneBuilder(RayTracer::Scene &scene, const ModelLibrary &models, const ClientSettings &settings)
+        : _scene(scene), _models(models), _settings(settings), _firstInstance(scene.getInstanceCount())
     {
     }
 
@@ -32,7 +32,7 @@ namespace Client {
                 anim.bank + (model.spinAxis == 0 ? anim.spin : 0.0),
                 model.spinAxis == 1 ? anim.spin : 0.0,
                 model.spinAxis == 2 ? anim.spin : 0.0);
-            model.addTo(_scene, transform);
+            model.addTo(_scene, transform, _settings.highContrast);
         }
 
         // forget the entities the server doesn't send anymore

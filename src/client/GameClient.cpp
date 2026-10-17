@@ -3,8 +3,9 @@
 
 namespace Client {
 
-    GameClient::GameClient(RayTracer::Scene &scene, const ModelLibrary &models, ServerLinkFactory connect)
-        : _scene(scene), _builder(scene, models), _connect(std::move(connect))
+    GameClient::GameClient(RayTracer::Scene &scene, const ModelLibrary &models, const ClientSettings &settings,
+        ServerLinkFactory connect)
+        : _scene(scene), _builder(scene, models, settings), _connect(std::move(connect))
     {
     }
 

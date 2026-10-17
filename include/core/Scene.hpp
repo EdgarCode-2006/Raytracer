@@ -31,6 +31,7 @@ namespace RayTracer {
         const Lights &lights;
         const Background &background;
         double backgroundTime;
+        double backgroundBrightness;
     };
 
     class Scene {
@@ -104,6 +105,8 @@ namespace RayTracer {
             Background &getBackground() noexcept {return _background;}
             const Background &getBackground() const noexcept {return _background;}
             void scrollBackground(double seconds) noexcept {_backgroundTime += seconds;}
+            // 1 as the textures are, less to dim it (high contrast mode)
+            void setBackgroundBrightness(double brightness) noexcept {_backgroundBrightness = brightness;}
 
             void setSavedFeature(const std::string& name, bool active) { _savedFeatures[name] = active; }
             const std::map<std::string, bool>& getSavedFeatures() const noexcept { return _savedFeatures; }
@@ -111,7 +114,7 @@ namespace RayTracer {
 
             inline std::shared_ptr<const RenderScene> generateSceneSnapShot() const {
                 return std::make_shared<const RayTracer::RenderScene>(_geometry, _world.getTLASSnapshot(), _lights,
-                    _background, _backgroundTime);
+                    _background, _backgroundTime, _backgroundBrightness);
             }
         private:
             std::vector<std::string> _meshPaths;
@@ -121,6 +124,7 @@ namespace RayTracer {
             Lights _lights;
             Background _background;
             double _backgroundTime = 0.0;
+            double _backgroundBrightness = 1.0;
             std::map<std::string, bool> _savedFeatures;
             std::string _pendingHdriPath;
     };

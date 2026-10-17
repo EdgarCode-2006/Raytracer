@@ -1,6 +1,7 @@
 #ifndef SCENE_BUILDER_HPP_
 #define SCENE_BUILDER_HPP_
 
+#include "client/ClientSettings.hpp"
 #include "client/ModelLibrary.hpp"
 #include "common/WorldState.hpp"
 #include "core/Scene.hpp"
@@ -14,7 +15,7 @@ namespace Client {
     // isn't gameplay (rolling, spinning) is added here, kept per entity id between states.
     class SceneBuilder {
         public:
-            SceneBuilder(RayTracer::Scene &scene, const ModelLibrary &models);
+            SceneBuilder(RayTracer::Scene &scene, const ModelLibrary &models, const ClientSettings &settings);
 
             // rewrites the entities' instances; dt animates them
             void apply(const Common::WorldState &world, double dt);
@@ -30,6 +31,7 @@ namespace Client {
 
             RayTracer::Scene &_scene;
             const ModelLibrary &_models;
+            const ClientSettings &_settings;
             uint32_t _firstInstance; // the instances before it belong to the scene file
             std::unordered_map<uint32_t, Animation> _animations;
             uint32_t _applyCount = 0;

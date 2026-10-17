@@ -30,8 +30,9 @@ namespace RayTracer {
 
             // false when the direction doesn't go towards the background plane
             bool covers(const Math::Vector3D &direction) const noexcept { return !isEmpty() && direction.z() > 1e-6; }
-            // time is the scrolling time in seconds: it is kept by the scene snapshot
-            Graphic::Pixel sample(const Math::Vector3D &direction, double time) const;
+            // time is the scrolling time in seconds and brightness multiplies the colors: both are
+            // kept by the scene snapshot
+            Graphic::Pixel sample(const Math::Vector3D &direction, double time, double brightness = 1.0) const;
 
         private:
             std::vector<Layer> _layers;

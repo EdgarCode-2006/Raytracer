@@ -22,6 +22,7 @@ namespace Client {
     struct ModelPart {
         uint32_t meshId;
         Graphic::Material material;
+        Graphic::Material contrastMaterial; // in high contrast mode: flat, the model's contrast color or white for a glow
     };
 
     // How one entity type looks. Only the client knows it: the server only sends the type.
@@ -32,9 +33,10 @@ namespace Client {
         int spinAxis = 1;        // 0 for x, 1 for y, 2 for z (z spins in the plane of the screen)
         double maxBank = 0.0;    // degrees of roll when moving up or down
         double bankAtSpeed = 1.0; // vertical speed giving the whole maxBank
+        Graphic::Pixel contrastColor{255, 255, 255, 255};
 
         // adds one instance per part, all at the same transform
-        void addTo(RayTracer::Scene &scene, const Transform &transform) const;
+        void addTo(RayTracer::Scene &scene, const Transform &transform, bool highContrast = false) const;
     };
 
     // The model of every entity type, read from assets/game/models.cfg. The meshes are loaded

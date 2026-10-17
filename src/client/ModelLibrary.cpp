@@ -5,14 +5,15 @@
 
 namespace Client {
 
-    void Model::addTo(RayTracer::Scene &scene, const Transform &transform) const
+    void Model::addTo(RayTracer::Scene &scene, const Transform &transform, bool highContrast) const
     {
         const float pos[3] = {(float)transform.position.x(), (float)transform.position.y(), (float)transform.position.z()};
         const float rot[3] = {(float)transform.rotation.x(), (float)transform.rotation.y(), (float)transform.rotation.z()};
         const float size[3] = {(float)scale, (float)scale, (float)scale};
 
         for (const auto &part : parts) {
-            RayTracer::Instance &instance = scene.addInstance(part.meshId, Math::Matrix4{}, part.material);
+            RayTracer::Instance &instance = scene.addInstance(part.meshId, Math::Matrix4{},
+                highContrast ? part.contrastMaterial : part.material);
             instance.setTRS(pos, rot, size);
         }
     }
@@ -36,6 +37,16 @@ namespace Client {
         return material;
     }
 
+    // Flat and unlit (shown by the Emission feature): the shape reads the same from every side.
+    static Graphic::Material contrastMaterial(const Graphic::Material &material, Graphic::Pixel contrastColor)
+    {
+        Graphic::Material contrast;
+        contrast.color = material.emission > 0.0f ? Graphic::Pixel(255, 255, 255, 255) : contrastColor;
+        contrast.emission = 1.0f;
+        contrast.type = EMISSION;
+        return contrast;
+    }
+
     static Model readModel(const libconfig::Setting &entity, RayTracer::Scene &scene, const std::string &path)
     {
         Model model;
@@ -45,6 +56,10 @@ namespace Client {
         model.bankAtSpeed = readDouble(entity, "bankAtSpeed", model.bankAtSpeed);
         if (model.bankAtSpeed <= 0.0)
             throw std::runtime_error("bankAtSpeed must be more than 0 in " + path);
+        if (entity.exists("contrastColor")) {
+            const libconfig::Setting &c = entity["contrastColor"];
+            model.contrastColor = Graphic::Pixel((unsigned char)(int)c["r"], (unsigned char)(int)c["g"], (unsigned char)(int)c["b"]);
+        }
         if (entity.exists("spinAxis")) {
             std::string axis = (const char *)entity["spinAxis"];
             if (axis != "x" && axis != "y" && axis != "z")
@@ -60,7 +75,8 @@ namespace Client {
             if (triangles.empty())
                 throw std::runtime_error("Failed to load OBJ: " + objPath);
             uint32_t meshId = scene.addMesh(std::move(triangles), objPath);
-            model.parts.push_back({meshId, readMaterial(parts[i])});
+            const Graphic::Material material = readMaterial(parts[i]);
+            model.parts.push_back({meshId, material, contrastMaterial(material, model.contrastColor)});
         }
         return model;
     }

@@ -20,7 +20,8 @@ namespace Client {
     // world, sending no button held (the server doesn't pause for one player).
     class GameClient : public AClientMode {
         public:
-            GameClient(RayTracer::Scene &scene, const ModelLibrary &models, ServerLinkFactory connect);
+            GameClient(RayTracer::Scene &scene, const ModelLibrary &models, const ClientSettings &settings,
+                ServerLinkFactory connect);
 
             void onEnter() override;  // connects
             void onExit() override;   // disconnects

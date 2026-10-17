@@ -18,7 +18,7 @@ namespace RayTracer
     static Graphic::Pixel environmentColor(const RenderScene &scene, const Math::Vector3D &direction)
     {
         if (scene.background.covers(direction))
-            return scene.background.sample(direction, scene.backgroundTime);
+            return scene.background.sample(direction, scene.backgroundTime, scene.backgroundBrightness);
         return scene.lights.getHDRIPixel(direction * -1);
     }
 
