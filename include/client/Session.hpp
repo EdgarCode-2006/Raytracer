@@ -10,11 +10,12 @@
 #include "core/Scene.hpp"
 #include <map>
 #include <memory>
+#include <vector>
 
 namespace Client {
 
-    // The client program: owns the main loop, reads the input, runs the current mode and has the
-    // engine render the scene the mode built.
+    // The client program: owns the main loop, reads the input, runs the stack of modes and has
+    // the engine render the scene they built.
     class Session {
         public:
             Session(const ClientConfig &config, RayTracer::Scene &scene, RayTracer::Engine &engine,
@@ -23,7 +24,12 @@ namespace Client {
             void run();
 
         private:
-            void changeMode(ModeId id);
+            void push(ModeId id);
+            void pop();
+            void clear();
+            // false when it asks to quit
+            bool apply(const Transition &transition);
+            bool isInStack(const IClientMode *mode) const;
 
             ClientConfig _config;
             RayTracer::Scene &_scene;
@@ -31,8 +37,7 @@ namespace Client {
             InputManager _input;
 
             std::map<ModeId, std::unique_ptr<IClientMode>> _modes;
-            ModeId _currentModeId = ModeId::Title;
-            IClientMode *_currentMode = nullptr;
+            std::vector<IClientMode *> _stack; // the last one is on top
     };
 }
 

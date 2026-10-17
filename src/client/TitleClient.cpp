@@ -8,7 +8,7 @@ namespace Client {
         _scene.scrollBackground(dt);
         // Enter and the arrow keys already drive the buttons through ImGui keyboard navigation
         if (input.isPressed(Action::Back))
-            _next = ModeId::Quit;
+            request(Transition::quit());
     }
 
     void TitleClient::drawOverlay()
@@ -31,9 +31,9 @@ namespace Client {
         if (ImGui::IsWindowAppearing())
             ImGui::SetKeyboardFocusHere();
         if (ImGui::Button("Play", buttonSize))
-            _next = ModeId::Game;
+            request(Transition::switchTo(ModeId::Game));
         if (ImGui::Button("Quit", buttonSize))
-            _next = ModeId::Quit;
+            request(Transition::quit());
 
         ImGui::End();
     }
