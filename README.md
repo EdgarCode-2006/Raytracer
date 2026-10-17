@@ -112,12 +112,15 @@ The menu opens over the game, which goes on under it: the server doesn't pause f
 **Settings** (from the title screen or the menu) only change this client:
 - Controls: two keys per movement and for firing. Click a key (or press Enter on it), then press the new one; Backspace removes it, Esc cancels. A key moves from the action that had it. Esc and Enter can't be rebound, they drive the menus.
 - Graphics: the FPS counter and the shader features, applied from the next frame.
+- Accessibility: high contrast mode. The ships become flat bright shapes, one color per entity type (`contrastColor` in `models.cfg`: the player cyan, the enemies orange and yellow), over a background dimmed to 30%.
+
+The debug views of the Graphics tab (wireframe, outline, normal map, BVH traversal depth) draw over every object when switched on.
 
 ### Game assets
 
 The ships and the background are placeholders, made by `tools/generate_placeholder_assets.py` (`python3 tools/generate_placeholder_assets.py` from the repository root writes them again). Replace the files or point the configs at new ones:
 
-- `assets/game/models.cfg` (client): how each entity type looks. Each model is a list of `.obj` parts with their own color, `emission` makes a part glow. Ships fly along +x (nose to the right). Also the visual animation: spinning, rolling when going up or down.
+- `assets/game/models.cfg` (client): how each entity type looks. Each model is a list of `.obj` parts with their own color, `emission` makes a part glow. Ships fly along +x (nose to the right). Also the visual animation (spinning, rolling when going up or down) and the color of the model in high contrast mode.
 - `assets/game/gameplay.cfg` (server): the speeds, sizes, enemy waves and how often enemies spawn.
 - `assets/scenes/space.cfg`: the background layers (tiling textures, each scrolling at its own speed), the lights, the HDRI seen in reflections and the shader features.
 
