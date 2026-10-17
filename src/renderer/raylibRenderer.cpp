@@ -30,6 +30,9 @@ namespace Graphic {
 
         ImGuiIO &io = ImGui::GetIO();
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+        // the menus are driven with the keyboard: without it, the first key only shows the
+        // highlight of the focused button and pressing it takes a second Enter
+        io.ConfigNavCursorVisibleAlways = true;
         io.IniFilename = nullptr; // the windows are placed by code, nothing to remember
     }
 
