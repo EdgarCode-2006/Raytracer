@@ -91,7 +91,7 @@ The server to connect to can be given at launch (see `./build/client -h`):
 ./build/client --host localhost --port 4242
 ```
 
-Without them it uses `127.0.0.1:4242`.
+Without them it uses `127.0.0.1:4242`. There's no network yet: pressing Play starts a server inside the client, so the host and port aren't used.
 
 On Windows (PowerShell):
 
@@ -111,8 +111,24 @@ On Windows (PowerShell):
 
 The ships and the background are placeholders, made by `tools/generate_placeholder_assets.py` (`python3 tools/generate_placeholder_assets.py` from the repository root writes them again). Replace the files or point the configs at new ones:
 
-- `assets/game/entities.cfg`: the player and the enemies. Each model is a list of `.obj` parts with their own color, `emission` makes a part glow. Ships fly along +x (nose to the right). It also sets the speeds, the enemy waves and how often enemies spawn.
+- `assets/game/models.cfg` (client): how each entity type looks. Each model is a list of `.obj` parts with their own color, `emission` makes a part glow. Ships fly along +x (nose to the right). Also the visual animation: spinning, rolling when going up or down.
+- `assets/game/gameplay.cfg` (server): the speeds, sizes, enemy waves and how often enemies spawn.
 - `assets/scenes/space.cfg`: the background layers (tiling textures, each scrolling at its own speed), the lights, the HDRI seen in reflections and the shader features.
+
+Both files name the entity types the same way (`player`, `drone`, `saucer`). The list is in `common/include/common/EntityType.hpp`: a new enemy type is added there, then in both files.
+
+### Architecture
+
+The game is split so that the server decides everything and the client only shows it:
+
+```
+ keyboard ──► client ── InputState ──► server ── WorldState ──► client ──► scene ──► raytracer
+```
+
+- `common/`: what the client and the server exchange (`InputState`, `WorldState`, the entity types, the size of the play area). No raytracer, raylib or ImGui.
+- `simulation/`: the game rules (players, enemies, spawning), run by the server. Same restrictions as `common/`, it builds as its own library.
+- `src/client/`: the client program. `Session` owns the main loop and switches between the title screen (`TitleClient`) and the game (`GameClient`). The game sends the input to an `IServerLink` and `SceneBuilder` turns the world states it gets back into scene instances. `LocalServerLink` runs the simulation on its own thread at the server tick rate, until the network link replaces it.
+- `src/` (the rest): the raytracer. `Engine` only renders the scene it is given.
 
 To run it on another Windows machine, copy `client.exe` together with the `rayFeatures/` folder (only the `.dll` files are needed) and the `assets/` folder.
 
