@@ -50,7 +50,8 @@ namespace Graphic {
         BeginDrawing();
             ClearBackground(BLACK);
             DrawTexture(_texture, 0, 0, WHITE);
-            DrawFPS(10, 10);
+            if (_showFps)
+                DrawFPS(10, 10);
             if (drawOverlay) {
                 rlImGuiBegin();
                 drawOverlay();

@@ -6,6 +6,7 @@
 #include "client/IClientMode.hpp"
 #include "client/InputManager.hpp"
 #include "client/ModelLibrary.hpp"
+#include "client/SettingsPanel.hpp"
 #include "core/Engine.hpp"
 #include "core/Scene.hpp"
 #include <map>
@@ -35,6 +36,7 @@ namespace Client {
             RayTracer::Scene &_scene;
             RayTracer::Engine &_engine;
             InputManager _input;
+            SettingsPanel _settings; // shared by the title screen and the menu
 
             std::map<ModeId, std::unique_ptr<IClientMode>> _modes;
             std::vector<IClientMode *> _stack; // the last one is on top

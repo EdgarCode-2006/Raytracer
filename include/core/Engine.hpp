@@ -23,6 +23,10 @@ namespace RayTracer {
             // drawOverlay's ImGui calls on top
             void renderFrame(const std::function<void()> &drawOverlay);
 
+            // the shader features, to turn them on and off (read when a frame starts tracing)
+            std::vector<std::unique_ptr<IRayFeature>> &getFeatures() noexcept { return _integrationManager->getIntegrator()->getPipeline(); }
+            Graphic::IRenderer &getRenderer() noexcept { return *_renderer; }
+
         private:
             void generateSnapShot();
 

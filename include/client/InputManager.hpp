@@ -4,6 +4,7 @@
 #include "common/InputState.hpp"
 #include <array>
 #include <cstddef>
+#include <string>
 #include <vector>
 
 namespace Client {
@@ -24,22 +25,29 @@ namespace Client {
     // Only the client reads the keyboard: the server gets the game buttons (toInputState).
     class InputManager {
         public:
+            static constexpr std::size_t MAX_KEYS_PER_ACTION = 2;
+
             InputManager();
 
             void update();
-            void bind(Action action, int key);
-            void clearBindings(Action action);
 
             bool isDown(Action action) const noexcept { return _down[index(action)]; }
             bool isPressed(Action action) const noexcept { return _pressed[index(action)]; }
             bool isReleased(Action action) const noexcept { return _released[index(action)]; }
 
-            // -1 to 1 on each axis, x to the right and y down like the screen
-            float axisX() const noexcept;
-            float axisY() const noexcept;
-
             // the game buttons held now, to send to the server
             Common::InputState toInputState(uint32_t sequence) const noexcept;
+
+            // the keys of an action, MAX_KEYS_PER_ACTION at most
+            const std::vector<int> &getKeys(Action action) const noexcept { return _bindings[index(action)]; }
+            // puts key in a slot of action, taking it from any other action using it
+            void setKey(Action action, std::size_t slot, int key);
+            void clearKey(Action action, std::size_t slot);
+            void resetKeys();
+
+            // the first key pressed during the last update, 0 if none: to rebind a key
+            int getKeyPressed() const noexcept { return _keyPressed; }
+            static std::string keyName(int key);
 
         private:
             static constexpr std::size_t ACTION_COUNT = static_cast<std::size_t>(Action::Count);
@@ -49,6 +57,7 @@ namespace Client {
             std::array<bool, ACTION_COUNT> _down{};
             std::array<bool, ACTION_COUNT> _pressed{};
             std::array<bool, ACTION_COUNT> _released{};
+            int _keyPressed = 0;
     };
 }
 

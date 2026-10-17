@@ -23,13 +23,13 @@ namespace Client {
 
     Session::Session(const ClientConfig &config, RayTracer::Scene &scene, RayTracer::Engine &engine,
         const ModelLibrary &models, ServerLinkFactory connect)
-        : _config(config), _scene(scene), _engine(engine)
+        : _config(config), _scene(scene), _engine(engine), _settings(_input, engine)
     {
         fitCameraToWorld(_scene.getCamera());
 
-        _modes[ModeId::Title] = std::make_unique<TitleClient>(_scene);
+        _modes[ModeId::Title] = std::make_unique<TitleClient>(_scene, _settings);
         _modes[ModeId::Game] = std::make_unique<GameClient>(_scene, models, std::move(connect));
-        _modes[ModeId::Menu] = std::make_unique<MenuClient>();
+        _modes[ModeId::Menu] = std::make_unique<MenuClient>(_settings);
         push(ModeId::Title);
     }
 
