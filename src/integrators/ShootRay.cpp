@@ -96,6 +96,9 @@ namespace RayTracer
 
             this->executePipeline(scene, intersection, UTILITY);
             this->executePipeline(scene, intersection, intersection.mat->type);
+            // the debug views switched on draw over every object, on top of its own shading
+            if (intersection.mat->type != DEBUG)
+                this->executePipeline(scene, intersection, DEBUG);
 
             integrateColor(finalColor, currentRay.throughput, intersection.localColor);
             instanceNewRays(intersection.nextRays, rayQueue, currentRay);
