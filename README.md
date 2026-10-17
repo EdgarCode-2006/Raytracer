@@ -57,7 +57,7 @@ make
 
 #### Windows
 
-The Windows build uses MinGW-w64 (GCC). raylib and libconfig++ are downloaded and built automatically, and everything is linked statically: `raytracer.exe` and the plugins (`rayFeatures/*.dll`) don't need any extra DLL to run.
+The Windows build uses MinGW-w64 (GCC). raylib and libconfig++ are downloaded and built automatically, and everything is linked statically: `client.exe` and the plugins (`rayFeatures/*.dll`) don't need any extra DLL to run.
 
 Cross-compiling from Linux or WSL (Ubuntu: `sudo apt install mingw-w64`):
 
@@ -81,13 +81,22 @@ Each compile job needs a fair amount of RAM, so keep `-j` low on machines with l
 Run it from the repository root: the plugins are loaded from `rayFeatures/` and the assets from `assets/`. The game opens on its main menu, in front of the scrolling space background of `assets/scenes/space.cfg` (seen by a fixed camera).
 
 ```bash
-./build/raytracer
+./build/client
 ```
+
+The server to connect to can be given at launch (see `./build/client -h`):
+
+```bash
+./build/client -t 192.168.1.20 -p 4242
+./build/client --host localhost --port 4242
+```
+
+Without them it uses `127.0.0.1:4242`.
 
 On Windows (PowerShell):
 
 ```powershell
-.\build-windows\raytracer.exe
+.\build-windows\client.exe
 ```
 
 | Key | Action |
@@ -105,7 +114,7 @@ The ships and the background are placeholders, made by `tools/generate_placehold
 - `assets/game/entities.cfg`: the player and the enemies. Each model is a list of `.obj` parts with their own color, `emission` makes a part glow. Ships fly along +x (nose to the right). It also sets the speeds, the enemy waves and how often enemies spawn.
 - `assets/scenes/space.cfg`: the background layers (tiling textures, each scrolling at its own speed), the lights, the HDRI seen in reflections and the shader features.
 
-To run it on another Windows machine, copy `raytracer.exe` together with the `rayFeatures/` folder (only the `.dll` files are needed) and the `assets/` folder.
+To run it on another Windows machine, copy `client.exe` together with the `rayFeatures/` folder (only the `.dll` files are needed) and the `assets/` folder.
 
 ---
 

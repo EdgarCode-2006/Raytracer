@@ -4,7 +4,7 @@
 #   cmake -B build-windows -DCMAKE_TOOLCHAIN_FILE=cmake/toolchains/mingw-w64-x86_64.cmake
 #   cmake --build build-windows -j
 #
-# Produces build-windows/raytracer.exe and rayFeatures/*.dll.
+# Produces build-windows/client.exe and rayFeatures/*.dll.
 
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR x86_64)

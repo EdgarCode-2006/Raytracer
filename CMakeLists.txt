@@ -10,7 +10,7 @@ endif()
 # --- GLOBAL CONFIGURATION ---
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(EXECUTABLE_NAME "raytracer")
+set(EXECUTABLE_NAME "client")
 set(FEATURES_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/rayFeatures")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -25,7 +25,7 @@ else()
     set(PLATFORM_LIBS GL m pthread dl X11 rt)
 endif()
 
-# MinGW: make raytracer.exe and the features only depend on Windows itself, so they can be
+# MinGW: make client.exe and the features only depend on Windows itself, so they can be
 # copied to any Windows machine. The GCC runtime is linked statically, and raylib and
 # libconfig++ are built from source instead of using the installed ones.
 set(SELF_CONTAINED_BUILD OFF)

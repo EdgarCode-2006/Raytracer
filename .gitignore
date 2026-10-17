@@ -1,6 +1,7 @@
 # Build outputs
 raytracer
 raytracer_debug
+client
 build/
 build-*/
 build_tests/
