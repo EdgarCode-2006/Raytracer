@@ -59,6 +59,17 @@ namespace optimization {
         _cv.notify_one();
     }
 
+    void ThreadPool::enqueueBatch(std::vector<std::function<void()>> tasks)
+    {
+        {
+            std::unique_lock<std::mutex> lock(this->_queueMutex);
+            this->_activeTasks += tasks.size();
+            for (auto &task : tasks)
+                _tasks.emplace(std::move(task));
+        }
+        _cv.notify_all();
+    }
+
     void ThreadPool::wait() {
         std::unique_lock<std::mutex> lock(_queueMutex);
         _cv.wait(lock, [this] { 

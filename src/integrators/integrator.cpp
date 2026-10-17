@@ -143,11 +143,14 @@ namespace RayTracer {
         int tileCount = static_cast<int>(_cache.tiles.size());
         auto currentFrame = std::make_shared<Frame>(bufferSize, tileCount);
 
+        std::vector<std::function<void()>> tasks;
+        tasks.reserve(_cache.tiles.size());
         for (const auto& tile : _cache.tiles) {
-            this->_threadPool->enqueue([this, tile, currentFrame, sceneLocked, cam]() {
+            tasks.emplace_back([this, tile, currentFrame, sceneLocked, cam]() {
                 this->computeTile(tile, currentFrame, *sceneLocked, cam);
             });
         }
+        this->_threadPool->enqueueBatch(std::move(tasks));
     }
 
     std::shared_ptr<Frame> Integrator::getAvailableFrame()
