@@ -1,8 +1,8 @@
-#include "input/InputManager.hpp"
+#include "client/InputManager.hpp"
 #include <algorithm>
 #include <raylib.h>
 
-namespace Input {
+namespace Client {
 
     InputManager::InputManager()
     {
@@ -52,5 +52,17 @@ namespace Input {
     float InputManager::axisY() const noexcept
     {
         return (isDown(Action::MoveDown) ? 1.0f : 0.0f) - (isDown(Action::MoveUp) ? 1.0f : 0.0f);
+    }
+
+    Common::InputState InputManager::toInputState(uint32_t sequence) const noexcept
+    {
+        Common::InputState state;
+        state.sequence = sequence;
+        state.set(Common::Button::Up, isDown(Action::MoveUp));
+        state.set(Common::Button::Down, isDown(Action::MoveDown));
+        state.set(Common::Button::Left, isDown(Action::MoveLeft));
+        state.set(Common::Button::Right, isDown(Action::MoveRight));
+        state.set(Common::Button::Fire, isDown(Action::Fire));
+        return state;
     }
 }

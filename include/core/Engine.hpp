@@ -4,36 +4,33 @@
 #include "Scene.hpp"
 #include "integrators/IntegrationManager.hpp"
 #include "renderer/Renderer.hpp"
-#include "input/InputManager.hpp"
-#include "game/IGameState.hpp"
-#include "game/GameAssets.hpp"
 
-#include <map>
+#include <functional>
 #include <memory>
 
 namespace RayTracer {
 
+    // Renders the scene, nothing else: whoever owns the main loop changes the scene, then calls
+    // renderFrame. The frames are traced on the render threads, so the image shown can be a frame
+    // or two behind the scene.
     class Engine {
         public:
-            Engine(RayTracer::Scene& scene, std::unique_ptr<Graphic::IRenderer> renderer, Game::GameAssets assets);
+            Engine(RayTracer::Scene& scene, std::unique_ptr<Graphic::IRenderer> renderer);
             ~Engine();
 
-            void run();
-            void generateSnapShot();
+            bool windowOpen() { return _renderer->windowOpen(); }
+            // snapshots the scene, starts tracing it and shows the newest finished frame with
+            // drawOverlay's ImGui calls on top
+            void renderFrame(const std::function<void()> &drawOverlay);
+
         private:
-            void changeState(Game::StateId id);
+            void generateSnapShot();
 
             Scene& _scene;
 
             std::unique_ptr<Graphic::IRenderer> _renderer;
             std::unique_ptr<RayTracer::IntegrationManager> _integrationManager;
             std::shared_ptr<Frame> _currentFrame;
-
-            Game::GameAssets _assets; // before the states, which keep references to it
-            Input::InputManager _input;
-            std::map<Game::StateId, std::unique_ptr<Game::IGameState>> _states;
-            Game::StateId _currentStateId = Game::StateId::Menu;
-            Game::IGameState *_currentState = nullptr;
     };
 
     class EngineException : public std::exception {

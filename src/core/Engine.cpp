@@ -1,15 +1,9 @@
 #include "core/Engine.hpp"
 #include "core/Scene.hpp"
-#include "game/MenuState.hpp"
-#include "game/PlayingState.hpp"
-#include <algorithm>
-#include <chrono>
 
 namespace RayTracer{
-    static constexpr double MAX_FRAME_TIME = 0.1;
-
-    Engine::Engine(RayTracer::Scene &scene, std::unique_ptr<Graphic::IRenderer> renderer, Game::GameAssets assets)
-        : _scene(scene), _renderer(std::move(renderer)), _assets(std::move(assets))
+    Engine::Engine(RayTracer::Scene &scene, std::unique_ptr<Graphic::IRenderer> renderer)
+        : _scene(scene), _renderer(std::move(renderer))
     {
         if (!_renderer)
             throw EngineException("Invalid rendering object");
@@ -27,15 +21,13 @@ namespace RayTracer{
             if (it != saved.end())
                 feature->setActivity(it->second);
         }
-
-        _states[Game::StateId::Menu] = std::make_unique<Game::MenuState>(_scene);
-        _states[Game::StateId::Playing] = std::make_unique<Game::PlayingState>(_scene, _assets);
-        changeState(Game::StateId::Menu);
+        _currentFrame = std::make_shared<Frame>(cam.getWidth() * cam.getHeight(), 0);
     }
 
     Engine::~Engine()
     {
         if (_integrationManager) {
+            _integrationManager->stop();
             _integrationManager->waitForRendering();
         }
     }
@@ -50,51 +42,17 @@ namespace RayTracer{
         this->_integrationManager->addSnapShot(currentSnapshot);
     }
 
-    void Engine::changeState(Game::StateId id)
-    {
-        if (_currentState)
-            _currentState->onExit();
-        _currentStateId = id;
-        _currentState = _states.at(id).get();
-        _currentState->onEnter();
-    }
-
-    void Engine::run()
+    void Engine::renderFrame(const std::function<void()> &drawOverlay)
     {
         Camera& cam = _scene.getCamera();
-        _currentFrame = std::make_shared<Frame>(cam.getWidth() * cam.getHeight(), 0);
 
-        auto lastTime = std::chrono::steady_clock::now();
+        // the background scrolls and the entities move: every frame shows a new scene
+        this->generateSnapShot();
 
-        while (this->_renderer->windowOpen()) {
-            const auto now = std::chrono::steady_clock::now();
-            // a long stall (window dragged, breakpoint) must not teleport everything
-            const double dt = std::min(std::chrono::duration<double>(now - lastTime).count(), MAX_FRAME_TIME);
-            lastTime = now;
-
-            _input.update();
-            _currentState->update(_input, dt);
-
-            // the background scrolls and the entities move: every frame shows a new scene
-            this->generateSnapShot();
-
-            _integrationManager->renderSnapShot(cam);
-            std::shared_ptr<Frame> tempFrame = _integrationManager->getAvailableFrame();
-            if (tempFrame)
-                _currentFrame = tempFrame;
-            _renderer->renderPixelBuffer(_currentFrame->_pixelBuffer.data(), [this]() {
-                _currentState->drawOverlay();
-            });
-
-            Game::StateId next = _currentState->next();
-            if (next == Game::StateId::Quit) {
-                _currentState->onExit();
-                break;
-            }
-            if (next != _currentStateId)
-                changeState(next);
-        }
-        _integrationManager->stop();
-        _integrationManager->waitForRendering();
+        _integrationManager->renderSnapShot(cam);
+        std::shared_ptr<Frame> tempFrame = _integrationManager->getAvailableFrame();
+        if (tempFrame)
+            _currentFrame = tempFrame;
+        _renderer->renderPixelBuffer(_currentFrame->_pixelBuffer.data(), drawOverlay);
     }
 }

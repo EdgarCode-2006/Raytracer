@@ -89,6 +89,11 @@ file(GLOB_RECURSE FEATURE_SRC "src/integrators/features/*.cpp")
 list(REMOVE_ITEM SRC ${FEATURE_SRC})
 list(REMOVE_ITEM SRC "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
+# The client (input, modes, server link, scene building) is the program around the raytracer,
+# not part of it: the features don't need it.
+file(GLOB_RECURSE CLIENT_SRC "src/client/*.cpp")
+list(REMOVE_ITEM SRC ${CLIENT_SRC})
+
 set(IMGUI_SRC
     ${imgui_SOURCE_DIR}/imgui.cpp
     ${imgui_SOURCE_DIR}/imgui_draw.cpp
@@ -153,9 +158,10 @@ add_ray_feature(WireFrame_feat src/integrators/features/debug/WireFrame.cpp)
 add_ray_feature(RayTraverseDepth_feat src/integrators/features/debug/RayTraverseDepth.cpp)
 
 # --- EXECUTABLE ---
-add_executable(${EXECUTABLE_NAME} src/main.cpp)
+add_executable(${EXECUTABLE_NAME} src/main.cpp ${CLIENT_SRC})
 
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE raytracer_core)
+# rtype_simulation for the local server, until the server is its own program
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE raytracer_core rtype_simulation)
 
 # The features are loaded at runtime from rayFeatures/, build them along with the executable.
 add_dependencies(${EXECUTABLE_NAME} ${RAY_FEATURES})

@@ -1,9 +1,12 @@
 #include "core/Engine.hpp"
 #include "core/Scene.hpp"
 #include "SceneParser.hpp"
-#include "game/GameAssets.hpp"
 #include "renderer/RaylibRenderer.hpp"
 #include "client/ArgumentParser.hpp"
+#include "client/LocalServerLink.hpp"
+#include "client/ModelLibrary.hpp"
+#include "client/Session.hpp"
+#include "simulation/GameRules.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -11,7 +14,9 @@
 static constexpr int SCREEN_WIDTH = 960;
 static constexpr int SCREEN_HEIGHT = 540;
 static constexpr const char *SCENE_PATH = "assets/scenes/space.cfg";
-static constexpr const char *GAME_ASSETS_PATH = "assets/game/entities.cfg";
+static constexpr const char *MODELS_PATH = "assets/game/models.cfg";
+// read by the server: for now the local one, running inside the client
+static constexpr const char *GAMEPLAY_PATH = "assets/game/gameplay.cfg";
 
 // When the program is launched, the user can set a host using --host or -t <hostname>
 // and a port using --port or -p <portNumber>. -h or --help prints the usage.
@@ -30,18 +35,25 @@ int main(int argc, char **argv)
         std::cout << Client::ArgumentParser::usage(programName);
         return 0;
     }
-    std::cout << "Server: " << config.host << ":" << config.port << std::endl;
+    std::cout << "Server: " << config.host << ":" << config.port << " (not used yet, the game runs a local server)" << std::endl;
 
     try {
         RayTracer::Scene scene(SCREEN_WIDTH, SCREEN_HEIGHT);
         RayTracer::SceneParser parser;
         parser.load(SCENE_PATH, scene);
         // every mesh is loaded before the first frame renders
-        Game::GameAssets assets = Game::GameAssets::load(GAME_ASSETS_PATH, scene);
+        const Client::ModelLibrary models = Client::ModelLibrary::load(MODELS_PATH, scene);
+        // loaded now so that a broken file stops the program here, not when pressing Play
+        const Simulation::GameRules rules = Simulation::GameRules::load(GAMEPLAY_PATH);
 
         auto renderer = std::make_unique<Graphic::RaylibRenderer>(SCREEN_WIDTH, SCREEN_HEIGHT);
-        RayTracer::Engine engine(scene, std::move(renderer), std::move(assets));
-        engine.run();
+        RayTracer::Engine engine(scene, std::move(renderer));
+
+        // there's no network yet: playing starts a server inside the client
+        Client::Session session(config, scene, engine, models, [&rules]() {
+            return std::make_unique<Client::LocalServerLink>(rules);
+        });
+        session.run();
 
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;

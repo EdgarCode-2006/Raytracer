@@ -1,11 +1,12 @@
 #ifndef INPUT_MANAGER_HPP_
 #define INPUT_MANAGER_HPP_
 
+#include "common/InputState.hpp"
 #include <array>
 #include <cstddef>
 #include <vector>
 
-namespace Input {
+namespace Client {
 
     enum class Action : std::size_t {
         MoveUp,
@@ -19,7 +20,8 @@ namespace Input {
         Count
     };
 
-    // Turns the keyboard into game actions, read once per frame so every system sees the same input.
+    // Turns the keyboard into actions, read once per frame so every system sees the same input.
+    // Only the client reads the keyboard: the server gets the game buttons (toInputState).
     class InputManager {
         public:
             InputManager();
@@ -35,6 +37,9 @@ namespace Input {
             // -1 to 1 on each axis, x to the right and y down like the screen
             float axisX() const noexcept;
             float axisY() const noexcept;
+
+            // the game buttons held now, to send to the server
+            Common::InputState toInputState(uint32_t sequence) const noexcept;
 
         private:
             static constexpr std::size_t ACTION_COUNT = static_cast<std::size_t>(Action::Count);
