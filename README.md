@@ -101,11 +101,17 @@ On Windows (PowerShell):
 
 | Key | Action |
 |---|---|
-| Arrows / WASD | Move (menu: navigate the buttons) |
-| Enter | Confirm |
+| Arrows / WASD | Move (in the menus: go between the buttons) |
+| Enter | Press the highlighted button |
 | Space | Fire |
-| P | Pause |
-| Esc | Back (quits from the main menu) |
+| Esc | In the game: open the menu. In a menu: go back (quits from the title screen) |
+| F12 | Screenshot (raylib saves `screenshot000.png`...) |
+
+The menu opens over the game, which goes on under it: the server doesn't pause for one player, so the ship stops but stays in the game. From the menu you can resume, open the settings, leave the game for the title screen or quit.
+
+**Settings** (from the title screen or the menu) only change this client:
+- Controls: two keys per movement and for firing. Click a key (or press Enter on it), then press the new one; Backspace removes it, Esc cancels. A key moves from the action that had it. Esc and Enter can't be rebound, they drive the menus.
+- Graphics: the FPS counter and the shader features, applied from the next frame.
 
 ### Game assets
 
@@ -127,7 +133,7 @@ The game is split so that the server decides everything and the client only show
 
 - `common/`: what the client and the server exchange (`InputState`, `WorldState`, the entity types, the size of the play area). No raytracer, raylib or ImGui.
 - `simulation/`: the game rules (players, enemies, spawning), run by the server. Same restrictions as `common/`, it builds as its own library.
-- `src/client/`: the client program. `Session` owns the main loop and switches between the title screen (`TitleClient`) and the game (`GameClient`). The game sends the input to an `IServerLink` and `SceneBuilder` turns the world states it gets back into scene instances. `LocalServerLink` runs the simulation on its own thread at the server tick rate, until the network link replaces it.
+- `src/client/`: the client program. `Session` owns the main loop and a stack of modes: the title screen (`TitleClient`), the game (`GameClient`) and the menu (`MenuClient`, pushed over the game). The mode on top gets the input, the ones under it keep running without it, and they all draw their UI from the bottom up. The game sends the input to an `IServerLink` and `SceneBuilder` turns the world states it gets back into scene instances. `LocalServerLink` runs the simulation on its own thread at the server tick rate, until the network link replaces it.
 - `src/` (the rest): the raytracer. `Engine` only renders the scene it is given.
 
 To run it on another Windows machine, copy `client.exe` together with the `rayFeatures/` folder (only the `.dll` files are needed) and the `assets/` folder.
