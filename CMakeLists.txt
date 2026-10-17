@@ -69,6 +69,19 @@ FetchContent_Declare(tinyexr
 
 FetchContent_MakeAvailable(imgui rlimgui tinyexr stb)
 
+# --- GAME LIBRARIES ---
+# What the client and the server share (inputs, world state, entity types), and the game rules
+# the server runs. Neither knows about the raytracer, raylib or ImGui: only their own headers
+# are on their include path.
+file(GLOB_RECURSE COMMON_SRC "common/src/*.cpp")
+add_library(rtype_common STATIC ${COMMON_SRC})
+target_include_directories(rtype_common PUBLIC "${CMAKE_SOURCE_DIR}/common/include")
+
+file(GLOB_RECURSE SIMULATION_SRC "simulation/src/*.cpp")
+add_library(rtype_simulation STATIC ${SIMULATION_SRC})
+target_include_directories(rtype_simulation PUBLIC "${CMAKE_SOURCE_DIR}/simulation/include")
+target_link_libraries(rtype_simulation PUBLIC rtype_common)
+
 # --- SOURCE FILES ---
 file(GLOB_RECURSE SRC "src/*.cpp")
 file(GLOB_RECURSE FEATURE_SRC "src/integrators/features/*.cpp")
@@ -156,6 +169,8 @@ endif()
 if(NOT SELF_CONTAINED_BUILD AND LIBCONFIGPP_LIB AND LIBCONFIGPP_INC)
     target_include_directories(raytracer_core PUBLIC ${LIBCONFIGPP_INC})
     target_link_libraries(raytracer_core PUBLIC ${LIBCONFIGPP_LIB})
+    target_include_directories(rtype_simulation PRIVATE ${LIBCONFIGPP_INC})
+    target_link_libraries(rtype_simulation PRIVATE ${LIBCONFIGPP_LIB})
 else()
     message(STATUS "Building libconfig++ from source")
     FetchContent_Declare(libconfig
@@ -167,8 +182,10 @@ else()
 
     if(MSVC)
         target_link_libraries(raytracer_core PUBLIC libconfig++)
+        target_link_libraries(rtype_simulation PRIVATE libconfig++)
     else()
         target_link_libraries(raytracer_core PUBLIC config++)
+        target_link_libraries(rtype_simulation PRIVATE config++)
     endif()
 endif()
 
