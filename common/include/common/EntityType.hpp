@@ -14,6 +14,7 @@ namespace Common {
         Drone,
         Saucer,
         Fighter,
+        Boss,   // has a model, but the server doesn't spawn it yet: its fight isn't written
         Count
     };
 

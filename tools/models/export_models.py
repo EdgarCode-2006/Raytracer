@@ -15,7 +15,7 @@ import bpy
 TOOLS = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(TOOLS))
 OUT = os.path.join(REPO, "assets", "game", "models")
-MODELS = ["player", "drone", "saucer", "fighter"]
+MODELS = ["player", "drone", "saucer", "fighter", "boss"]
 
 sys.path.insert(0, TOOLS)
 import gametools as gt  # noqa: E402 (needs TOOLS in the path)

@@ -122,9 +122,9 @@ The debug views of the Graphics tab (wireframe, outline, normal map, BVH travers
 - `assets/game/gameplay.cfg` (server): the speeds, sizes, enemy waves and how often enemies spawn.
 - `assets/scenes/space.cfg`: the background layers (tiling textures, each scrolling at its own speed), the lights, the HDRI seen in reflections and the shader features.
 
-Both files name the entity types the same way (`player`, `drone`, `saucer`, `fighter`). The list is in `common/include/common/EntityType.hpp`: a new enemy type is added there, then in both files.
+Both files name the entity types the same way (`player`, `drone`, `saucer`, `fighter`, `boss`). The list is in `common/include/common/EntityType.hpp`: a new enemy type is added there, then in both files. The boss has its model but isn't spawned yet.
 
-The models (`assets/game/models/*.obj`) are low poly (from about 340 triangles for the drone to 580 for the player) and made in Blender by the scripts of `tools/models/`, one per model. Change a model in its script, then write the `.obj` files again with Blender 4.2 or newer:
+The models (`assets/game/models/*.obj`) are low poly (from about 340 triangles for the drone to 1600 for the boss) and made in Blender by the scripts of `tools/models/`, one per model. Change a model in its script, then write the `.obj` files again with Blender 4.2 or newer:
 
 ```bash
 blender -b --factory-startup --python-exit-code 1 --python tools/models/export_models.py            # every model
