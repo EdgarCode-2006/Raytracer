@@ -18,25 +18,32 @@ namespace Client {
         Math::Vector3D rotation;
     };
 
-    // One mesh of a model with its own material (a hull and a glowing engine for example).
+    // One mesh of a model (a hull and a glowing engine for example).
     struct ModelPart {
         uint32_t meshId;
-        Graphic::Material material;
-        Graphic::Material contrastMaterial; // in high contrast mode: flat, the model's contrast color or white for a glow
+        std::string name; // how the themes of models.cfg call it
+    };
+
+    // The material of each part, in the order of the parts. A model has one look, or one per
+    // theme in models.cfg (the player has a look per team).
+    struct ModelLook {
+        std::vector<Graphic::Material> materials;
+        std::vector<Graphic::Material> contrastMaterials; // in high contrast mode: flat, the look's contrast color or white for a glow
     };
 
     // How one entity type looks. Only the client knows it: the server only sends the type.
     struct Model {
         std::vector<ModelPart> parts;
+        std::vector<ModelLook> looks; // never empty
         double scale = 1.0;
         double spin = 0.0;       // degrees per second
         int spinAxis = 1;        // 0 for x, 1 for y, 2 for z (z spins in the plane of the screen)
         double maxBank = 0.0;    // degrees of roll when moving up or down
         double bankAtSpeed = 1.0; // vertical speed giving the whole maxBank
-        Graphic::Pixel contrastColor{255, 255, 255, 255};
 
-        // adds one instance per part, all at the same transform
-        void addTo(RayTracer::Scene &scene, const Transform &transform, bool highContrast = false) const;
+        // adds one instance per part, all at the same transform. variant picks the look (a
+        // player's slot picks their team), going round when there are fewer looks.
+        void addTo(RayTracer::Scene &scene, const Transform &transform, bool highContrast = false, uint8_t variant = 0) const;
     };
 
     // The model of every entity type, read from assets/game/models.cfg. The meshes are loaded

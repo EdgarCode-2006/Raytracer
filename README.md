@@ -112,13 +112,13 @@ The menu opens over the game, which goes on under it: the server doesn't pause f
 **Settings** (from the title screen or the menu) only change this client:
 - Controls: two keys per movement and for firing. Click a key (or press Enter on it), then press the new one; Backspace removes it, Esc cancels. A key moves from the action that had it. Esc and Enter can't be rebound, they drive the menus.
 - Graphics: the FPS counter and the shader features, applied from the next frame.
-- Accessibility: high contrast mode. The ships become flat bright shapes, one color per entity type (`contrastColor` in `models.cfg`: the player cyan, the enemies orange and yellow), over a background dimmed to 30%.
+- Accessibility: high contrast mode. The ships become flat bright shapes, one color per entity type and per player (`contrastColor` in `models.cfg`: the players in cool colors, the enemies in warm ones), over a background dimmed to 30%.
 
 The debug views of the Graphics tab (wireframe, outline, normal map, BVH traversal depth) draw over every object when switched on.
 
 ### Game assets
 
-- `assets/game/models.cfg` (client): how each entity type looks. Each model is a list of `.obj` parts with their own color, `emission` makes a part glow. The player flies along +x (nose to the right), the enemies face -x. Also the visual animation (spinning, rolling when going up or down) and the color of the model in high contrast mode.
+- `assets/game/models.cfg` (client): how each entity type looks. Each model is a list of `.obj` parts with their own color, `emission` makes a part glow. The player flies along +x (nose to the right), the enemies face -x. Also the visual animation (spinning, rolling when going up or down), the color of the model in high contrast mode, and `themes`: other colors for the same meshes. The player has one theme per team (Azure, Aqua, Rose, Lilac): the server gives each player a slot and the client shows it with that team's colors.
 - `assets/game/gameplay.cfg` (server): the speeds, sizes, enemy waves and how often enemies spawn.
 - `assets/scenes/space.cfg`: the background layers (tiling textures, each scrolling at its own speed), the lights, the HDRI seen in reflections and the shader features.
 

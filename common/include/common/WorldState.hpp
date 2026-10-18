@@ -13,6 +13,7 @@ namespace Common {
         EntityType type;
         Vec2 position;
         Vec2 velocity;    // world units per second, for the client to animate (and later interpolate)
+        uint8_t variant = 0; // which look of its type: a player's slot, that the client shows with a team's colors
     };
 
     // What the server sends to a client every tick. Only gameplay: how an entity looks (model,

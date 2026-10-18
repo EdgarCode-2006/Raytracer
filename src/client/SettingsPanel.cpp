@@ -133,7 +133,7 @@ namespace Client {
     {
         ImGui::Checkbox("High contrast", &_settings.highContrast);
         ImGui::TextDisabled("Ships as flat bright shapes, a color per type, over a dimmed background.");
-        ImGui::TextDisabled("Player in cyan, enemies in warm colors (models.cfg, contrastColor).");
+        ImGui::TextDisabled("Players in cool colors, one per player, enemies in warm ones (models.cfg, contrastColor).");
 
         // the flat shapes are drawn by the Emission feature
         if (_settings.highContrast) {

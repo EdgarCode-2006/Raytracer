@@ -32,7 +32,7 @@ namespace Client {
                 anim.bank + (model.spinAxis == 0 ? anim.spin : 0.0),
                 model.spinAxis == 1 ? anim.spin : 0.0,
                 model.spinAxis == 2 ? anim.spin : 0.0);
-            model.addTo(_scene, transform, _settings.highContrast);
+            model.addTo(_scene, transform, _settings.highContrast, entity.variant);
         }
 
         // forget the entities the server doesn't send anymore

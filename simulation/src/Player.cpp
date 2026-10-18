@@ -4,8 +4,8 @@
 
 namespace Simulation {
 
-    Player::Player(uint32_t id, const PlayerRules &rules, Common::Vec2 start)
-        : _id(id), _rules(&rules), _position(start)
+    Player::Player(uint32_t id, uint8_t slot, const PlayerRules &rules, Common::Vec2 start)
+        : _id(id), _slot(slot), _rules(&rules), _position(start)
     {
     }
 
@@ -23,6 +23,6 @@ namespace Simulation {
 
     Common::EntityState Player::state() const noexcept
     {
-        return {_id, Common::EntityType::Player, _position, _velocity};
+        return {_id, Common::EntityType::Player, _position, _velocity, _slot};
     }
 }

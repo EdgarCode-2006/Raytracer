@@ -14,14 +14,18 @@ namespace Simulation {
 
     uint32_t GameSimulation::addPlayer()
     {
+        // the first slot no player has: a player who leaves frees their place and their colors
+        int index = 0;
+        while (std::any_of(_players.begin(), _players.end(), [index](const Player &p) { return p.getSlot() == index; }))
+            index++;
+
         // 0, +2, -2, +4, -4...
-        const int index = static_cast<int>(_players.size());
         const float offset = ((index + 1) / 2) * PLAYER_SPACING * (index % 2 ? 1.0f : -1.0f);
         const float maxY = Common::WORLD_HALF_HEIGHT - _rules.player.size;
         const Common::Vec2 start{-Common::WORLD_HALF_WIDTH * 0.6f, std::clamp(offset, -maxY, maxY)};
 
         const uint32_t id = _nextId++;
-        _players.emplace_back(id, _rules.player, start);
+        _players.emplace_back(id, static_cast<uint8_t>(index), _rules.player, start);
         return id;
     }
 
