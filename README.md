@@ -122,7 +122,7 @@ The debug views of the Graphics tab (wireframe, outline, normal map, BVH travers
 - `assets/game/gameplay.cfg` (server): the speeds, sizes, enemy waves and how often enemies spawn.
 - `assets/scenes/space.cfg`: the background layers (tiling textures, each scrolling at its own speed), the lights, the HDRI seen in reflections and the shader features.
 
-Both files name the entity types the same way (`player`, `drone`, `saucer`). The list is in `common/include/common/EntityType.hpp`: a new enemy type is added there, then in both files.
+Both files name the entity types the same way (`player`, `drone`, `saucer`, `fighter`). The list is in `common/include/common/EntityType.hpp`: a new enemy type is added there, then in both files.
 
 The models (`assets/game/models/*.obj`) are low poly (from about 340 triangles for the drone to 580 for the player) and made in Blender by the scripts of `tools/models/`, one per model. Change a model in its script, then write the `.obj` files again with Blender 4.2 or newer:
 

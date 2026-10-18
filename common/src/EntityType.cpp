@@ -8,6 +8,7 @@ namespace Common {
         "player",
         "drone",
         "saucer",
+        "fighter",
     };
 
     std::string_view entityTypeName(EntityType type) noexcept

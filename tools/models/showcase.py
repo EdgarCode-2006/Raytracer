@@ -37,6 +37,7 @@ LAYOUT = {
     "player": [(-8.5, 4.2), (-6.0, 1.4), (-8.5, -1.4), (-6.0, -4.2)],
     "drone": [(-0.5, 4.2)],
     "saucer": [(0.0, 0.0)],
+    "fighter": [(0.5, -4.2)],
 }
 FOV = 60.0  # assets/scenes/space.cfg
 WORLD_HALF_HEIGHT = 6.75  # common/include/common/World.hpp

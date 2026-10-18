@@ -13,6 +13,7 @@ namespace Common {
         Player,
         Drone,
         Saucer,
+        Fighter,
         Count
     };
 
