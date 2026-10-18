@@ -118,13 +118,21 @@ The debug views of the Graphics tab (wireframe, outline, normal map, BVH travers
 
 ### Game assets
 
-The ships and the background are placeholders, made by `tools/generate_placeholder_assets.py` (`python3 tools/generate_placeholder_assets.py` from the repository root writes them again). Replace the files or point the configs at new ones:
-
-- `assets/game/models.cfg` (client): how each entity type looks. Each model is a list of `.obj` parts with their own color, `emission` makes a part glow. Ships fly along +x (nose to the right). Also the visual animation (spinning, rolling when going up or down) and the color of the model in high contrast mode.
+- `assets/game/models.cfg` (client): how each entity type looks. Each model is a list of `.obj` parts with their own color, `emission` makes a part glow. The player flies along +x (nose to the right), the enemies face -x. Also the visual animation (spinning, rolling when going up or down) and the color of the model in high contrast mode.
 - `assets/game/gameplay.cfg` (server): the speeds, sizes, enemy waves and how often enemies spawn.
 - `assets/scenes/space.cfg`: the background layers (tiling textures, each scrolling at its own speed), the lights, the HDRI seen in reflections and the shader features.
 
 Both files name the entity types the same way (`player`, `drone`, `saucer`). The list is in `common/include/common/EntityType.hpp`: a new enemy type is added there, then in both files.
+
+The models (`assets/game/models/*.obj`) are low poly (from about 340 triangles for the drone to 580 for the player) and made in Blender by the scripts of `tools/models/`, one per model. Change a model in its script, then write the `.obj` files again with Blender 4.2 or newer:
+
+```bash
+blender -b --factory-startup --python-exit-code 1 --python tools/models/export_models.py            # every model
+blender -b --factory-startup --python-exit-code 1 --python tools/models/export_models.py -- drone   # only some
+blender --python tools/models/showcase.py   # every model in a Blender scene, seen like in the game (numpad 0)
+```
+
+Blender's Front view is the game's view: X to the right, Z up, -Y towards the camera. Each part is a closed mesh and the exporter refuses one that is open or inside out (the ray tracer has no back faces). The background textures are made by `python3 tools/generate_space_textures.py`.
 
 ### Architecture
 

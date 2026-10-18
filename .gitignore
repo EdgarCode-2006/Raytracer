@@ -38,3 +38,6 @@ scenes/zizi.cfg
 scenes/caca.cfg
 scenes/prout.cfg
 imgui.ini
+
+# Python (the Blender scripts of tools/models)
+__pycache__/
